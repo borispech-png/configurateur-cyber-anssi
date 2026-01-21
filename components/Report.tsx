@@ -24,6 +24,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
   const sectionRefs = useRef<{[key: string]: HTMLElement | null}>({});
 
   const handleDownload = useReactToPrint({
+    // @ts-ignore
     content: () => reportRef.current,
     documentTitle: `Audit_Cyber_ANSSI_${clientInfo.name}`,
     pageStyle: `

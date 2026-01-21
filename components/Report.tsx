@@ -4,6 +4,7 @@ import { Shield, ChevronLeft, Download, BarChart3, ListChecks, Target, CreditCar
 import { ClientInfo, Recommendation, BudgetPhase, Theme, Answers, Benchmark } from '../types';
 import { DOMAINS, ANSSI_SOLUTIONS, GLOSSARY } from '../constants';
 import RadialProgress from './RadialProgress';
+import MaturityRadar from './MaturityRadar';
 
 interface ReportProps {
   clientInfo: ClientInfo;
@@ -535,6 +536,25 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                         Conformité et Référentiels
                                     </h2>
                                 </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-gray-50 dark:bg-gray-700/50 p-6 rounded-lg mb-8">
+                                {/* Global Score */}
+                                <div className="flex flex-col items-center justify-center">
+                                    <RadialProgress
+                                        score={maturity}
+                                        size={200}
+                                        strokeWidth={15}
+                                        label="Maturité Globale"
+                                    />
+                                </div>
+                                
+                                {/* Radar Chart (Spider Web) */}
+                                <div className="flex flex-col items-center justify-center w-full">
+                                    <h4 className="text-gray-500 dark:text-gray-300 text-sm font-semibold uppercase tracking-wider mb-2 text-center">
+                                        Répartition par domaine
+                                    </h4>
+                                    <MaturityRadar domainScores={domainScores} />
+                                </div>
+                            </div>
                                 <div className="bg-gray-50 dark:bg-gray-700/50 p-6 rounded-lg">
                                     <p className="text-gray-700 dark:text-gray-300">
                                         Cet audit et les recommandations qui en découlent sont alignés avec les principaux référentiels de cybersécurité en vigueur en France et en Europe. L'objectif est de vous fournir une feuille de route pragmatique pour élever votre niveau de protection et de conformité.

@@ -6,6 +6,7 @@ import { DOMAINS, ANSSI_SOLUTIONS, GLOSSARY, BUDGET_ITEMS } from '../constants';
 import RadialProgress from './RadialProgress';
 import MaturityRadar from './MaturityRadar';
 import QuickWinMatrix from './QuickWinMatrix';
+import HighlightGlossary from './HighlightGlossary';
 import { ToggleLeft, ToggleRight, ArrowRight } from 'lucide-react';
 
 interface ReportProps {
@@ -469,15 +470,13 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                 <div className="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-lg border-l-4 border-blue-500">
                                     <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2">Pourquoi l'Immutabilité ?</h4>
                                     <p className="text-sm text-gray-600 dark:text-gray-300">
-                                        Les ransomwares modernes s'attaquent d'abord aux sauvegardes pour empêcher la restauration. 
-                                        L'immutabilité (WORM - Write Once Read Many) garantit techniquement qu'aucune donnée ne peut être modifiée ou supprimée avant sa date d'expiration, même avec des droits administrateur.
+                                        <HighlightGlossary text="Les ransomwares modernes s'attaquent d'abord aux sauvegardes pour empêcher la restauration. L'immutabilité (WORM) garantit techniquement qu'aucune donnée ne peut être modifiée avant expiration." />
                                     </p>
                                 </div>
                                 <div className="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-lg border-l-4 border-indigo-500">
                                     <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2">Le concept d'Air-Gap</h4>
                                     <p className="text-sm text-gray-600 dark:text-gray-300">
-                                        La règle du 3-2-1 impose une copie hors-site. L'Air-Gap va plus loin en isolant cette copie du réseau de production. 
-                                        Les solutions de "Cyber Recovery Vault" automatisent cette isolation en n'ouvrant le flux réseau que le temps de la réplication, réduisant la surface d'attaque à quasi-zero.
+                                        <HighlightGlossary text="La règle du 3-2-1 impose une copie hors-site. L'Air-Gap isole cette copie du réseau. Les solutions de Cyber Recovery Vault automatisent cette isolation." />
                                     </p>
                                 </div>
                             </div>
@@ -537,7 +536,9 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                                 <span className={`text-xs font-bold uppercase px-2 py-1 rounded-full ${rec.level === 'critique' ? 'bg-red-200 text-red-800 dark:bg-red-700 dark:text-red-100' : 'bg-yellow-200 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100'}`}>
                                                   {rec.level}
                                                 </span>
-                                                <h4 className="font-bold text-lg text-gray-900 dark:text-gray-100 mt-2">{rec.question}</h4>
+                                                <h4 className="font-bold text-lg text-gray-900 dark:text-gray-100 mt-2">
+                                                    <HighlightGlossary text={rec.question} />
+                                                </h4>
                                                 <div className="text-sm mt-2 space-y-1 text-gray-700 dark:text-gray-300">
                                                   <p><strong>État actuel :</strong> {rec.currentState}</p>
                                                   <p className="flex items-center gap-2">
@@ -632,11 +633,14 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                               {phase.items.map(item => (
                                                   <li key={item.name} className="py-3 flex justify-between items-start">
                                                       <div>
-                                                          <p className="font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                                                            {item.name}
+                                                          <div className="font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+                                                            <HighlightGlossary text={item.name} />
                                                             {item.anssiCertified && <span className="text-xs font-bold text-white bg-blue-600 px-2 py-0.5 rounded-full">Qualifié ANSSI</span>}
-                                                          </p>
-                                                          <p className="text-xs text-gray-500 dark:text-gray-400">{item.description}</p>
+                                                          </div>
+                                                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                                                              <HighlightGlossary text={item.description} />
+                                                          </div>
+                                                      </div>
                                                       </div>
                                                       <p className="font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap">{item.cost.toLocaleString('fr-FR')} €</p>
                                                   </li>

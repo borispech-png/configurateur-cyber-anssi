@@ -155,7 +155,11 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
         <header className="sticky top-0 z-40 bg-white dark:bg-gray-800 shadow-md">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                    <Shield className="text-indigo-600 dark:text-indigo-400" size={32} />
+                    {clientInfo.logo ? (
+                        <img src={clientInfo.logo} alt="Logo Client" className="h-10 w-auto object-contain" />
+                    ) : (
+                        <Shield className="text-indigo-600 dark:text-indigo-400" size={32} />
+                    )}
                     <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200 hidden sm:block">Rapport d'Audit Cyber</h1>
                 </div>
                 <div className="flex items-center gap-2">

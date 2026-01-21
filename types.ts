@@ -6,6 +6,7 @@ export interface ClientInfo {
   sector: string;
   contact: string;
   phone: string;
+  logo?: string;
 }
 
 export interface Answers {

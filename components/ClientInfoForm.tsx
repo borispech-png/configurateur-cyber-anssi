@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, ChevronRight, Lock } from 'lucide-react';
+import { Shield, ChevronRight, Lock, Upload, Image as ImageIcon } from 'lucide-react';
 import { ClientInfo } from '../types';
 import { BENCHMARKS } from '../constants';
 
@@ -16,6 +16,17 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({ clientInfo, onClientInf
   const [isSectorInputFocused, setIsSectorInputFocused] = useState(false);
 
   const benchmarkSectors = Object.keys(BENCHMARKS);
+
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+              onClientInfoChange('logo', reader.result as string);
+          };
+          reader.readAsDataURL(file);
+      }
+  };
 
   const handleSectorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -64,6 +75,39 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({ clientInfo, onClientInf
           </div>
 
           <div className="space-y-4">
+            
+            {/* Logo Upload */}
+            <div className="animate-fade-in-up" style={{ animationDelay: '250ms' }}>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    Logo de l'organisme (optionnel)
+                </label>
+                <div className="flex items-center gap-4">
+                    {clientInfo.logo ? (
+                        <div className="relative w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center overflow-hidden">
+                            <img src={clientInfo.logo} alt="Logo Client" className="object-contain w-full h-full" />
+                            <button 
+                                onClick={() => onClientInfoChange('logo', '')}
+                                className="absolute top-0 right-0 bg-red-500 text-white p-0.5 rounded-bl hover:bg-red-600"
+                                title="Supprimer le logo"
+                            >
+                                ×
+                            </button>
+                        </div>
+                    ) : (
+                         <div className="w-20 h-20 bg-gray-50 dark:bg-gray-700 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center text-gray-400">
+                            <ImageIcon size={24} />
+                        </div>
+                    )}
+                    <label className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+                        <Upload size={16} className="text-gray-600 dark:text-gray-300" />
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                            {clientInfo.logo ? "Changer le logo" : "Importer un logo"}
+                        </span>
+                        <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
+                    </label>
+                </div>
+            </div>
+
             <div className="animate-fade-in-up" style={{ animationDelay: '300ms' }}>
               <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Nom de l'organisme *

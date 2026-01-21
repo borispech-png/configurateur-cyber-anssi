@@ -64,14 +64,14 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
       filename: `Audit_Cyber_ANSSI_${clientInfo.name}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { 
-        scale: 2, 
+        scale: 1.5, // Réduction de l'échelle pour éviter le rognage
         useCORS: true, 
         logging: true,
-        letterRendering: true, // Améliore le rendu du texte
-        windowWidth: 1200 // Fixe la largeur de fenêtre virtuelle pour le rendu
+        letterRendering: true,
+        windowWidth: 794 // Largeur exacte A4 en pixels à 96DPI pour forcer le bon layout
       },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] } // Gestion intelligente des sauts de pages
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     };
     // @ts-ignore
     html2pdf().set(opt).from(element).save();

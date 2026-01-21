@@ -8,8 +8,9 @@ import MaturityRadar from './MaturityRadar';
 import QuickWinMatrix from './QuickWinMatrix';
 import UgapOrderSheet from './UgapOrderSheet';
 import MissionLetter from './MissionLetter';
+import ImplementationPlan from './ImplementationPlan';
 import HighlightGlossary from './HighlightGlossary';
-import { ToggleLeft, ToggleRight, ArrowRight, ShoppingCart, FileText } from 'lucide-react';
+import { ToggleLeft, ToggleRight, ArrowRight, ShoppingCart, FileText, Calendar } from 'lucide-react';
 
 interface ReportProps {
   clientInfo: ClientInfo;
@@ -31,6 +32,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
   const reportRef = useRef<HTMLDivElement>(null);
   const ugapSheetRef = useRef<HTMLDivElement>(null);
   const missionLetterRef = useRef<HTMLDivElement>(null);
+  const planningRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>('synthese');
   const sectionRefs = useRef<{[key: string]: HTMLElement | null}>({});
   
@@ -148,6 +150,11 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
   const handleMissionPrint = useReactToPrint({
     contentRef: missionLetterRef,
     documentTitle: `Lettre_Mission_${clientInfo.name.replace(/\s+/g, '_')}`,
+  });
+
+  const handlePlanningPrint = useReactToPrint({
+    contentRef: planningRef,
+    documentTitle: `Planning_Projet_${clientInfo.name.replace(/\s+/g, '_')}`,
   });
 
     const togglePhase = (phaseIndex: number) => {
@@ -303,6 +310,14 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                     >
                         <FileText size={18} />
                         <span className="hidden sm:inline">Lettre Mission</span>
+                    </button>
+                     <button
+                        onClick={handlePlanningPrint}
+                        className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors no-print"
+                        title="Générer Planning Projet"
+                    >
+                        <Calendar size={18} />
+                        <span className="hidden sm:inline">Planning</span>
                     </button>
                     <button
                         onClick={onReset}
@@ -656,6 +671,12 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                 <MissionLetter 
                                     ref={missionLetterRef} 
                                     clientInfo={clientInfo} 
+                                />
+                            </div>
+                            <div style={{ display: "none" }}>
+                                <ImplementationPlan 
+                                    ref={planningRef} 
+                                    budget={budget} 
                                 />
                             </div>
 

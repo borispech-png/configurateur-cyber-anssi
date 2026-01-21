@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Shield, ChevronRight, Lock, Upload, Image as ImageIcon } from 'lucide-react';
 import { ClientInfo } from '../types';
 import { BENCHMARKS } from '../constants';
+import { APP_VERSION, BUILD_DATE } from '../version';
 
 interface ClientInfoFormProps {
   clientInfo: ClientInfo;
@@ -275,9 +276,11 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({ clientInfo, onClientInf
               </label>
           </div>
 
-          <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-4 animate-fade-in-up" style={{ animationDelay: '1100ms' }}>
-            💾 Vos réponses sont sauvegardées automatiquement
-          </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-4 animate-fade-in-up" style={{ animationDelay: '1100ms' }}>
+              <span>💾 Vos réponses sont sauvegardées automatiquement</span>
+              <br />
+              <span className="text-[10px] opacity-70">v{APP_VERSION} - {BUILD_DATE}</span>
+            </p>
         </div>
       </div>
     </div>

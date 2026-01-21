@@ -749,6 +749,93 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                             </div>
                         </section>
 
+                        {/* --- Module "Indicateur NIS2" --- */}
+                        <section id="nis2" className="mt-16 scroll-mt-20 print-break-avoid">
+                             <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-3 mb-6">
+                                <Award size={32} className="text-purple-600 dark:text-purple-400"/>
+                                Indicateur de Conformité NIS 2
+                            </h2>
+                            
+                            {/* Calculation Logic (Inline) */}
+                            {(() => {
+                                // Filter NIS2 questions
+                                const nis2Questions = DOMAINS.flatMap(d => d.questions).filter(q => q.nis2);
+                                const totalNis2 = nis2Questions.length;
+                                const compliantNis2 = nis2Questions.filter(q => (answers[q.id] || 0) >= 2).length;
+                                const nis2Score = totalNis2 > 0 ? Math.round((compliantNis2 / totalNis2) * 100) : 0;
+                                const blockers = nis2Questions.filter(q => (answers[q.id] || 0) < 2);
+
+                                return (
+                                    <div className="bg-purple-50 dark:bg-purple-900/20 border-l-4 border-purple-500 rounded-lg p-6">
+                                        <div className="flex flex-col md:flex-row items-center gap-8 mb-6">
+                                            {/* Gauge NIS2 */}
+                                             <div className="flex flex-col items-center">
+                                                <div className="relative w-32 h-32">
+                                                    <svg className="w-full h-full" viewBox="0 0 36 36">
+                                                        <path
+                                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                            fill="none"
+                                                            stroke="#E9D5FF"
+                                                            strokeWidth="4"
+                                                            className="dark:stroke-purple-900"
+                                                        />
+                                                        <path
+                                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                            fill="none"
+                                                            stroke="#9333EA"
+                                                            strokeWidth="4"
+                                                            strokeDasharray={`${nis2Score}, 100`}
+                                                            className="animate-[progress_1s_ease-out_forwards]"
+                                                        />
+                                                        <text x="18" y="20.35" className="text-[8px] font-bold fill-purple-700 dark:fill-purple-300" textAnchor="middle">{nis2Score}%</text>
+                                                    </svg>
+                                                </div>
+                                                <span className="text-sm font-bold text-purple-800 dark:text-purple-300 mt-2">Score NIS 2</span>
+                                            </div>
+
+                                            <div className="flex-1">
+                                                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-2">
+                                                    {nis2Score >= 80 ? "Conformité avancée" : nis2Score >= 50 ? "Conformité partielle" : "Non-conforme"}
+                                                </h3>
+                                                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                                                    La directive NIS 2 impose des mesures strictes pour les entités essentielles et importantes. 
+                                                    {blockers.length > 0 
+                                                        ? ` Vous avez ${blockers.length} points bloquants critiques à traiter en priorité.`
+                                                        : " Vous respectez les pré-requis fondamentaux identifiés."}
+                                                </p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-500 italic">
+                                                    * Cet indicateur se base sur les 10 piliers essentiels (MFA, Sauvegardes, Incidents...) de la directive.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {/* Blockers List */}
+                                        {blockers.length > 0 && (
+                                            <div className="bg-white dark:bg-gray-800 rounded-md p-4 shadow-sm border border-purple-200 dark:border-purple-800">
+                                                <h4 className="font-bold text-red-600 dark:text-red-400 mb-3 flex items-center gap-2">
+                                                    <Info size={18} />
+                                                    Points Bloquants NIS 2 ({blockers.length})
+                                                </h4>
+                                                <ul className="space-y-2">
+                                                    {blockers.map(q => (
+                                                        <li key={q.id} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                                                            <span className="text-red-500 font-bold">❌</span>
+                                                            <span>
+                                                                <span className="font-semibold">{q.text}</span>
+                                                                <span className="block text-xs text-gray-500 mt-0.5">
+                                                                    Actuel : {q.options[answers[q.id] || 0]}
+                                                                </span>
+                                                            </span>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })()}
+                        </section>
+
                          {/* --- ANSSI Solutions --- */}
                         {/* Fix: Changed ref callback to use a block body to prevent returning a value. */}
                         <section id="catalogue" ref={el => { sectionRefs.current['catalogue'] = el; }} className="mt-16 scroll-mt-20">

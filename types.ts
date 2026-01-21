@@ -27,6 +27,7 @@ export interface Question {
   options: string[];
   weight: number;
   ugapSuggestion?: UgapSolution;
+  nis2?: boolean;
 }
 
 export interface Domain {

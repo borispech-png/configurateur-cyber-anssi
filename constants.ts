@@ -63,6 +63,7 @@ export const DOMAINS: Domain[] = [
         help: "La PSSI est le document fondateur de votre démarche de cybersécurité. Elle doit être portée par la direction générale et connue de tous les collaborateurs.",
         options: ["Non", "En cours de rédaction", "Oui, mais pas à jour ou peu diffusée", "Oui, à jour et connue de tous"],
         weight: 3,
+        nis2: true,
       },
       {
         id: 'gov-2',
@@ -77,6 +78,7 @@ export const DOMAINS: Domain[] = [
         help: "L'analyse de risques (ex: EBIOS RM) permet d'identifier les menaces et de prioriser les actions de sécurité en fonction de leur impact métier.",
         options: ["Non", "Ponctuellement / sans méthode", "Oui, mais pas à jour", "Oui, intégrée dans les projets et revue annuellement"],
         weight: 2,
+        nis2: true,
       },
       {
         id: 'gov-4',
@@ -84,6 +86,7 @@ export const DOMAINS: Domain[] = [
         help: "La sensibilisation (hameçonnage, mots de passe...) est essentielle car l'humain est souvent le premier maillon faible.",
         options: ["Jamais", "Seulement à l'arrivée", "Campagnes ponctuelles", "Programme de sensibilisation continu et mesuré"],
         weight: 2,
+        nis2: true,
       },
     ],
   },
@@ -112,7 +115,8 @@ export const DOMAINS: Domain[] = [
             description: "Solution de sauvegarde de dernière génération protégeant contre les ransomwares (copies immuables) avec capacité de restauration instantanée.",
             vendors: ["HPE (StoreOnce/Zerto)", "Rubrik", "Dell (Data Domain)", "Quantum"],
             marketRef: "Marché UGAP Stockage & Sauvegarde"
-        }
+        },
+        nis2: true,
       },
       {
         id: 'prot-3',
@@ -125,7 +129,8 @@ export const DOMAINS: Domain[] = [
             description: "Remplacement des serveurs obsolètes par des équipements récents intégrant la sécurité au niveau hardware (Silicon Root of Trust).",
             vendors: ["HPE ProLiant Gen11"],
             marketRef: "Marché UGAP Serveurs"
-        }
+        },
+        nis2: true,
       },
       {
         id: 'prot-4',
@@ -138,7 +143,8 @@ export const DOMAINS: Domain[] = [
             description: "Baies de stockage Full Flash avec chiffrement natif des données au repos (Data-at-Rest Encryption) sans perte de performance.",
             vendors: ["NetApp", "PureStorage", "HPE Alletra", "Dell PowerStore", "Huawei", "IBM FlashSystem"],
             marketRef: "Marché UGAP Stockage"
-        }
+        },
+        nis2: true,
       },
     ],
   },
@@ -204,6 +210,7 @@ export const DOMAINS: Domain[] = [
         help: "La MFA (code SMS, application, clé physique) est une des mesures les plus efficaces pour se protéger contre l'usurpation de comptes.",
         options: ["Non", "Pour les administrateurs seulement", "Pour l'accès externe (VPN, M365)", "Déployée pour tous les accès, internes et externes"],
         weight: 3,
+        nis2: true,
       },
       {
         id: 'access-3',
@@ -295,6 +302,7 @@ export const DOMAINS: Domain[] = [
         help: "Centraliser les journaux (logs) des serveurs, pare-feux, antivirus... est un prérequis pour pouvoir détecter et analyser un incident.",
         options: ["Non", "Logs locaux seulement", "Centralisation partielle", "Centralisation complète avec politique de rétention"],
         weight: 3,
+        nis2: true,
       },
       {
         id: 'detect-2',
@@ -332,6 +340,7 @@ export const DOMAINS: Domain[] = [
         help: "Qui fait quoi en cas d'alerte ? Qui contacter ? Qui décide ? Ce processus doit être clair et connu.",
         options: ["Non", "Informel", "Défini mais non testé", "Défini, testé et intégré dans un contrat de réponse à incident"],
         weight: 3,
+        nis2: true,
       },
       {
         id: 'resp-2',
@@ -376,6 +385,7 @@ export const DOMAINS: Domain[] = [
         help: "Le PRA décrit l'architecture et les procédures techniques pour redémarrer l'informatique sur un site de secours.",
         options: ["Non", "Solutions de secours ponctuelles", "PRA formalisé mais non testé", "PRA formalisé et testé annuellement"],
         weight: 3,
+        nis2: true,
       },
       {
         id: 'cont-3',

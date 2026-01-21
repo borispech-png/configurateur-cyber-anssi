@@ -8,37 +8,50 @@ Nous développons une application web ("Configurateur Cyber ANSSI") destinée à
 **Objectifs Fonctionnels Clés :**
 
 1.  **Parcours d'Audit :**
-    - **Collecte** : Formulaire d'entrée pour les métadonnées de l'entité (Nom, Secteur, Taille, Contact).
-    - **Questionnaire :** Interface étape par étape couvrant les domaines clés (Gouvernance, Protection, Accès, Réseau, etc.).
-    - **Logique de Scoring :** Chaque réponse a un poids et impacte un score global et par domaine (0-100%).
+    - **Collecte** : Formulaire d'entrée enrichi (Logo Client, Secteur, Taille).
+    - **Questionnaire :** Interface étape par étape avec feedbacks visuels et "Nudges" commerciaux (Suggestion UGAP si maturité faible).
+    - **Obsolescence :** Prise en compte de l'âge du matériel et des supports (EOS).
 
-2.  **Moteur de Recommandation :**
-    - Transformer automatiquement les réponses "négatives" ou "partielles" en recommandations d'amélioration concrètes.
-    - Prioriser les actions (Critique vs Important) selon l'impact sécurité.
+2.  **Moteur de Recommandation & Business Intelligence :**
+    - **Calculateur Budgétaire :** Estimation des coûts (CAPEX/OPEX) par phase.
+    - **ROI / Coût de l'Inaction :** Comparaison visuelle entre le budget de sécurité et le coût estimé d'une cyberattaque (Ransomware).
+    - **Simulateur "Avant / Après" :** Projection dynamique du score de maturité en fonction des phases budgétaires activées (Aide à la décision).
 
-3.  **Calculateur Budgétaire :**
-    - Estimer une enveloppe budgétaire pour la mise en conformité (CAPEX/OPEX).
-    - Proposer un découpage en phases (ex: Phase 1 = Socle de sécurité, Phase 2 = Durcissement).
-    - Associer des produits/services types à chaque action.
+3.  **Conformité & Réglementaire :**
+    - **Indicateur NIS 2 :** Module spécifique isolant les critères de la directive européenne (MFA, Sauvegarde, Incidents) avec alerte sur les points bloquants.
+    - **Standards :** Alignement avec le Guide d'Hygiène ANSSI et ISO 27001.
 
-4.  **Catalogue de Solutions :**
-    - Suggérer des technologies qualifiées ou recommandées par l'ANSSI (ex: EDR souverains, Pare-feux certifiés) en face des besoins identifiés.
+4.  **Catalogue & Écosystème :**
+    - **Solutions ANSSI :** Suggestion de produits qualifiés (Visa de sécurité).
+    - **Solutions UGAP :** Lien direct vers les marchés publics pour faciliter l'achat.
 
-5.  **Restitution & Reporting (Module Critique) :**
-    - Tableau de bord interactif avec visualisations (Radar charts, Jauges).
-    - **Génération PDF :** Export d'un rapport complet, professionnel et imprimable, contenant la synthèse managériale, le détail des scores, le plan d'action budgété et les contacts utiles. La mise en page doit être impeccable (pas de coupure de texte entre les pages).
+5.  **Fonctionnalités "Power User" :**
+    - **Export / Import JSON :** Sauvegarde complète de l'état de l'audit pour reprise ultérieure ou archivage.
+    - **Gestion de Session :** Persistance locale (LocalStorage) pour éviter la perte de données.
+
+6.  **Restitution & Reporting (Module Critique) :**
+    - **Synthèse Visuelle :** Jauge globale + **Radar Chart** (Graphique Araignée) par domaine.
+    - **Rapport PDF Pro :** Génération native impeccable avec `react-to-print`, incluant :
+      - Logo Client et branding.
+      - Synthèse Managériale et Budget.
+      - Détail technique et Glossaire pédagogique.
+      - Gestion avancée des sauts de page CSS (`print-break-avoid`).
 
 **Stack Technique de Référence :**
 
-- **Core :** React 19 (Hooks, Context), TypeScript, Vite.
-- **UI/UX :** Tailwind CSS v3 (Design system propre, Dark mode), Lucide React (Icônes).
-- **Data Viz :** Recharts (pour les graphiques d'audit).
-- **Export :** `react-to-print` (pour la génération PDF native via le navigateur).
+- **Core :** React 19, TypeScript, Vite.
+- **UI/UX :** Tailwind CSS v3 (Glassmorphism, Dark Mode), Lucide React.
+- **Data Viz :** Recharts (Radar Chart, Jauges).
+- **Export :** `react-to-print`, `file-saver` (JSON).
 
-**Architecture des Données (Exemple) :**
-Les données statiques (questions, poids, référentiel solutions) sont externalisées dans des fichiers de constantes pour faciliter la maintenance sans toucher au code logique.
+**Architecture des Données :**
+Les données statiques (Questions, Poids, Articles Budgétaires, Glossaire, Solutions) sont centralisées dans `constants.ts`. Les types sont définis dans `types.ts`.
+L'application est conçue comme un outil d'aide à la vente (Pre-Sales) et de conseil, alliant rigueur technique et impact commercial.
 
 ---
 
 **Instruction pour l'IA :**
-Utilise ce contexte pour guider tes développements, refactorings ou créations de nouvelles fonctionnalités. Garde toujours à l'esprit la finalité "Business" : fournir un rapport d'aide à la décision clair pour un dirigeant non-technique, tout en étant techniquement rigoureux pour un DSI.
+Utilise ce contexte pour maintenir la cohérence du projet. Tes développements doivent toujours servir deux maîtres :
+
+1.  **Le DSI (Technique) :** Justesse des recommandations, conformité ANSSI/NIS2.
+2.  **Le Décideur (Business) :** Clarté du ROI, visibilité budgétaire, esthétique "Premium".

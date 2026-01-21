@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { Shield, ChevronLeft, Download, BarChart3, ListChecks, Target, CreditCard, Award, GitMerge, Info, Link, RefreshCw, ShoppingBag } from 'lucide-react';
+import { Shield, ChevronLeft, Download, BarChart3, ListChecks, Target, CreditCard, Award, GitMerge, Info, Link, RefreshCw, ShoppingBag, Book } from 'lucide-react';
 import { ClientInfo, Recommendation, BudgetPhase, Theme, Answers, Benchmark } from '../types';
-import { DOMAINS, ANSSI_SOLUTIONS } from '../constants';
+import { DOMAINS, ANSSI_SOLUTIONS, GLOSSARY } from '../constants';
 import RadialProgress from './RadialProgress';
 
 interface ReportProps {
@@ -68,7 +68,8 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
       { id: 'scores', label: 'Scores de Maturité', icon: GitMerge },
       { id: 'recommandations', label: 'Recommandations Priorisées', icon: ListChecks },
       { id: 'budget', label: 'Budget Prévisionnel', icon: CreditCard },
-      { id: 'catalogue', label: 'Solutions Qualifiées ANSSI', icon: Award }
+      { id: 'catalogue', label: 'Solutions Qualifiées ANSSI', icon: Award },
+      { id: 'glossaire', label: 'Glossaire Pédagogique', icon: Book }
   ];
 
   useEffect(() => {
@@ -586,6 +587,25 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                                 </div>
                                             ))}
                                         </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                         {/* --- Glossaire Pédagogique --- */}
+                        <section id="glossaire" ref={el => { sectionRefs.current['glossaire'] = el; }} className="mt-16 scroll-mt-20 print-break-avoid">
+                             <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-3 mb-6">
+                                <Book size={32} className="text-indigo-600 dark:text-indigo-400"/>
+                                Glossaire Pédagogique
+                            </h2>
+                            <p className="text-gray-600 dark:text-gray-400 mb-6">
+                                Définitions simples des termes techniques et acronymes utilisés dans ce rapport pour faciliter la compréhension par les décideurs non-techniques.
+                            </p>
+                            <div className="grid grid-cols-1 gap-4">
+                                {Object.entries(GLOSSARY).sort(([a], [b]) => a.localeCompare(b)).map(([term, def]) => (
+                                    <div key={term} className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md border-l-4 border-indigo-300 dark:border-indigo-600">
+                                        <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm">{term}</h4>
+                                        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{def}</p>
                                     </div>
                                 ))}
                             </div>

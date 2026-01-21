@@ -525,3 +525,23 @@ export const ANSSI_SOLUTIONS: AnssiSolutionCategory[] = [
     ],
   }
 ];
+
+// GLOSSAIRE
+export const GLOSSARY: { [term: string]: string } = {
+    "Air-Gap": "Mesure de sécurité consistant à isoler physiquement ou logiquement un réseau ou une sauvegarde de tout autre réseau (y compris Internet), pour le rendre inaccessible aux attaquants distants.",
+    "ANSSI": "Agence Nationale de la Sécurité des Systèmes d'Information. L'autorité nationale en matière de sécurité et de défense des systèmes d'information en France.",
+    "BIA (Bilan d'Impact sur l'Activité)": "Analyse permettant d'identifier les processus métiers critiques et d'estimer les impacts (financiers, image, légaux...) d'une interruption de service.",
+    "EDR (Endpoint Detection & Response)": "Technologie de sécurité installée sur les postes et serveurs pour détecter et bloquer les cyberattaques avancées (ransomwares, virus inconnus) que les antivirus classiques ne voient pas.",
+    "Immutabilité (WORM)": "Propriété d'un stockage garantissant que les données, une fois écrites, ne peuvent être ni modifiées ni supprimées pendant une durée définie (Write Once, Read Many). Essentiel contre les ransomwares.",
+    "MFA (Authentification Multi-Facteurs)": "Méthode d'authentification demandant au moins deux preuves d'identité distinctes (ex: mot de passe + code SMS/Appli), rendant le vol de mot de passe inefficace.",
+    "NGFW (Next-Generation Firewall)": "Pare-feu de nouvelle génération capable d'analyser le contenu des connexions (applications, fichiers) et non plus seulement les ports réseaux, pour bloquer les menaces.",
+    "PCA / PRA": "Plan de Continuité / Reprise d'Activité. Ensemble des procédures permettant de maintenir (PCA) ou de redémarrer (PRA) l'activité d'une organisation après un sinistre majeur.",
+    "PSSI": "Politique de Sécurité des Systèmes d'Information. Document stratégique définissant les règles et objectifs de sécurité de l'organisme.",
+    "Ransomware (Rançongiciel)": "Logiciel malveillant qui chiffre les données de la victime et exige une rançon pour fournir la clé de déchiffrement.",
+    "RGPD": "Règlement Général sur la Protection des Données. Loi européenne encadrant le traitement des données personnelles et imposant leur sécurisation.",
+    "Risk-Based Authentication": "Authentification adaptative qui renforce les contrôles (MFA, blocage) en fonction du niveau de risque détecté (nouvel appareil, pays inhabituel...).",
+    "Roots of Trust (Silicon)": "Technologies de sécurité intégrées directement dans le matériel (processeur, carte mère) pour garantir que le système n'a pas été compromis avant même le démarrage de l'OS.",
+    "SIEM": "Security Information and Event Management. Outil collectant et analysant en temps réel les journaux (logs) de tout le SI pour détecter des incidents de sécurité.",
+    "SOC (Security Operations Center)": "Centre opérationnel de sécurité regroupant équipes, processus et outils pour surveiller et défendre le SI 24h/24 et 7j/7.",
+    "VLAN (Segmentation)": "Technique réseau permettant de créer des sous-réseaux logiques distincts sur une même infrastructure physique, pour isoler les flux et limiter la propagation des attaques."
+};

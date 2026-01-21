@@ -31,9 +31,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
           <p className="text-gray-600 dark:text-gray-400">
             Veuillez entrer le code d'accès pour continuer
           </p>
-          <div className="mt-2 text-xs text-gray-500 dark:text-gray-500">
-           (Indice : SCC-2026)
-          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">

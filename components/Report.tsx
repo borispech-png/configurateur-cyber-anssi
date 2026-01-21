@@ -60,11 +60,18 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
     const element = reportRef.current;
     if (!element) return;
     const opt = {
-      margin: [0.5, 0.5, 0.5, 0.5],
+      margin: [10, 10, 10, 10], // Augmenter les marges (en mm désormais, car unit: 'mm')
       filename: `Audit_Cyber_ANSSI_${clientInfo.name}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: true },
-      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      html2canvas: { 
+        scale: 2, 
+        useCORS: true, 
+        logging: true,
+        letterRendering: true, // Améliore le rendu du texte
+        windowWidth: 1200 // Fixe la largeur de fenêtre virtuelle pour le rendu
+      },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] } // Gestion intelligente des sauts de pages
     };
     // @ts-ignore
     html2pdf().set(opt).from(element).save();

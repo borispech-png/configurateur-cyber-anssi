@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { Shield, ChevronLeft, Download, BarChart3, ListChecks, Target, CreditCard, Award, GitMerge, Info, Link, RefreshCw } from 'lucide-react';
+import { Shield, ChevronLeft, Download, BarChart3, ListChecks, Target, CreditCard, Award, GitMerge, Info, Link, RefreshCw, ShoppingBag } from 'lucide-react';
 import { ClientInfo, Recommendation, BudgetPhase, Theme } from '../types';
 import { DOMAINS, ANSSI_SOLUTIONS } from '../constants';
 import RadialProgress from './RadialProgress';
@@ -265,6 +265,23 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                                     <Target size={16} className="text-green-600 dark:text-green-400" />
                                                     <strong>Objectif :</strong> <span className="font-semibold text-green-800 dark:text-green-300">{rec.targetState}</span>
                                                   </p>
+                                                  {rec.ugapSuggestion && (
+                                                    <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                                                        <div className="flex items-start gap-2 bg-blue-50 dark:bg-blue-900/30 p-2 rounded-md">
+                                                            <ShoppingBag className="text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" size={16} />
+                                                            <div>
+                                                                <h5 className="text-sm font-bold text-blue-800 dark:text-blue-300">Solution UGAP Recommandée : {rec.ugapSuggestion.name}</h5>
+                                                                <p className="text-xs text-blue-700 dark:text-blue-200 mt-1 mb-2">{rec.ugapSuggestion.description}</p>
+                                                                <div className="flex flex-wrap gap-2 mb-1">
+                                                                    {rec.ugapSuggestion.vendors.map(v => (
+                                                                        <span key={v} className="px-1.5 py-0.5 bg-white dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded text-[10px] uppercase font-bold text-blue-600 dark:text-blue-300 tracking-wider font-sans">{v}</span>
+                                                                    ))}
+                                                                </div>
+                                                                {rec.ugapSuggestion.marketRef && <p className="text-[10px] font-mono mt-1 text-gray-500 dark:text-gray-400">Ref: {rec.ugapSuggestion.marketRef}</p>}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                  )}
                                                 </div>
                                             </div>
                                         </div>

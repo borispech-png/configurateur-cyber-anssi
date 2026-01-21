@@ -150,7 +150,8 @@ const App: React.FC = () => {
               priority: q.weight,
               currentState: q.options[answer],
               targetState: q.options[q.options.length - 1],
-              questionId: q.id
+              questionId: q.id,
+              ugapSuggestion: q.ugapSuggestion
             });
           }
         });

@@ -59,6 +59,12 @@ export const DOMAINS: Domain[] = [
         help: "Les sauvegardes doivent être régulières, externalisées (règle 3-2-1) et leur restauration testée périodiquement pour garantir leur efficacité en cas d'incident (ransomware...).",
         options: ["Non", "Oui, mais non externalisées", "Oui, externalisées mais non testées", "Oui, externalisées et testées régulièrement"],
         weight: 3,
+        ugapSuggestion: {
+            name: "Sauvegarde Immuable & Cyber Recovery",
+            description: "Solution de sauvegarde de dernière génération protégeant contre les ransomwares (copies immuables) avec capacité de restauration instantanée.",
+            vendors: ["HPE (StoreOnce/Zerto)", "Rubrik", "Dell (Data Domain)", "Quantum"],
+            marketRef: "Marché UGAP Stockage & Sauvegarde"
+        }
       },
       {
         id: 'prot-3',
@@ -66,6 +72,12 @@ export const DOMAINS: Domain[] = [
         help: "L'application des correctifs de sécurité sur les systèmes d'exploitation et logiciels est cruciale pour se protéger des failles connues.",
         options: ["Manuellement et rarement", "Manuellement avec retard", "Automatisé mais sans supervision", "Automatisé, supervisé et priorisé selon la criticité"],
         weight: 2,
+        ugapSuggestion: {
+            name: "Renouvellement Infrastructure Compute",
+            description: "Remplacement des serveurs obsolètes par des équipements récents intégrant la sécurité au niveau hardware (Silicon Root of Trust).",
+            vendors: ["HPE ProLiant Gen11"],
+            marketRef: "Marché UGAP Serveurs"
+        }
       },
       {
         id: 'prot-4',
@@ -73,6 +85,12 @@ export const DOMAINS: Domain[] = [
         help: "Le chiffrement protège la confidentialité des données en cas de vol de matériel ou d'interception sur le réseau.",
         options: ["Non", "Seulement les postes portables", "Partiellement (postes, certains flux)", "Systématique pour le stockage et les flux sensibles"],
         weight: 2,
+        ugapSuggestion: {
+            name: "Stockage Sécurisé & Chiffré",
+            description: "Baies de stockage Full Flash avec chiffrement natif des données au repos (Data-at-Rest Encryption) sans perte de performance.",
+            vendors: ["NetApp", "PureStorage", "HPE Alletra", "Dell PowerStore", "Huawei", "IBM FlashSystem"],
+            marketRef: "Marché UGAP Stockage"
+        }
       },
     ],
   },

@@ -12,12 +12,20 @@ export interface Answers {
   [questionId: string]: number;
 }
 
+export interface UgapSolution {
+  name: string;
+  description: string;
+  vendors: string[]; // Liste des constructeurs disponibles à l'UGAP
+  marketRef?: string; // Référence du marché UGAP si pertinent
+}
+
 export interface Question {
   id: string;
   text: string;
   help: string;
   options: string[];
   weight: number;
+  ugapSuggestion?: UgapSolution;
 }
 
 export interface Domain {
@@ -37,6 +45,7 @@ export interface Recommendation {
   currentState: string;
   targetState: string;
   questionId: string;
+  ugapSuggestion?: UgapSolution;
 }
 
 export interface BudgetItem {

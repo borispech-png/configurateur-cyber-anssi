@@ -4,12 +4,14 @@ import Questionnaire from './components/Questionnaire';
 import Summary from './components/Summary';
 import Report from './components/Report';
 import ThemeSwitcher from './components/ThemeSwitcher';
+import LoginScreen from './components/LoginScreen';
 import { ClientInfo, Answers, Domain, Recommendation, BudgetPhase, Theme } from './types';
 import { DOMAINS, BENCHMARKS, BUDGET_ITEMS } from './constants';
 
 type View = 'clientInfo' | 'questionnaire' | 'summary' | 'report';
 
 const App: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [view, setView] = useState<View>('clientInfo');
   const [step, setStep] = useState<number>(0);
   const [clientInfo, setClientInfo] = useState<ClientInfo>({
@@ -41,11 +43,12 @@ const App: React.FC = () => {
 
   // Auto-save logic
   useEffect(() => {
+    if (!isAuthenticated) return;
     const saveData = { clientInfo, answers, step, view, timestamp: new Date().toISOString() };
     if (clientInfo.name) {
       sessionStorage.setItem('cyber-audit', JSON.stringify(saveData));
     }
-  }, [clientInfo, answers, step, view]);
+  }, [clientInfo, answers, step, view, isAuthenticated]);
 
   // Restore logic
   useEffect(() => {
@@ -210,6 +213,17 @@ const App: React.FC = () => {
   const themeSwitcher = <ThemeSwitcher theme={theme} onToggle={toggleTheme} />;
 
   // --- Render logic ---
+  if (!isAuthenticated) {
+    return (
+      <>
+        <div className="fixed top-4 right-4 z-50">
+           {themeSwitcher}
+        </div>
+        <LoginScreen onLogin={() => setIsAuthenticated(true)} />
+      </>
+    );
+  }
+
   switch (view) {
     case 'clientInfo':
       return <ClientInfoForm clientInfo={clientInfo} onClientInfoChange={handleClientInfoChange} onStart={() => setView('questionnaire')} themeSwitcher={themeSwitcher} />;

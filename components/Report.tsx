@@ -115,6 +115,38 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
     });
   };
 
+  /* --- LOGIC PROPOSITION 4: Hardware Obsolescence Logic --- */
+  const getHardwareRefreshRecommendation = () => {
+      // obs-1: Serveurs (0=Recent, 3=Vieux)
+      // obs-2: Stockage (0=Support, 2=EOS)
+      const serverAgeIdx = answers['obs-1'] || 0;
+      const storageSupportIdx = answers['obs-2'] || 0;
+
+      const needsServerRefresh = serverAgeIdx >= 2; // > 5 ans
+      const needsStorageRefresh = storageSupportIdx >= 2; // EOS
+
+      if (!needsServerRefresh && !needsStorageRefresh) return null;
+
+      return {
+          title: "Plan de Renouvellement Urgent (Cyber-Compliance)",
+          items: [
+              ...(needsServerRefresh ? [{
+                  label: "Renouvellement Compute",
+                  desc: "Vos serveurs sont trop anciens pour être sécurisés efficacement (Firmware/TPM).",
+                  ugap: "HPE ProLiant Gen11 / Dell PowerEdge",
+                  ref: "Marché Serveurs"
+              }] : []),
+              ...(needsStorageRefresh ? [{
+                  label: "Modernisation Stockage",
+                  desc: "Stockage hors support = Risque maximal de perte de données sans recours.",
+                  ugap: "PureStorage / NetApp / HPE Alletra",
+                  ref: "Marché Stockage"
+              }] : [])
+          ]
+      };
+  };
+  const hardwareRec = getHardwareRefreshRecommendation();
+
   return (
     <div className="bg-gray-100 dark:bg-slate-900">
         {/* Header */}
@@ -187,6 +219,33 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                             {clientInfo.contact && <div><strong>Contact :</strong> {clientInfo.contact}</div>}
                             {clientInfo.phone && <div><strong>Téléphone :</strong> {clientInfo.phone}</div>}
                         </div>
+
+                        {/* --- Hardware Obsolescence Alert (Si détecté) --- */}
+                        {hardwareRec && (
+                          <section id="hardware" className="mt-12 bg-orange-50 dark:bg-orange-900/30 border-l-4 border-orange-500 p-6 rounded-md">
+                              <h2 className="text-2xl font-bold text-orange-800 dark:text-orange-200 flex items-center gap-3 mb-4">
+                                  <ShoppingBag size={28} />
+                                  {hardwareRec.title}
+                              </h2>
+                              <p className="text-gray-700 dark:text-gray-300 mb-4">
+                                  L'audit a révélé une obsolescence matérielle critique. Avant même de parler logiciel, il est impératif de <strong>renouveler le socle physique</strong> pour garantir un niveau de sécurité minimal.
+                              </p>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                  {hardwareRec.items.map((item, idx) => (
+                                      <div key={idx} className="bg-white dark:bg-gray-800 p-4 rounded shadow-sm border border-orange-200 dark:border-orange-800">
+                                          <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100">{item.label}</h3>
+                                          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 mb-3">{item.desc}</p>
+                                          
+                                          <div className="bg-orange-100 dark:bg-orange-900/50 p-2 rounded text-sm">
+                                              <strong className="text-orange-800 dark:text-orange-300 block">Solution UGAP :</strong>
+                                              <span className="text-gray-800 dark:text-gray-200">{item.ugap}</span>
+                                              <span className="block text-xs text-gray-500 dark:text-gray-400 mt-1 italic">{item.ref}</span>
+                                          </div>
+                                      </div>
+                                  ))}
+                              </div>
+                          </section>
+                        )}
 
                         {/* --- Synthèse Managériale --- */}
                         {/* Fix: Changed ref callback to use a block body to prevent returning a value. */}

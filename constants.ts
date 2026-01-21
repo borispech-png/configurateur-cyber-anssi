@@ -2,6 +2,54 @@ import { Domain, Benchmarks, BudgetItems, AnssiSolutionCategory } from './types'
 
 // DOMAINES DE L'AUDIT
 export const DOMAINS: Domain[] = [
+  // 0. Obsolescence Hardware (Socle Physique)
+  {
+    title: "Obsolescence & Socle Hardware",
+    icon: '🏗️',
+    color: 'bg-orange-600',
+    description: "État du parc matériel (Serveurs/Stockage). Un matériel obsolète ne peut plus être sécurisé (failles firmware/BIOS).",
+    questions: [
+      {
+        id: 'obs-1',
+        text: "Quel est l'âge moyen de votre parc de serveurs physiques ?",
+        help: "Au-delà de 5 ans, les serveurs ne reçoivent plus de correctifs de sécurité critiques (BIOS/Firmware) et sont vulnérables aux attaques bas niveau.",
+        options: ["Moins de 3 ans", "Entre 3 et 5 ans", "Entre 5 et 7 ans", "Plus de 7 ans ou inconnu"],
+        weight: 3,
+        ugapSuggestion: {
+            name: "Renouvellement Serveurs Gen11",
+            description: "Anciens serveurs = Risque Cyber critique. Passage sur HPE ProLiant Gen11 avec sécurité ancrée dans le silicium (Silicon Root of Trust).",
+            vendors: ["HPE ProLiant", "Dell PowerEdge"],
+            marketRef: "Marché UGAP Serveurs & Calcul"
+        }
+      },
+      {
+        id: 'obs-2',
+        text: "Vos baies de stockage sont-elles sous support constructeur actif ?",
+        help: "Le support garantit l'accès aux mises à jour contre les failles. Un stockage hors support met en danger toutes vos données.",
+        options: ["Oui, support J+1 ou 4h", "Oui, support standard", "Support expiré ou fin de vie (EOS)", "Pas de baie de stockage"],
+        weight: 3,
+        ugapSuggestion: {
+            name: "Modernisation Stockage Flash",
+            description: "Remplacement des baies obsolètes par du stockage Full Flash NVMe sécurisé et chiffré par défaut.",
+            vendors: ["PureStorage", "NetApp", "HPE Alletra", "Huawei"],
+            marketRef: "Marché UGAP Stockage"
+        }
+      },
+      {
+        id: 'obs-3',
+        text: "Vos équipements réseaux (Switchs/Cœur) supportent-ils les derniers standards ?",
+        help: "Vos switchs doivent supporter l'authentification 802.1x et les ACLs pour permettre la segmentation du réseau.",
+        options: ["Oui, matériel récent (<5 ans)", "Matériel ancien mais mis à jour", "Matériel obsolète (Fin de support)", "Switchs non manageables"],
+        weight: 2,
+        ugapSuggestion: {
+            name: "Refonte Cœur de Réseau",
+            description: "Renouvellement des commutateurs pour activer la micro-segmentation et l'authentification des équipements.",
+            vendors: ["HPE Aruba Networking", "Cisco", "Huawei"],
+            marketRef: "Marché UGAP Réseaux"
+        }
+      },
+    ]
+  },
   // 1. Gouvernance
   {
     title: 'Gouvernance de la sécurité',

@@ -2,9 +2,10 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { Shield, ChevronLeft, Download, BarChart3, ListChecks, Target, CreditCard, Award, GitMerge, Info, Link, RefreshCw, ShoppingBag, Book, Save } from 'lucide-react';
 import { ClientInfo, Recommendation, BudgetPhase, Theme, Answers, Benchmark } from '../types';
-import { DOMAINS, ANSSI_SOLUTIONS, GLOSSARY } from '../constants';
+import { DOMAINS, ANSSI_SOLUTIONS, GLOSSARY, BUDGET_ITEMS } from '../constants';
 import RadialProgress from './RadialProgress';
 import MaturityRadar from './MaturityRadar';
+import { ToggleLeft, ToggleRight, ArrowRight } from 'lucide-react';
 
 interface ReportProps {
   clientInfo: ClientInfo;
@@ -26,6 +27,74 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
   const reportRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>('synthese');
   const sectionRefs = useRef<{[key: string]: HTMLElement | null}>({});
+  
+  // -- Simulation State --
+  const [selectedPhases, setSelectedPhases] = useState<number[]>([]);
+
+  // -- Simulation Logic --
+  const projectedData = React.useMemo(() => {
+    if (selectedPhases.length === 0) return null;
+
+    // 1. Identify questions fixed by selected phases
+    const fixedQuestions = new Set<string>();
+    selectedPhases.forEach(phaseIndex => {
+        // Find all budget items belonging to this phase
+        Object.values(BUDGET_ITEMS).forEach(item => {
+            if (item.phase === phaseIndex) {
+                 // BUDGET_ITEMS keys are questionIds, but here we iterate values.
+                 // We need to find the key. Actually budget items are indexed by questionID in constants.
+                 // So we need to iterate entries.
+            }
+        });
+        Object.entries(BUDGET_ITEMS).forEach(([qId, item]) => {
+            if (item.phase === phaseIndex) {
+                fixedQuestions.add(qId);
+            }
+        });
+    });
+
+    // 2. Patch answers
+    const patchedAnswers = { ...answers };
+    // We need to find the max score index for each fixed question
+    DOMAINS.forEach(d => {
+        d.questions.forEach(q => {
+            if (fixedQuestions.has(q.id)) {
+                // Set to max score (last option)
+                patchedAnswers[q.id] = q.options.length - 1;
+            }
+        });
+    });
+
+    // 3. Recalculate Scores (Duplicated logic from App.tsx for local simulation)
+    let totalScore = 0;
+    let maxScore = 0;
+    const pDomainScores: { [key: string]: number } = {};
+
+    DOMAINS.forEach(domain => {
+        let dTotal = 0;
+        let dMax = 0;
+        domain.questions.forEach(q => {
+            dMax += (q.options.length - 1) * q.weight;
+            const ans = patchedAnswers[q.id];
+             if (ans !== undefined) {
+                dTotal += ans * q.weight;
+            }
+        });
+        pDomainScores[domain.title] = dMax > 0 ? Math.round((dTotal / dMax) * 100) : 0;
+        totalScore += dTotal;
+        maxScore += dMax;
+    });
+
+    const pMaturity = maxScore === 0 ? 0 : Math.round((totalScore / maxScore) * 100);
+    
+    return {
+        maturity: pMaturity,
+        domainScores: pDomainScores,
+        gain: pMaturity - maturity
+    };
+
+  }, [answers, selectedPhases, maturity]);
+
 
   const handleDownload = useReactToPrint({
     contentRef: reportRef,
@@ -64,6 +133,19 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
       }
     `
   });
+
+    const togglePhase = (phaseIndex: number) => {
+        setSelectedPhases(prev => 
+            prev.includes(phaseIndex) 
+            ? prev.filter(p => p !== phaseIndex) 
+            : [...prev, phaseIndex]
+        );
+    };
+
+    // --- RENDER HELPERS ---
+    const getPhaseCost = (phaseIndex: number) => {
+        return budget[phaseIndex]?.total || 0;
+    }
 
   const sections = [
       { id: 'synthese', label: 'Synthèse Managériale', icon: BarChart3 },
@@ -588,19 +670,55 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                 {/* Global Score */}
                                 <div className="flex flex-col items-center justify-center">
                                     <RadialProgress
-                                        score={maturity}
+                                        score={projectedData ? projectedData.maturity : maturity}
                                         size={200}
                                         strokeWidth={15}
-                                        label="Maturité Globale"
+                                        label={projectedData ? "Maturité Projetée" : "Maturité Globale"}
+                                        color={projectedData ? '#10b981' : undefined}
                                     />
+                                    {projectedData && (
+                                        <div className="mt-2 text-center animate-bounce">
+                                            <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full text-sm font-bold">
+                                                <ArrowRight size={14} />+ {projectedData.gain} points
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
                                 
-                                {/* Radar Chart (Spider Web) */}
+                                {/* Radar Chart & Sim Controls */}
                                 <div className="flex flex-col items-center justify-center w-full">
                                     <h4 className="text-gray-500 dark:text-gray-300 text-sm font-semibold uppercase tracking-wider mb-2 text-center">
                                         Répartition par domaine
                                     </h4>
-                                    <MaturityRadar domainScores={domainScores} />
+                                    <MaturityRadar domainScores={domainScores} projectedScores={projectedData?.domainScores} />
+                                    
+                                    {/* SIMULATION CONTROLS */}
+                                    <div className="mt-4 w-full bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg border border-indigo-100 dark:border-indigo-800 no-print">
+                                        <h5 className="text-xs font-bold text-indigo-800 dark:text-indigo-200 uppercase mb-3 flex items-center gap-2">
+                                            <Target size={14} /> Simulateur "Avant / Après"
+                                        </h5>
+                                        <div className="flex flex-col gap-2">
+                                            {[0, 1].map((phaseIndex) => (
+                                                <button
+                                                    key={phaseIndex}
+                                                    onClick={() => togglePhase(phaseIndex)}
+                                                    className={`flex items-center justify-between p-2 rounded text-sm transition-colors ${
+                                                        selectedPhases.includes(phaseIndex)
+                                                        ? 'bg-indigo-600 text-white shadow-md'
+                                                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                                    }`}
+                                                >
+                                                    <div className="flex items-center gap-2">
+                                                        {selectedPhases.includes(phaseIndex) ? <ToggleRight size={18} /> : <ToggleLeft size={18} />}
+                                                        <span>Simuler Phase {phaseIndex + 1}</span>
+                                                    </div>
+                                                    <span className="font-mono text-xs opacity-90">
+                                                        +{getPhaseCost(phaseIndex).toLocaleString('fr-FR')} €
+                                                    </span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                                 <div className="bg-gray-50 dark:bg-gray-700/50 p-6 rounded-lg">

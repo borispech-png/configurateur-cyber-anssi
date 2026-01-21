@@ -58,6 +58,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
         .print-break-avoid {
             break-inside: avoid !important;
             page-break-inside: avoid !important;
+            display: block !important;
         }
       }
     `
@@ -230,7 +231,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
 
                         {/* --- Hardware Obsolescence Alert (Si détecté) --- */}
                         {hardwareRec && (
-                          <section id="hardware" className="mt-12 bg-orange-50 dark:bg-orange-900/30 border-l-4 border-orange-500 p-6 rounded-md">
+                          <section id="hardware" className="mt-12 bg-orange-50 dark:bg-orange-900/30 border-l-4 border-orange-500 p-6 rounded-md print-break-avoid">
                               <h2 className="text-2xl font-bold text-orange-800 dark:text-orange-200 flex items-center gap-3 mb-4">
                                   <ShoppingBag size={28} />
                                   {hardwareRec.title}
@@ -285,7 +286,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
 
                                     {/* --- BENCHMARK INTEGRATION --- */}
                                     {benchmark && (
-                                      <div className={`mt-6 p-4 rounded-lg border-l-4 ${maturity >= benchmark.avgMaturity ? 'bg-green-50 dark:bg-green-900/30 border-green-500' : 'bg-orange-50 dark:bg-orange-900/30 border-orange-500'}`}>
+                                      <div className={`mt-6 p-4 rounded-lg border-l-4 print-break-avoid ${maturity >= benchmark.avgMaturity ? 'bg-green-50 dark:bg-green-900/30 border-green-500' : 'bg-orange-50 dark:bg-orange-900/30 border-orange-500'}`}>
                                           <h4 className="font-bold text-lg flex items-center gap-2 mb-2 text-gray-800 dark:text-gray-200">
                                               <BarChart3 size={20} />
                                               Positionnement Sectoriel : {clientInfo.sector}
@@ -321,7 +322,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                 <Shield size={32} className="text-indigo-600 dark:text-indigo-400"/>
                                 Focus : Cyber-Résilience & Sauvegarde
                             </h2>
-                            <div className="bg-indigo-900 text-white rounded-lg p-6 shadow-lg mb-8">
+                            <div className="bg-indigo-900 text-white rounded-lg p-6 shadow-lg mb-8 print-break-avoid">
                                 <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                                     <ShoppingBag size={24} className="text-yellow-400" />
                                     Recommandation Spécifique UGAP

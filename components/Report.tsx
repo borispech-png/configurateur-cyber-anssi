@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { Shield, ChevronLeft, Download, BarChart3, ListChecks, Target, CreditCard, Award, GitMerge, Info, Link, RefreshCw, ShoppingBag } from 'lucide-react';
-import { ClientInfo, Recommendation, BudgetPhase, Theme } from '../types';
+import { ClientInfo, Recommendation, BudgetPhase, Theme, Answers } from '../types';
 import { DOMAINS, ANSSI_SOLUTIONS } from '../constants';
 import RadialProgress from './RadialProgress';
 
@@ -16,9 +16,10 @@ interface ReportProps {
   themeSwitcher: React.ReactNode;
   onBack: () => void;
   onReset: () => void;
+  answers: Answers;
 }
 
-const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, recommendations, budget, totalBudget, theme, themeSwitcher, onBack, onReset }) => {
+const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, recommendations, budget, totalBudget, theme, themeSwitcher, onBack, onReset, answers }) => {
   const reportRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>('synthese');
   const sectionRefs = useRef<{[key: string]: HTMLElement | null}>({});
@@ -62,6 +63,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
 
   const sections = [
       { id: 'synthese', label: 'Synthèse Managériale', icon: BarChart3 },
+      { id: 'resilience', label: 'Focus Cyber-Résilience', icon: Shield },
       { id: 'scores', label: 'Scores de Maturité', icon: GitMerge },
       { id: 'recommandations', label: 'Recommandations Priorisées', icon: ListChecks },
       { id: 'budget', label: 'Budget Prévisionnel', icon: CreditCard },
@@ -212,6 +214,75 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                     <p>
                                       Un plan d'action en 3 phases est proposé pour adresser ces risques, avec un budget estimé à <strong>{totalBudget.toLocaleString('fr-FR')} €</strong>.
                                       La priorité doit être mise sur la <strong>Phase 1 (Socle de sécurité)</strong> pour corriger les vulnérabilités les plus urgentes et renforcer la posture de défense de l'organisme.
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* --- Focus Cyber-Résilience --- */}
+                        <section id="resilience" ref={el => { sectionRefs.current['resilience'] = el; }} className="mt-16 scroll-mt-20">
+                             <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-3 mb-6">
+                                <Shield size={32} className="text-indigo-600 dark:text-indigo-400"/>
+                                Focus : Cyber-Résilience & Sauvegarde
+                            </h2>
+                            <div className="bg-indigo-900 text-white rounded-lg p-6 shadow-lg mb-8">
+                                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                                    <ShoppingBag size={24} className="text-yellow-400" />
+                                    Recommandation Spécifique UGAP
+                                </h3>
+                                <p className="mb-4 text-indigo-100">
+                                    Basé sur votre volumétrie déclarée de <strong>{(() => {
+                                        const idx = answers['res-3'] || 0;
+                                        return ["< 10 To", "10 - 50 To", "50 - 150 To", "> 150 To"][idx];
+                                    })()}</strong> (Back-end) :
+                                </p>
+                                
+                                {(() => {
+                                    const idx = answers['res-3'] || 0;
+                                    const rec = idx <= 1 ? {
+                                        product: "HPE StoreOnce / Dell Data Domain",
+                                        desc: "Appliance de stockage avec déduplication agressive et verrouillage objet (Immutabilité). Idéal pour optimiser le stockage et garantir l'intégrité.",
+                                        vendors: ["HPE", "Dell", "Quantum"]
+                                    } : {
+                                        product: "Rubrik Security Cloud / Dell Cyber Recovery",
+                                        desc: "Plateforme de sécurité des données Zero Trust. Architecture Scale-out avec détection d'anomalies (Ransomware) et restauration chirurgicale.",
+                                        vendors: ["Rubrik", "Dell", "HPE Zerto"]
+                                    };
+
+                                    return (
+                                        <div className="bg-white/10 rounded-md p-4 border border-white/20">
+                                            <div className="flex justify-between items-start">
+                                                <div>
+                                                    <h4 className="text-lg font-bold text-white">{rec.product}</h4>
+                                                    <p className="text-sm text-indigo-200 mt-1">{rec.desc}</p>
+                                                </div>
+                                                <span className="bg-yellow-400 text-indigo-900 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">
+                                                    Marché UGAP
+                                                </span>
+                                            </div>
+                                            <div className="mt-3 flex gap-2">
+                                                {rec.vendors.map(v => (
+                                                    <span key={v} className="text-xs font-semibold bg-indigo-800 px-2 py-1 rounded text-indigo-200">{v}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-lg border-l-4 border-blue-500">
+                                    <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2">Pourquoi l'Immutabilité ?</h4>
+                                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                                        Les ransomwares modernes s'attaquent d'abord aux sauvegardes pour empêcher la restauration. 
+                                        L'immutabilité (WORM - Write Once Read Many) garantit techniquement qu'aucune donnée ne peut être modifiée ou supprimée avant sa date d'expiration, même avec des droits administrateur.
+                                    </p>
+                                </div>
+                                <div className="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-lg border-l-4 border-indigo-500">
+                                    <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2">Le concept d'Air-Gap</h4>
+                                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                                        La règle du 3-2-1 impose une copie hors-site. L'Air-Gap va plus loin en isolant cette copie du réseau de production. 
+                                        Les solutions de "Cyber Recovery Vault" automatisent cette isolation en n'ouvrant le flux réseau que le temps de la réplication, réduisant la surface d'attaque à quasi-zero.
                                     </p>
                                 </div>
                             </div>

@@ -94,7 +94,49 @@ export const DOMAINS: Domain[] = [
       },
     ],
   },
-    // 3. Contrôle d'accès
+  // 3. Cyber-Résilience (Focus Spécial)
+  {
+    title: "Cyber-Résilience & Sauvegarde",
+    icon: '🛡️',
+    color: 'bg-indigo-600',
+    description: "Capacité à restaurer les données critiques après une attaque destructrice (Ransomware).",
+    questions: [
+      {
+        id: 'res-1',
+        text: "Vos sauvegardes disposent-elles d'une immutabilité (WORM) garantie ?",
+        help: "L'immutabilité empêche la modification ou la suppression des sauvegardes, même par un administrateur compromis, bloquant ainsi les ransomwares.",
+        options: ["Non", "Partiellement (sur certains partages)", "Oui, via retention logicielle", "Oui, immutabilité matérielle/physique stricte"],
+        weight: 3,
+        ugapSuggestion: {
+            name: "HPE StoreOnce / Dell DataDomain",
+            description: "Appliance de déduplication avec verrouillage objet (Object Lock) certifié pour garantir l'intégrité des données.",
+            vendors: ["HPE", "Dell", "Quantum"],
+            marketRef: "Marché Stockage & Sauvegarde"
+        }
+      },
+      {
+        id: 'res-2',
+        text: "Disposez-vous d'une copie de sauvegarde déconnectée (Air-gapped) ?",
+        help: "Une copie isolée du réseau (physiquement ou logiquement via un 'Virtual Air Gap') est le seul moyen sûr de récupérer ses données si tout le réseau est compromis.",
+        options: ["Non, tout est en ligne", "Externalisation sur disque USB/Bande", "Réplication vers un site tiers connecté", "Vault Cyber-Recovery isolé (Air Gap)"],
+        weight: 3,
+        ugapSuggestion: {
+            name: "Architecture Cyber Recovery",
+            description: "Solution créant un coffre-fort numérique isolé (Vault) pour analyser et protéger les données critiques hors d'atteinte du réseau principal.",
+            vendors: ["Rubrik", "Dell Cyber Recovery", "HPE Zerto"],
+            marketRef: "Marché Logiciels Infra"
+        }
+      },
+      {
+        id: 'res-3',
+        text: "Quelle est la volumétrie totale de données (Back-end) à protéger ?",
+        help: "Permet de dimensionner la solution de sauvegarde et d'archivage nécessaire.",
+        options: ["< 10 To", "10 - 50 To", "50 - 150 To", "> 150 To"],
+        weight: 1, // Poids faible car c'est une question de dimensionnement technique
+      },
+    ]
+  },
+    // 4. Contrôle d'accès
   {
     title: "Contrôle des accès",
     icon: '🔑',

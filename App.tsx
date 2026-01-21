@@ -254,7 +254,7 @@ const App: React.FC = () => {
       return <Summary {...calculations} clientInfo={clientInfo} onEdit={() => setView('questionnaire')} onGenerateReport={() => setView('report')} />;
       
     case 'report':
-      return <Report {...calculations} clientInfo={clientInfo} onBack={() => setView('summary')} onReset={handleReset} theme={theme} themeSwitcher={themeSwitcher} />;
+      return <Report {...calculations} clientInfo={clientInfo} answers={answers} onBack={() => setView('summary')} onReset={handleReset} theme={theme} themeSwitcher={themeSwitcher} />;
       
     default:
       return <div>Erreur: Vue non reconnue.</div>;

@@ -234,6 +234,12 @@ export const DOMAINS: Domain[] = [
             help: "La segmentation (ex: VLANs) permet de limiter la propagation d'un attaquant sur le réseau. Séparez les serveurs, les postes de travail, le Wi-Fi invités...",
             options: ["Non, réseau plat", "Segmentation de base (ex: Wi-Fi invités)", "Segmentation par zones fonctionnelles", "Micro-segmentation et filtrage strict entre zones"],
             weight: 3,
+            ugapSuggestion: {
+                name: "HPE Aruba Dynamic Segmentation",
+                description: "Segmentation automatisée des ports et des utilisateurs pilotée par le rôle (Colorless Ports) pour contenir les menaces.",
+                vendors: ["HPE Aruba Networking", "ClearPass"],
+                marketRef: "Marché UGAP LAN"
+            }
         },
         {
             id: 'net-2',
@@ -241,6 +247,12 @@ export const DOMAINS: Domain[] = [
             help: "Le NGFW ne se contente pas de filtrer les ports, il analyse les applications et peut détecter les menaces (IPS).",
             options: ["Pas de pare-feu ou box FAI", "Pare-feu simple (stateful)", "NGFW avec fonctions de base", "NGFW avec toutes les fonctions de sécurité activées et supervisées"],
             weight: 3,
+            ugapSuggestion: {
+                name: "Firewall & SD-WAN Sécurisé",
+                description: "Protection périmétrique avancée avec inspection SSL et filtrage applicatif.",
+                vendors: ["Stormshield (Qualifié ANSSI)", "Fortinet", "Palo Alto"],
+                marketRef: "Marché UGAP Sécurité"
+            }
         },
         {
             id: 'net-3',
@@ -248,6 +260,12 @@ export const DOMAINS: Domain[] = [
             help: "Le Wi-Fi doit utiliser un chiffrement robuste (WPA2/WPA3-Enterprise), et un portail captif doit être utilisé pour les invités sur un réseau séparé.",
             options: ["Ouvert ou WEP/WPA", "WPA2-Personnel (PSK partagé)", "WPA2-Enterprise (comptes individuels)", "WPA3-Enterprise + sonde de détection de points d'accès illégitimes"],
             weight: 2,
+            ugapSuggestion: {
+                name: "Wi-Fi Sécurisé Aruba & ClearPass",
+                description: "Bornes Wi-Fi 6E/7 avec WPA3 et authentification forte 802.1x via ClearPass pour bloquer les accès non autorisés.",
+                vendors: ["HPE Aruba Networking"],
+                marketRef: "Marché UGAP WLAN"
+            }
         },
         {
             id: 'net-4',
@@ -255,6 +273,12 @@ export const DOMAINS: Domain[] = [
             help: "L'administration des serveurs et équipements critiques doit se faire depuis des postes sécurisés (PAW - Privileged Access Workstation) via un bastion qui trace toutes les actions.",
             options: ["Non, depuis les postes bureautiques", "Via un VPN mais depuis les postes bureautiques", "Via un bastion mais sans postes dédiés", "Via un bastion et des PAW dédiés"],
             weight: 2,
+            ugapSuggestion: {
+                name: "Bastion d'Administration (PAM)",
+                description: "Traçabilité et enregistrement des sessions d'administration pour éviter les abus de privilèges.",
+                vendors: ["Wallix (Qualifié ANSSI)", "CyberArk"],
+                marketRef: "Marché UGAP Logiciels"
+            }
         },
     ]
   },

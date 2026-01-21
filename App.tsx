@@ -210,6 +210,16 @@ const App: React.FC = () => {
     };
   }, [answers, clientInfo.type, clientInfo.sector]);
   
+  const handleReset = useCallback(() => {
+    if (confirm("Attention, cela va effacer toutes les données de l'audit actuel. Voulez-vous continuer ?")) {
+      sessionStorage.removeItem('cyber-audit');
+      setClientInfo({ name: '', type: '', size: '', sector: '', contact: '', phone: '' });
+      setAnswers({});
+      setStep(0);
+      setView('clientInfo');
+    }
+  }, []);
+
   const themeSwitcher = <ThemeSwitcher theme={theme} onToggle={toggleTheme} />;
 
   // --- Render logic ---
@@ -243,7 +253,7 @@ const App: React.FC = () => {
       return <Summary {...calculations} clientInfo={clientInfo} onEdit={() => setView('questionnaire')} onGenerateReport={() => setView('report')} />;
       
     case 'report':
-      return <Report {...calculations} clientInfo={clientInfo} onBack={() => setView('summary')} theme={theme} themeSwitcher={themeSwitcher} />;
+      return <Report {...calculations} clientInfo={clientInfo} onBack={() => setView('summary')} onReset={handleReset} theme={theme} themeSwitcher={themeSwitcher} />;
       
     default:
       return <div>Erreur: Vue non reconnue.</div>;

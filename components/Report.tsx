@@ -1,5 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { Shield, ChevronLeft, Download, BarChart3, ListChecks, Target, CreditCard, Award, GitMerge, Info, Link } from 'lucide-react';
+import { Shield, ChevronLeft, Download, BarChart3, ListChecks, Target, CreditCard, Award, GitMerge, Info, Link, RefreshCw } from 'lucide-react';
 import { ClientInfo, Recommendation, BudgetPhase, Theme } from '../types';
 import { DOMAINS, ANSSI_SOLUTIONS } from '../constants';
 import RadialProgress from './RadialProgress';
@@ -14,9 +13,10 @@ interface ReportProps {
   theme: Theme;
   themeSwitcher: React.ReactNode;
   onBack: () => void;
+  onReset: () => void;
 }
 
-const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, recommendations, budget, totalBudget, theme, themeSwitcher, onBack }) => {
+const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, recommendations, budget, totalBudget, theme, themeSwitcher, onBack, onReset }) => {
   const reportRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>('synthese');
   const sectionRefs = useRef<{[key: string]: HTMLElement | null}>({});
@@ -104,6 +104,10 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                 </div>
                 <div className="flex items-center gap-2">
                     {themeSwitcher}
+                    <button onClick={onReset} className="px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 rounded-lg transition flex items-center gap-2" title="Nouvel Audit">
+                        <RefreshCw size={16} />
+                        <span className="hidden sm:inline">Nouveau</span>
+                    </button>
                     <button onClick={onBack} className="px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 rounded-lg transition flex items-center gap-2">
                         <ChevronLeft size={16} />
                         Retour

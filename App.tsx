@@ -167,9 +167,9 @@ const App: React.FC = () => {
 
     const generateBudget = (recs: Recommendation[]): BudgetPhase[] => {
         const phases: BudgetPhase[] = [
-            { name: 'Phase 1 : Socle de sécurité', period: '0-6 mois', description: 'Mise en conformité minimale ANSSI - Protection de base', items: [], total: 0, priority: 'Critique' },
-            { name: 'Phase 2 : Détection & réponse', period: '6-12 mois', description: 'Capacités de supervision, détection et réaction', items: [], total: 0, priority: 'Important' },
-            { name: 'Phase 3 : Optimisation & amélioration', period: '12-24 mois', description: 'Automatisation et amélioration continue', items: [], total: 0, priority: 'Recommandé' }
+            { name: 'Phase 1 : Socle de sécurité', period: '0-6 mois', description: 'Mise en conformité minimale ANSSI - Protection de base', items: [], total: 0, recurrentTotal: 0, priority: 'Critique' },
+            { name: 'Phase 2 : Détection & réponse', period: '6-12 mois', description: 'Capacités de supervision, détection et réaction', items: [], total: 0, recurrentTotal: 0, priority: 'Important' },
+            { name: 'Phase 3 : Optimisation & amélioration', period: '12-24 mois', description: 'Automatisation et amélioration continue', items: [], total: 0, recurrentTotal: 0, priority: 'Recommandé' }
         ];
 
         recs.forEach(rec => {
@@ -179,6 +179,7 @@ const App: React.FC = () => {
                 if (!phase.items.find(i => i.name === budgetItem.name)) {
                     phase.items.push(budgetItem);
                     phase.total += budgetItem.cost;
+                    phase.recurrentTotal += (budgetItem.recurrent || 0); // Ajouter le récurrent
                 }
             }
         });

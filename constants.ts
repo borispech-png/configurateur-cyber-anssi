@@ -458,40 +458,40 @@ export const BENCHMARKS: Benchmarks = {
 // BUDGET ITEMS
 export const BUDGET_ITEMS: BudgetItems = {
   // Gouvernance
-  'gov-1': { name: "Accompagnement rédaction PSSI", phase: 0, cost: 5000, description: "Ateliers et rédaction de la politique de sécurité avec un consultant." },
-  'gov-2': { name: "Prestation RSSI temps partagé", phase: 0, cost: 15000, description: "Mission de conseil annuelle pour piloter la sécurité (2 jours/mois)." },
-  'gov-3': { name: "Analyse de risques EBIOS RM", phase: 1, cost: 8000, description: "Analyse de risques sur un périmètre critique avec un consultant certifié." },
-  'gov-4': { name: "Plateforme de sensibilisation", phase: 0, cost: 3000, description: "Licence annuelle pour une plateforme de e-learning et campagnes de phishing." },
+  'gov-1': { name: "Accompagnement rédaction PSSI", phase: 0, cost: 5000, recurrent: 0, description: "Ateliers et rédaction de la politique de sécurité avec un consultant." },
+  'gov-2': { name: "Prestation RSSI temps partagé", phase: 0, cost: 15000, recurrent: 15000, description: "Mission de conseil annuelle pour piloter la sécurité (2 jours/mois)." },
+  'gov-3': { name: "Analyse de risques EBIOS RM", phase: 1, cost: 8000, recurrent: 0, description: "Analyse de risques sur un périmètre critique avec un consultant certifié." },
+  'gov-4': { name: "Plateforme de sensibilisation", phase: 0, cost: 3000, recurrent: 3000, description: "Licence annuelle pour une plateforme de e-learning et campagnes de phishing." },
   // Protection
-  'prot-1': { name: "Déploiement EDR souverain", phase: 0, cost: 4000, description: "Licences annuelles pour une solution EDR (ex: Tehtris, HarfangLab).", anssiCertified: true },
-  'prot-2': { name: "Solution de sauvegarde externalisée", phase: 0, cost: 6000, description: "Coût annuel pour une solution de sauvegarde cloud immuable." },
-  'prot-3': { name: "Outil de gestion des vulnérabilités", phase: 1, cost: 7000, description: "Licence annuelle pour un scanner de vulnérabilités et gestion des correctifs." },
-  'prot-4': { name: "Solution de chiffrement de données", phase: 2, cost: 3500, description: "Licence pour le chiffrement centralisé des postes et serveurs." },
+  'prot-1': { name: "Déploiement EDR souverain", phase: 0, cost: 5000, recurrent: 4000, description: "Licences annuelles pour une solution EDR (ex: Tehtris, HarfangLab).", anssiCertified: true },
+  'prot-2': { name: "Solution de sauvegarde externalisée", phase: 0, cost: 7000, recurrent: 6000, description: "Coût annuel pour une solution de sauvegarde cloud immuable." },
+  'prot-3': { name: "Outil de gestion des vulnérabilités", phase: 1, cost: 7000, recurrent: 7000, description: "Licence annuelle pour un scanner de vulnérabilités et gestion des correctifs." },
+  'prot-4': { name: "Solution de chiffrement de données", phase: 2, cost: 3500, recurrent: 3500, description: "Licence pour le chiffrement centralisé des postes et serveurs." },
   // Contrôle d'accès
-  'access-1': { name: "Gestionnaire de mots de passe d'entreprise", phase: 0, cost: 2000, description: "Licence annuelle pour une solution de coffre-fort de mots de passe." },
-  'access-2': { name: "Déploiement MFA", phase: 0, cost: 2500, description: "Licences annuelles et support pour une solution d'authentification forte." },
-  'access-3': { name: "Projet de gestion des identités (IAM)", phase: 2, cost: 25000, description: "Projet d'intégration d'une solution IAM pour automatiser la gestion des droits." },
-  'access-4': { name: "Audit des comptes à privilèges", phase: 1, cost: 4000, description: "Mission de conseil pour cartographier et rationaliser les comptes administrateurs." },
+  'access-1': { name: "Gestionnaire de mots de passe d'entreprise", phase: 0, cost: 2000, recurrent: 2000, description: "Licence annuelle pour une solution de coffre-fort de mots de passe." },
+  'access-2': { name: "Déploiement MFA", phase: 0, cost: 2500, recurrent: 2500, description: "Licences annuelles et support pour une solution d'authentification forte." },
+  'access-3': { name: "Projet de gestion des identités (IAM)", phase: 2, cost: 25000, recurrent: 5000, description: "Projet d'intégration d'une solution IAM pour automatiser la gestion des droits." },
+  'access-4': { name: "Audit des comptes à privilèges", phase: 1, cost: 4000, recurrent: 0, description: "Mission de conseil pour cartographier et rationaliser les comptes administrateurs." },
   // Sécurité des réseaux
-  'net-1': { name: "Projet de segmentation réseau", phase: 1, cost: 12000, description: "Prestation d'architecture et de configuration pour le cloisonnement du réseau." },
-  'net-2': { name: "NGFW souverain en haute disponibilité", phase: 0, cost: 18000, description: "Achat et installation d'une paire de pare-feux (ex: Stormshield).", anssiCertified: true },
-  'net-3': { name: "Solution de contrôle d'accès réseau (NAC)", phase: 2, cost: 9000, description: "Licences et prestation pour une solution de contrôle d'accès 802.1x." },
-  'net-4': { name: "Déploiement d'un bastion d'administration", phase: 1, cost: 10000, description: "Licence et intégration d'une solution de PAM (ex: Wallix).", anssiCertified: true },
+  'net-1': { name: "Projet de segmentation réseau", phase: 1, cost: 12000, recurrent: 0, description: "Prestation d'architecture et de configuration pour le cloisonnement du réseau." },
+  'net-2': { name: "NGFW souverain en haute disponibilité", phase: 0, cost: 18000, recurrent: 3500, description: "Achat et installation d'une paire de pare-feux (ex: Stormshield).", anssiCertified: true },
+  'net-3': { name: "Solution de contrôle d'accès réseau (NAC)", phase: 2, cost: 9000, recurrent: 3000, description: "Licences et prestation pour une solution de contrôle d'accès 802.1x." },
+  'net-4': { name: "Déploiement d'un bastion d'administration", phase: 1, cost: 10000, recurrent: 4000, description: "Licence et intégration d'une solution de PAM (ex: Wallix).", anssiCertified: true },
   // Détection
-  'detect-1': { name: "Mise en place d'un SIEM", phase: 1, cost: 20000, description: "Licence et projet d'intégration d'un SIEM pour la centralisation des logs." },
-  'detect-2': { name: "Abonnement Threat Intelligence", phase: 2, cost: 5000, description: "Flux de renseignement sur les menaces pour enrichir le SIEM." },
-  'detect-3': { name: "Contrat SOC externalisé", phase: 1, cost: 25000, description: "Abonnement annuel à un service de supervision de sécurité 24/7." },
-  'detect-4': { name: "Test d'intrusion annuel", phase: 0, cost: 7500, description: "Prestation annuelle de pentest sur le périmètre externe." },
+  'detect-1': { name: "Mise en place d'un SIEM", phase: 1, cost: 20000, recurrent: 8000, description: "Licence et projet d'intégration d'un SIEM pour la centralisation des logs." },
+  'detect-2': { name: "Abonnement Threat Intelligence", phase: 2, cost: 5000, recurrent: 5000, description: "Flux de renseignement sur les menaces pour enrichir le SIEM." },
+  'detect-3': { name: "Contrat SOC externalisé", phase: 1, cost: 25000, recurrent: 25000, description: "Abonnement annuel à un service de supervision de sécurité 24/7." },
+  'detect-4': { name: "Test d'intrusion annuel", phase: 0, cost: 7500, recurrent: 7500, description: "Prestation annuelle de pentest sur le périmètre externe." },
   // Réponse
-  'resp-1': { name: "Rédaction plan de réponse à incident", phase: 0, cost: 4000, description: "Ateliers et rédaction des procédures de gestion d'incident." },
-  'resp-2': { name: "Contrat de réponse à incident (Retainer)", phase: 0, cost: 10000, description: "Contrat annuel avec un CERT/CSIRT pour une assistance garantie en cas de crise." },
-  'resp-3': { name: "Souscription cyber-assurance", phase: 2, cost: 6000, description: "Prime annuelle pour une police d'assurance cyber." },
-  'resp-4': { name: "Exercice de crise cyber", phase: 1, cost: 9000, description: "Organisation d'une simulation de crise avec les équipes IT et le CODIR." },
+  'resp-1': { name: "Rédaction plan de réponse à incident", phase: 0, cost: 4000, recurrent: 0, description: "Ateliers et rédaction des procédures de gestion d'incident." },
+  'resp-2': { name: "Contrat de réponse à incident (Retainer)", phase: 0, cost: 10000, recurrent: 10000, description: "Contrat annuel avec un CERT/CSIRT pour une assistance garantie en cas de crise." },
+  'resp-3': { name: "Souscription cyber-assurance", phase: 2, cost: 6000, recurrent: 6000, description: "Prime annuelle pour une police d'assurance cyber." },
+  'resp-4': { name: "Exercice de crise cyber", phase: 1, cost: 9000, recurrent: 5000, description: "Organisation d'une simulation de crise avec les équipes IT et le CODIR." },
   // Continuité
-  'cont-1': { name: "Réalisation d'un BIA", phase: 0, cost: 6000, description: "Ateliers avec les métiers pour évaluer l'impact des pannes et définir les RTO/RPO." },
-  'cont-2': { name: "Mise en place d'un PRA managé", phase: 1, cost: 30000, description: "Coût annuel pour une solution de reprise d'activité dans un datacenter tiers." },
-  'cont-3': { name: "Accompagnement rédaction PCA", phase: 2, cost: 7000, description: "Ateliers avec les métiers pour formaliser les procédures dégradées." },
-  'cont-4': { name: "Test annuel du PRA", phase: 1, cost: 5000, description: "Prestation pour organiser et piloter le test de bascule annuel du PRA." },
+  'cont-1': { name: "Réalisation d'un BIA", phase: 0, cost: 6000, recurrent: 0, description: "Ateliers avec les métiers pour évaluer l'impact des pannes et définir les RTO/RPO." },
+  'cont-2': { name: "Mise en place d'un PRA managé", phase: 1, cost: 30000, recurrent: 25000, description: "Coût annuel pour une solution de reprise d'activité dans un datacenter tiers." },
+  'cont-3': { name: "Accompagnement rédaction PCA", phase: 2, cost: 7000, recurrent: 0, description: "Ateliers avec les métiers pour formaliser les procédures dégradées." },
+  'cont-4': { name: "Test annuel du PRA", phase: 1, cost: 5000, recurrent: 5000, description: "Prestation pour organiser et piloter le test de bascule annuel du PRA." },
 };
 
 // ANSSI SOLUTIONS CATALOG

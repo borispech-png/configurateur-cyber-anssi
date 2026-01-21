@@ -57,7 +57,8 @@ export interface Recommendation {
 export interface BudgetItem {
     name: string;
     phase: number;
-    cost: number;
+    cost: number; // Coût initial (Année 1 ou One-shot)
+    recurrent?: number; // Coût récurrent annuel (Années suivantes)
     description: string;
     anssiCertified?: boolean;
 }
@@ -72,6 +73,7 @@ export interface BudgetPhase {
   description: string;
   items: BudgetItem[];
   total: number;
+  recurrentTotal: number; // Total des coûts récurrents
   priority: 'Critique' | 'Important' | 'Recommandé';
 }
 

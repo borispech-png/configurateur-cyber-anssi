@@ -650,9 +650,54 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                     </div>
                                 ))}
                             </div>
-                            <div className="mt-8 bg-indigo-600 text-white rounded-lg p-6 flex justify-between items-center">
-                                <span className="text-2xl font-bold">Total Budget Estimé</span>
-                                <span className="text-3xl font-bold">{totalBudget.toLocaleString('fr-FR')} €</span>
+                            
+                            {/* --- TCO Table --- */}
+                            <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden print-break-avoid">
+                                <div className="bg-gray-50 dark:bg-gray-700 px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+                                    <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+                                        <CreditCard size={20} className="text-indigo-600 dark:text-indigo-400"/>
+                                        Vision Financière TCO 36 mois
+                                    </h3>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">Projection des coûts d'investissement (CAPEX) et de fonctionnement (OPEX)</p>
+                                </div>
+                                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
+                                    <thead className="bg-gray-50 dark:bg-gray-800">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Phase</th>
+                                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Année 1 (Invest.)</th>
+                                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Année 2 (MCO)</th>
+                                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Année 3 (MCO)</th>
+                                            <th className="px-6 py-3 text-right text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Total TCO</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                        {budget.map((phase) => (
+                                            <tr key={phase.name}>
+                                                <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">{phase.name}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-right text-gray-700 dark:text-gray-300">{(phase.total).toLocaleString('fr-FR')} €</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-right text-gray-500 dark:text-gray-400">{(phase.recurrentTotal).toLocaleString('fr-FR')} €</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-right text-gray-500 dark:text-gray-400">{(phase.recurrentTotal).toLocaleString('fr-FR')} €</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-right font-bold text-indigo-600 dark:text-indigo-400">
+                                                    {(phase.total + phase.recurrentTotal * 2).toLocaleString('fr-FR')} €
+                                                </td>
+                                            </tr>
+                                        ))}
+                                        {/* TOTAL ROW */}
+                                        <tr className="bg-indigo-50 dark:bg-indigo-900/30 font-bold">
+                                            <td className="px-6 py-4 whitespace-nowrap text-indigo-900 dark:text-indigo-200">TOTAL CUMULÉ</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-right text-indigo-900 dark:text-indigo-200">{totalBudget.toLocaleString('fr-FR')} €</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-right text-indigo-900 dark:text-indigo-200">
+                                                {budget.reduce((acc, p) => acc + p.recurrentTotal, 0).toLocaleString('fr-FR')} €
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-right text-indigo-900 dark:text-indigo-200">
+                                                {budget.reduce((acc, p) => acc + p.recurrentTotal, 0).toLocaleString('fr-FR')} €
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-right text-indigo-700 dark:text-indigo-100 text-lg">
+                                                {(totalBudget + budget.reduce((acc, p) => acc + p.recurrentTotal, 0) * 2).toLocaleString('fr-FR')} €
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
 
                             <div className="mt-8 bg-blue-50 dark:bg-blue-900/50 border-l-4 border-blue-500 rounded-r-lg p-4">

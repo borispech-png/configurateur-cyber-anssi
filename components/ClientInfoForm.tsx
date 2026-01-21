@@ -8,14 +8,28 @@ interface ClientInfoFormProps {
   onClientInfoChange: (field: keyof ClientInfo, value: string) => void;
   onStart: () => void;
   themeSwitcher: React.ReactNode;
+  onImport: (data: string) => void;
 }
 
-const ClientInfoForm: React.FC<ClientInfoFormProps> = ({ clientInfo, onClientInfoChange, onStart, themeSwitcher }) => {
+const ClientInfoForm: React.FC<ClientInfoFormProps> = ({ clientInfo, onClientInfoChange, onStart, themeSwitcher, onImport }) => {
   const [consentGiven, setConsentGiven] = useState(false);
   const [sectorSuggestions, setSectorSuggestions] = useState<string[]>([]);
   const [isSectorInputFocused, setIsSectorInputFocused] = useState(false);
 
   const benchmarkSectors = Object.keys(BENCHMARKS);
+  
+  const handleFileImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+              if (event.target?.result) {
+                  onImport(event.target.result as string);
+              }
+          };
+          reader.readAsText(file);
+      }
+  };
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
@@ -252,6 +266,14 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({ clientInfo, onClientInf
             Commencer l'audit
             <ChevronRight size={20} />
           </button>
+
+          <div className="mt-4 flex justify-center animate-fade-in-up" style={{ animationDelay: '1050ms' }}>
+              <label className="flex items-center gap-2 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 cursor-pointer transition-colors">
+                  <Upload size={16} />
+                  <span>Charger un audit existant (.json)</span>
+                  <input type="file" accept=".json" onChange={handleFileImport} className="hidden" />
+              </label>
+          </div>
 
           <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-4 animate-fade-in-up" style={{ animationDelay: '1100ms' }}>
             💾 Vos réponses sont sauvegardées automatiquement

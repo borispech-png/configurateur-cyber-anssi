@@ -223,6 +223,45 @@ const App: React.FC = () => {
 
   const themeSwitcher = <ThemeSwitcher theme={theme} onToggle={toggleTheme} />;
 
+  const handleExportAudit = useCallback(() => {
+    const data = {
+      clientInfo,
+      answers,
+      step,
+      view: 'report', // Force resume at report
+      timestamp: new Date().toISOString(),
+      version: '1.0'
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `audit_${clientInfo.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [clientInfo, answers, step]);
+
+  const handleImportAudit = useCallback((jsonData: string) => {
+      try {
+          const data = JSON.parse(jsonData);
+          // Very basic validation
+          if (data.clientInfo && data.answers) {
+              setClientInfo(data.clientInfo);
+              setAnswers(data.answers);
+              setStep(data.step || 0);
+              setView(data.view || 'summary');
+              alert(`Audit importé avec succès : ${data.clientInfo.name}`);
+          } else {
+              alert("Fichier invalide : format incorrect.");
+          }
+      } catch (e) {
+          console.error("Erreur import", e);
+          alert("Erreur lors de la lecture du fichier.");
+      }
+  }, []);
+
   // --- Render logic ---
   if (!isAuthenticated) {
     return (
@@ -237,7 +276,13 @@ const App: React.FC = () => {
 
   switch (view) {
     case 'clientInfo':
-      return <ClientInfoForm clientInfo={clientInfo} onClientInfoChange={handleClientInfoChange} onStart={() => setView('questionnaire')} themeSwitcher={themeSwitcher} />;
+      return <ClientInfoForm 
+                clientInfo={clientInfo} 
+                onClientInfoChange={handleClientInfoChange} 
+                onStart={() => setView('questionnaire')} 
+                themeSwitcher={themeSwitcher}
+                onImport={handleImportAudit} 
+             />;
     
     case 'questionnaire':
       return <Questionnaire 
@@ -254,7 +299,16 @@ const App: React.FC = () => {
       return <Summary {...calculations} clientInfo={clientInfo} onEdit={() => setView('questionnaire')} onGenerateReport={() => setView('report')} />;
       
     case 'report':
-      return <Report {...calculations} clientInfo={clientInfo} answers={answers} onBack={() => setView('summary')} onReset={handleReset} theme={theme} themeSwitcher={themeSwitcher} />;
+      return <Report 
+                {...calculations} 
+                clientInfo={clientInfo} 
+                answers={answers} 
+                onBack={() => setView('summary')} 
+                onReset={handleReset} 
+                onExport={handleExportAudit}
+                theme={theme} 
+                themeSwitcher={themeSwitcher} 
+             />;
       
     default:
       return <div>Erreur: Vue non reconnue.</div>;

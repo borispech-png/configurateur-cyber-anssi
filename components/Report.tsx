@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { Shield, ChevronLeft, Download, BarChart3, ListChecks, Target, CreditCard, Award, GitMerge, Info, Link, RefreshCw, ShoppingBag, Book } from 'lucide-react';
+import { Shield, ChevronLeft, Download, BarChart3, ListChecks, Target, CreditCard, Award, GitMerge, Info, Link, RefreshCw, ShoppingBag, Book, Save } from 'lucide-react';
 import { ClientInfo, Recommendation, BudgetPhase, Theme, Answers, Benchmark } from '../types';
 import { DOMAINS, ANSSI_SOLUTIONS, GLOSSARY } from '../constants';
 import RadialProgress from './RadialProgress';
@@ -19,9 +19,10 @@ interface ReportProps {
   onReset: () => void;
   answers: Answers;
   benchmark: Benchmark | null;
+  onExport: () => void;
 }
 
-const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, recommendations, budget, totalBudget, theme, themeSwitcher, onBack, onReset, answers, benchmark }) => {
+const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, recommendations, budget, totalBudget, theme, themeSwitcher, onBack, onReset, answers, benchmark, onExport }) => {
   const reportRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>('synthese');
   const sectionRefs = useRef<{[key: string]: HTMLElement | null}>({});
@@ -166,19 +167,33 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                     <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200 hidden sm:block">Rapport d'Audit Cyber</h1>
                 </div>
                 <div className="flex items-center gap-2">
-                    {themeSwitcher}
-                    <button onClick={onReset} className="px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 rounded-lg transition flex items-center gap-2" title="Nouvel Audit">
-                        <RefreshCw size={16} />
-                        <span className="hidden sm:inline">Nouveau</span>
+                     <button
+                        onClick={onExport}
+                        className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors no-print"
+                        title="Sauvegarder le dossier client (JSON)"
+                    >
+                        <Save size={18} />
+                        <span className="hidden sm:inline">Sauvegarder</span>
+                    </button>
+                    <button
+                        onClick={handleDownload}
+                        className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors no-print"
+                    >
+                        <Download size={18} />
+                        <span className="hidden sm:inline">Télécharger PDF</span>
+                    </button>
+                    <button
+                        onClick={onReset}
+                        className="flex items-center gap-2 px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg transition-colors no-print"
+                        title="Réinitialiser"
+                    >
+                        <RefreshCw size={18} />
                     </button>
                     <button onClick={onBack} className="px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 rounded-lg transition flex items-center gap-2">
                         <ChevronLeft size={16} />
                         Retour
                     </button>
-                    <button onClick={handleDownload} className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 rounded-lg transition flex items-center gap-2">
-                        <Download size={16} />
-                        Télécharger
-                    </button>
+                    {themeSwitcher}
                 </div>
             </div>
         </header>

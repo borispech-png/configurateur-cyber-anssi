@@ -1,46 +1,6 @@
+import React, { useRef, useEffect, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
-
-// ... (imports existants)
-
-// Dans le composant Report :
-  const handleDownload = useReactToPrint({
-    content: () => reportRef.current,
-    documentTitle: `Audit_Cyber_ANSSI_${clientInfo.name}`,
-    onBeforeGetContent: () => {
-        // Optionnel : préparation avant l'impression
-    },
-    pageStyle: `
-      @page {
-        size: A4;
-        margin: 20mm;
-      }
-      @media print {
-        body {
-          -webkit-print-color-adjust: exact;
-        }
-        /* Cacher les éléments inutiles à l'impression */
-        header, nav, button, .no-print {
-          display: none !important;
-        }
-        /* Ajustements de layout pour l'impression */
-        main {
-           width: 100% !important;
-           margin: 0 !important;
-           padding: 0 !important;
-           box-shadow: none !important;
-        }
-        /* Forcer les sauts de page */
-        section {
-            break-inside: avoid;
-            page-break-inside: avoid;
-        }
-        h2 {
-            break-after: avoid;
-            page-break-after: avoid;
-        }
-      }
-    `
-  });
+import { Shield, ChevronLeft, Download, BarChart3, ListChecks, Target, CreditCard, Award, GitMerge, Info, Link, RefreshCw } from 'lucide-react';
 import { ClientInfo, Recommendation, BudgetPhase, Theme } from '../types';
 import { DOMAINS, ANSSI_SOLUTIONS } from '../constants';
 import RadialProgress from './RadialProgress';
@@ -62,6 +22,39 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
   const reportRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>('synthese');
   const sectionRefs = useRef<{[key: string]: HTMLElement | null}>({});
+
+  const handleDownload = useReactToPrint({
+    content: () => reportRef.current,
+    documentTitle: `Audit_Cyber_ANSSI_${clientInfo.name}`,
+    pageStyle: `
+      @page {
+        size: A4;
+        margin: 20mm;
+      }
+      @media print {
+        body {
+          -webkit-print-color-adjust: exact;
+        }
+        header, nav, button, .no-print {
+          display: none !important;
+        }
+        main {
+           width: 100% !important;
+           margin: 0 !important;
+           padding: 0 !important;
+           box-shadow: none !important;
+        }
+        section {
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+        h2 {
+            break-after: avoid;
+            page-break-after: avoid;
+        }
+      }
+    `
+  });
 
   const sections = [
       { id: 'synthese', label: 'Synthèse Managériale', icon: BarChart3 },
@@ -98,26 +91,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
     };
   }, []);
 
-  const handleDownload = () => {
-    const element = reportRef.current;
-    if (!element) return;
-    const opt = {
-      margin: [10, 10, 10, 10], // Augmenter les marges (en mm désormais, car unit: 'mm')
-      filename: `Audit_Cyber_ANSSI_${clientInfo.name}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { 
-        scale: 1.5, // Réduction de l'échelle pour éviter le rognage
-        useCORS: true, 
-        logging: true,
-        letterRendering: true,
-        windowWidth: 794 // Largeur exacte A4 en pixels à 96DPI pour forcer le bon layout
-      },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-    };
-    // @ts-ignore
-    html2pdf().set(opt).from(element).save();
-  };
+
   
   const getMaturityText = (score: number) => {
     if (score < 40) return { text: 'Initial', color: 'text-red-500' };

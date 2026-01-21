@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { Shield, ChevronLeft, Download, BarChart3, ListChecks, Target, CreditCard, Award, GitMerge, Info, Link, RefreshCw, ShoppingBag } from 'lucide-react';
-import { ClientInfo, Recommendation, BudgetPhase, Theme, Answers } from '../types';
+import { ClientInfo, Recommendation, BudgetPhase, Theme, Answers, Benchmark } from '../types';
 import { DOMAINS, ANSSI_SOLUTIONS } from '../constants';
 import RadialProgress from './RadialProgress';
 
@@ -17,9 +17,10 @@ interface ReportProps {
   onBack: () => void;
   onReset: () => void;
   answers: Answers;
+  benchmark: Benchmark | null;
 }
 
-const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, recommendations, budget, totalBudget, theme, themeSwitcher, onBack, onReset, answers }) => {
+const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, recommendations, budget, totalBudget, theme, themeSwitcher, onBack, onReset, answers, benchmark }) => {
   const reportRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>('synthese');
   const sectionRefs = useRef<{[key: string]: HTMLElement | null}>({});
@@ -274,6 +275,35 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                       Un plan d'action en 3 phases est proposé pour adresser ces risques, avec un budget estimé à <strong>{totalBudget.toLocaleString('fr-FR')} €</strong>.
                                       La priorité doit être mise sur la <strong>Phase 1 (Socle de sécurité)</strong> pour corriger les vulnérabilités les plus urgentes et renforcer la posture de défense de l'organisme.
                                     </p>
+
+                                    {/* --- BENCHMARK INTEGRATION --- */}
+                                    {benchmark && (
+                                      <div className={`mt-6 p-4 rounded-lg border-l-4 ${maturity >= benchmark.avgMaturity ? 'bg-green-50 dark:bg-green-900/30 border-green-500' : 'bg-orange-50 dark:bg-orange-900/30 border-orange-500'}`}>
+                                          <h4 className="font-bold text-lg flex items-center gap-2 mb-2 text-gray-800 dark:text-gray-200">
+                                              <BarChart3 size={20} />
+                                              Positionnement Sectoriel : {clientInfo.sector}
+                                          </h4>
+                                          <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
+                                              {maturity >= benchmark.avgMaturity 
+                                                  ? <span>Bravo, votre maturité est supérieure de <strong>{maturity - benchmark.avgMaturity} points</strong> à la moyenne du secteur ({benchmark.avgMaturity}%).</span>
+                                                  : <span>Attention, votre maturité est inférieure de <strong>{benchmark.avgMaturity - maturity} points</strong> à la moyenne du secteur ({benchmark.avgMaturity}%).</span>
+                                              }
+                                              <br/>
+                                              <span className="italic mt-1 block">{benchmark.description}</span>
+                                          </p>
+                                          
+                                          <div className="mt-3">
+                                              <p className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Top Risques du secteur :</p>
+                                              <div className="flex flex-wrap gap-2">
+                                                  {benchmark.topRisks.map(risk => (
+                                                      <span key={risk} className="px-2 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded text-xs font-semibold text-gray-700 dark:text-gray-300">
+                                                          {risk}
+                                                      </span>
+                                                  ))}
+                                              </div>
+                                          </div>
+                                      </div>
+                                    )}
                                 </div>
                             </div>
                         </section>

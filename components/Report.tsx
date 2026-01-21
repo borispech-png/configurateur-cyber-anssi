@@ -45,12 +45,16 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
            box-shadow: none !important;
         }
         section {
-            break-inside: avoid;
-            page-break-inside: avoid;
+            break-inside: auto;
+            page-break-inside: auto;
         }
         h2 {
             break-after: avoid;
             page-break-after: avoid;
+        }
+        .print-break-avoid {
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
         }
       }
     `
@@ -247,7 +251,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                             </h2>
                             <div className="space-y-4">
                                 {recommendations.map((rec, index) => (
-                                    <div key={index} className={`border-l-4 rounded-r-lg p-5 ${rec.level === 'critique' ? 'border-red-500 bg-red-50 dark:bg-red-900/40' : 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/40'}`}>
+                                    <div key={index} className={`print-break-avoid border-l-4 rounded-r-lg p-5 ${rec.level === 'critique' ? 'border-red-500 bg-red-50 dark:bg-red-900/40' : 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/40'}`}>
                                         <div className="flex items-start gap-3">
                                             <span className="text-2xl mt-1">{rec.domainIcon}</span>
                                             <div>
@@ -278,7 +282,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                             </h2>
                             <div className="space-y-8">
                                 {budget.map((phase) => (
-                                    <div key={phase.name} className="border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                                    <div key={phase.name} className="print-break-avoid border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
                                         <div className={`p-4 ${
                                               phase.priority === 'Critique' ? 'bg-red-100 dark:bg-red-900/50' :
                                               phase.priority === 'Important' ? 'bg-yellow-100 dark:bg-yellow-900/50' :
@@ -398,7 +402,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                         </div>
                                         <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                                             {category.solutions.map(solution => (
-                                                <div key={solution.name} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md p-3">
+                                                <div key={solution.name} className="print-break-avoid bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md p-3">
                                                     <h4 className="font-semibold text-gray-800 dark:text-gray-200">{solution.name}</h4>
                                                     <p className="text-xs text-gray-500 dark:text-gray-400 font-semibold">{solution.provider}</p>
                                                     {solution.description && <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{solution.description}</p>}

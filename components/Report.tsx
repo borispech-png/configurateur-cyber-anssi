@@ -5,6 +5,7 @@ import { ClientInfo, Recommendation, BudgetPhase, Theme, Answers, Benchmark } fr
 import { DOMAINS, ANSSI_SOLUTIONS, GLOSSARY, BUDGET_ITEMS } from '../constants';
 import RadialProgress from './RadialProgress';
 import MaturityRadar from './MaturityRadar';
+import QuickWinMatrix from './QuickWinMatrix';
 import { ToggleLeft, ToggleRight, ArrowRight } from 'lucide-react';
 
 interface ReportProps {
@@ -514,9 +515,22 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                 <ListChecks size={32} className="text-indigo-600 dark:text-indigo-400"/>
                                 Recommandations Priorisées
                             </h2>
+                            
+                            {/* --- Quick Win Matrix (Nouveau) --- */}
+                            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-8 print-break-avoid">
+                                <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2 flex items-center gap-2">
+                                    <Target size={20} className="text-blue-500"/>
+                                    Matrice de Priorisation (Quick Wins)
+                                </h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+                                    Ce graphique vous aide à décider par quoi commencer. Privilégiez les actions situées dans la zone <strong>"Quick Wins"</strong> (Impact élevé, Effort faible).
+                                </p>
+                                <QuickWinMatrix recommendations={recommendations} />
+                            </div>
+
                             <div className="space-y-4">
                                 {recommendations.map((rec, index) => (
-                                    <div key={index} className={`print-break-avoid border-l-4 rounded-r-lg p-5 ${rec.level === 'critique' ? 'border-red-500 bg-red-50 dark:bg-red-900/40' : 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/40'}`}>
+                                    <div key={index} className={`print-break-avoid border-l-4 rounded-r-lg p-5 ${rec.level === 'critique' ? 'border-red-500 bg-red-50 dark:bg-red-900/40' : 'border-yellow-500 bg-yellow-50 bg-yellow-900/40'}`}>
                                         <div className="flex items-start gap-3">
                                             <span className="text-2xl mt-1">{rec.domainIcon}</span>
                                             <div>

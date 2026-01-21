@@ -28,6 +28,8 @@ export interface Question {
   weight: number;
   ugapSuggestion?: UgapSolution;
   nis2?: boolean;
+  effort?: 1 | 2 | 3; // 1: Faible, 2: Moyen, 3: Élevé
+  impact?: 1 | 2 | 3; // 1: Faible, 2: Important, 3: Critique
 }
 
 export interface Domain {
@@ -48,6 +50,8 @@ export interface Recommendation {
   targetState: string;
   questionId: string;
   ugapSuggestion?: UgapSolution;
+  effort?: number;
+  impact?: number;
 }
 
 export interface BudgetItem {

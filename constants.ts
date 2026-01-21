@@ -64,6 +64,8 @@ export const DOMAINS: Domain[] = [
         options: ["Non", "En cours de rédaction", "Oui, mais pas à jour ou peu diffusée", "Oui, à jour et connue de tous"],
         weight: 3,
         nis2: true,
+        effort: 2,
+        impact: 2,
       },
       {
         id: 'gov-2',
@@ -117,6 +119,8 @@ export const DOMAINS: Domain[] = [
             marketRef: "Marché UGAP Stockage & Sauvegarde"
         },
         nis2: true,
+        effort: 2,
+        impact: 3,
       },
       {
         id: 'prot-3',
@@ -131,6 +135,8 @@ export const DOMAINS: Domain[] = [
             marketRef: "Marché UGAP Serveurs"
         },
         nis2: true,
+        effort: 2,
+        impact: 3,
       },
       {
         id: 'prot-4',
@@ -166,7 +172,9 @@ export const DOMAINS: Domain[] = [
             description: "Appliance de déduplication avec verrouillage objet (Object Lock) certifié pour garantir l'intégrité des données.",
             vendors: ["HPE", "Dell", "Quantum"],
             marketRef: "Marché Stockage & Sauvegarde"
-        }
+        },
+        effort: 2,
+        impact: 3,
       },
       {
         id: 'res-2',
@@ -179,7 +187,9 @@ export const DOMAINS: Domain[] = [
             description: "Solution créant un coffre-fort numérique isolé (Vault) pour analyser et protéger les données critiques hors d'atteinte du réseau principal.",
             vendors: ["Rubrik", "Dell Cyber Recovery", "HPE Zerto"],
             marketRef: "Marché Logiciels Infra"
-        }
+        },
+        effort: 3,
+        impact: 3,
       },
       {
         id: 'res-3',
@@ -211,6 +221,8 @@ export const DOMAINS: Domain[] = [
         options: ["Non", "Pour les administrateurs seulement", "Pour l'accès externe (VPN, M365)", "Déployée pour tous les accès, internes et externes"],
         weight: 3,
         nis2: true,
+        effort: 1, // Quick Win
+        impact: 3,
       },
       {
         id: 'access-3',
@@ -246,7 +258,9 @@ export const DOMAINS: Domain[] = [
                 description: "Segmentation automatisée des ports et des utilisateurs pilotée par le rôle (Colorless Ports) pour contenir les menaces.",
                 vendors: ["HPE Aruba Networking", "ClearPass"],
                 marketRef: "Marché UGAP LAN"
-            }
+            },
+            effort: 3,
+            impact: 2,
         },
         {
             id: 'net-2',
@@ -348,6 +362,8 @@ export const DOMAINS: Domain[] = [
         help: "Les attaques n'attendent pas les heures de bureau. Une astreinte (interne ou externe) est nécessaire pour réagir rapidement.",
         options: ["Non", "Astreinte 'au bon vouloir'", "Astreinte formalisée interne", "Astreinte externalisée via un contrat de réponse (CERT/CSIRT)"],
         weight: 2,
+        effort: 1,
+        impact: 2,
       },
       {
         id: 'resp-3',

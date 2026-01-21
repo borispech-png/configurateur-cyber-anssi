@@ -151,7 +151,9 @@ const App: React.FC = () => {
               currentState: q.options[answer],
               targetState: q.options[q.options.length - 1],
               questionId: q.id,
-              ugapSuggestion: q.ugapSuggestion
+              ugapSuggestion: q.ugapSuggestion,
+              effort: q.effort, // Propager l'effort
+              impact: q.impact, // Propager l'impact
             });
           }
         });

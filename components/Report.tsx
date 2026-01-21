@@ -119,13 +119,14 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
 
   /* --- LOGIC PROPOSITION 4: Hardware Obsolescence Logic --- */
   const getHardwareRefreshRecommendation = () => {
-      // obs-1: Serveurs (0=Recent, 3=Vieux)
-      // obs-2: Stockage (0=Support, 2=EOS)
+      // obs-1: Serveurs (0=Vieux/Risque, 3=Recent/Top)
+      // obs-2: Stockage (0=EOS/Risque, 3=Support J+1)
       const serverAgeIdx = answers['obs-1'] || 0;
       const storageSupportIdx = answers['obs-2'] || 0;
 
-      const needsServerRefresh = serverAgeIdx >= 2; // > 5 ans
-      const needsStorageRefresh = storageSupportIdx >= 2; // EOS
+      // Logic INVERTED: Low index = High Risk
+      const needsServerRefresh = serverAgeIdx <= 1; // 0 (>7ans) or 1 (5-7ans)
+      const needsStorageRefresh = storageSupportIdx <= 1; // 0 (EOS) or 1 (Pas de baie/Risque)
 
       if (!needsServerRefresh && !needsStorageRefresh) return null;
 

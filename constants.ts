@@ -13,7 +13,7 @@ export const DOMAINS: Domain[] = [
         id: 'obs-1',
         text: "Quel est l'âge moyen de votre parc de serveurs physiques ?",
         help: "Au-delà de 5 ans, les serveurs ne reçoivent plus de correctifs de sécurité critiques (BIOS/Firmware) et sont vulnérables aux attaques bas niveau.",
-        options: ["Moins de 3 ans", "Entre 3 et 5 ans", "Entre 5 et 7 ans", "Plus de 7 ans ou inconnu"],
+        options: ["Plus de 7 ans ou inconnu", "Entre 5 et 7 ans", "Entre 3 et 5 ans", "Moins de 3 ans"],
         weight: 3,
         ugapSuggestion: {
             name: "Renouvellement Serveurs Gen11",
@@ -26,7 +26,7 @@ export const DOMAINS: Domain[] = [
         id: 'obs-2',
         text: "Vos baies de stockage sont-elles sous support constructeur actif ?",
         help: "Le support garantit l'accès aux mises à jour contre les failles. Un stockage hors support met en danger toutes vos données.",
-        options: ["Oui, support J+1 ou 4h", "Oui, support standard", "Support expiré ou fin de vie (EOS)", "Pas de baie de stockage"],
+        options: ["Support expiré ou fin de vie (EOS)", "Pas de baie de stockage", "Oui, support standard", "Oui, support J+1 ou 4h"],
         weight: 3,
         ugapSuggestion: {
             name: "Modernisation Stockage Flash",
@@ -39,7 +39,7 @@ export const DOMAINS: Domain[] = [
         id: 'obs-3',
         text: "Vos équipements réseaux (Switchs/Cœur) supportent-ils les derniers standards ?",
         help: "Vos switchs doivent supporter l'authentification 802.1x et les ACLs pour permettre la segmentation du réseau.",
-        options: ["Oui, matériel récent (<5 ans)", "Matériel ancien mais mis à jour", "Matériel obsolète (Fin de support)", "Switchs non manageables"],
+        options: ["Switchs non manageables", "Matériel obsolète (Fin de support)", "Matériel ancien mais mis à jour", "Oui, matériel récent (<5 ans)"],
         weight: 2,
         ugapSuggestion: {
             name: "Refonte Cœur de Réseau",

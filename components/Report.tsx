@@ -475,11 +475,43 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
 
                         {/* --- Budget --- */}
                         {/* Fix: Changed ref callback to use a block body to prevent returning a value. */}
-                        <section id="budget" ref={el => { sectionRefs.current['budget'] = el; }} className="mt-16 scroll-mt-20">
+                        <section id="budget" ref={el => { sectionRefs.current['budget'] = el; }} className="mt-16 scroll-mt-20 print-break-avoid">
                            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-3 mb-6">
                                 <CreditCard size={32} className="text-indigo-600 dark:text-indigo-400"/>
-                                Budget Prévisionnel
+                                Budget Prévisionnel & Services
                             </h2>
+                            
+                            {/* --- Cost of Inaction Estimation --- */}
+                            <div className="bg-gray-100 dark:bg-gray-700/50 p-6 rounded-lg mb-8 border border-gray-200 dark:border-gray-600">
+                                <h4 className="font-bold text-lg text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+                                    <BarChart3 size={20} className="text-gray-500" />
+                                    Estimation du Retour sur Investissement (ROI)
+                                </h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-sm border-l-4 border-indigo-500">
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Budget de Remédiation (Estimé)</p>
+                                        <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{totalBudget.toLocaleString('fr-FR')} €</p>
+                                        <p className="text-xs text-gray-400 mt-2">Investissement planifié sur 24 mois</p>
+                                    </div>
+                                    <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-sm border-l-4 border-red-500">
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Coût Estimé d'une Cyberattaque (Inaction)</p>
+                                        <p className="text-2xl font-bold text-red-600 dark:text-red-400">
+                                            {(() => {
+                                                let agents = 30; // < 50
+                                                if(clientInfo.size === '50-200 agents') agents = 125;
+                                                if(clientInfo.size === '200-1000 agents') agents = 600;
+                                                if(clientInfo.size === '> 1000 agents') agents = 2000;
+                                                return (agents * 2500).toLocaleString('fr-FR');
+                                            })()} € *
+                                        </p>
+                                        <p className="text-xs text-gray-400 mt-2">* Basé sur un impact moyen de 2 500€ / agent (Rançons, Arrêt de service, Rétablissement)</p>
+                                    </div>
+                                </div>
+                                <p className="text-xs text-gray-500 italic mt-4">
+                                    Note : Investir dans la cybersécurité coûte en moyenne 10 à 20 fois moins cher que de subir une attaque majeure (Ransomware).
+                                </p>
+                            </div>
+
                             <div className="space-y-8">
                                 {budget.map((phase) => (
                                     <div key={phase.name} className="print-break-avoid border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">

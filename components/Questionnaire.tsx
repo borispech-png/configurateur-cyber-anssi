@@ -93,7 +93,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ domains, step, answers, o
                       <button
                         key={optIdx}
                         onClick={() => onAnswer(question.id, optIdx)}
-                        className={`w-full text-left p-4 rounded-lg border-2 transition ${
+                        className={`w-full text-left p-4 rounded-lg border-2 transition relative ${
                           answers[question.id] === optIdx
                             ? `border-indigo-600 bg-indigo-50 dark:bg-indigo-900/50 dark:border-indigo-400 shadow-md`
                             : 'border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-500 hover:bg-white dark:hover:bg-gray-700 hover:shadow'
@@ -109,11 +109,20 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ domains, step, answers, o
                               <div className="w-4 h-4 rounded-full bg-indigo-600 dark:bg-indigo-400" />
                             )}
                           </div>
-                          <span className={`${
-                            answers[question.id] === optIdx ? 'font-semibold text-indigo-900 dark:text-indigo-200' : 'text-gray-700 dark:text-gray-300'
-                          }`}>
-                            {option}
-                          </span>
+                          <div className="flex-1">
+                              <span className={`${
+                                answers[question.id] === optIdx ? 'font-semibold text-indigo-900 dark:text-indigo-200' : 'text-gray-700 dark:text-gray-300'
+                              }`}>
+                                {option}
+                              </span>
+                              
+                              {/* Nudge UGAP si réponse faible et solution existe */}
+                              {answers[question.id] === optIdx && optIdx < 2 && question.ugapSuggestion && (
+                                  <div className="text-xs text-indigo-600 dark:text-indigo-400 mt-1 font-semibold flex items-center gap-1 animate-fade-in-up">
+                                      <span role="img" aria-label="ugap">🛍️</span> Solution UGAP identifiée
+                                  </div>
+                              )}
+                          </div>
                         </div>
                       </button>
                     ))}

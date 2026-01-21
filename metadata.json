@@ -1,0 +1,5 @@
+{
+  "name": "Configurateur Cyber ANSSI V3",
+  "description": "An interactive web application to conduct a cybersecurity audit based on ANSSI (French National Agency for the Security of Information Systems) guidelines. It assesses maturity, provides recommendations, and estimates a budget.",
+  "requestFramePermissions": []
+}

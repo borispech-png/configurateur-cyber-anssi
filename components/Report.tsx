@@ -1,4 +1,46 @@
-import { Shield, ChevronLeft, Download, BarChart3, ListChecks, Target, CreditCard, Award, GitMerge, Info, Link, RefreshCw } from 'lucide-react';
+import { useReactToPrint } from 'react-to-print';
+
+// ... (imports existants)
+
+// Dans le composant Report :
+  const handleDownload = useReactToPrint({
+    content: () => reportRef.current,
+    documentTitle: `Audit_Cyber_ANSSI_${clientInfo.name}`,
+    onBeforeGetContent: () => {
+        // Optionnel : préparation avant l'impression
+    },
+    pageStyle: `
+      @page {
+        size: A4;
+        margin: 20mm;
+      }
+      @media print {
+        body {
+          -webkit-print-color-adjust: exact;
+        }
+        /* Cacher les éléments inutiles à l'impression */
+        header, nav, button, .no-print {
+          display: none !important;
+        }
+        /* Ajustements de layout pour l'impression */
+        main {
+           width: 100% !important;
+           margin: 0 !important;
+           padding: 0 !important;
+           box-shadow: none !important;
+        }
+        /* Forcer les sauts de page */
+        section {
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+        h2 {
+            break-after: avoid;
+            page-break-after: avoid;
+        }
+      }
+    `
+  });
 import { ClientInfo, Recommendation, BudgetPhase, Theme } from '../types';
 import { DOMAINS, ANSSI_SOLUTIONS } from '../constants';
 import RadialProgress from './RadialProgress';

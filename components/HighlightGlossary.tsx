@@ -11,8 +11,12 @@ const HighlightGlossary: React.FC<HighlightGlossaryProps> = ({ text, className =
   const sortedTerms = Object.keys(GLOSSARY).sort((a, b) => b.length - a.length);
 
   // 2. Create a regex safely
+  const escapeRegExp = (string: string) => {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  };
+
   // We use word boundaries \b to avoid matching "SOC" in "Association"
-  const pattern = new RegExp(`\\b(${sortedTerms.join('|')})\\b`, 'gi');
+  const pattern = new RegExp(`\\b(${sortedTerms.map(escapeRegExp).join('|')})\\b`, 'gi');
 
   // 3. Split parts
   const parts = text.split(pattern);
@@ -20,6 +24,7 @@ const HighlightGlossary: React.FC<HighlightGlossaryProps> = ({ text, className =
   return (
     <span className={className}>
       {parts.map((part, index) => {
+        if (!part) return null;
         // Check if this part is a glossary term (case insensitive check)
         const termKey = sortedTerms.find(term => term.toLowerCase() === part.toLowerCase());
         

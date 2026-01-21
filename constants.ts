@@ -461,10 +461,10 @@ export const BUDGET_ITEMS: BudgetItems = {
   'gov-1': { name: "Accompagnement rédaction PSSI", phase: 0, cost: 5000, recurrent: 0, description: "Ateliers et rédaction de la politique de sécurité avec un consultant." },
   'gov-2': { name: "Prestation RSSI temps partagé", phase: 0, cost: 15000, recurrent: 15000, description: "Mission de conseil annuelle pour piloter la sécurité (2 jours/mois)." },
   'gov-3': { name: "Analyse de risques EBIOS RM", phase: 1, cost: 8000, recurrent: 0, description: "Analyse de risques sur un périmètre critique avec un consultant certifié." },
-  'gov-4': { name: "Plateforme de sensibilisation", phase: 0, cost: 3000, recurrent: 3000, description: "Licence annuelle pour une plateforme de e-learning et campagnes de phishing." },
+  'gov-4': { name: "Plateforme de sensibilisation", phase: 0, cost: 3000, recurrent: 3000, description: "Licence annuelle pour une plateforme de e-learning et campagnes de phishing.", ugapRef: "854471", marketRef: "Prestations Intellectuelles" },
   // Protection
-  'prot-1': { name: "Déploiement EDR souverain", phase: 0, cost: 5000, recurrent: 4000, description: "Licences annuelles pour une solution EDR (ex: Tehtris, HarfangLab).", anssiCertified: true },
-  'prot-2': { name: "Solution de sauvegarde externalisée", phase: 0, cost: 7000, recurrent: 6000, description: "Coût annuel pour une solution de sauvegarde cloud immuable." },
+  'prot-1': { name: "Déploiement EDR souverain", phase: 0, cost: 5000, recurrent: 4000, description: "Licences annuelles pour une solution EDR (ex: Tehtris, HarfangLab).", anssiCertified: true, ugapRef: "SOFT-EDR-FR", marketRef: "Logiciels Multi-éditeurs" },
+  'prot-2': { name: "Solution de sauvegarde externalisée", phase: 0, cost: 7000, recurrent: 6000, description: "Coût annuel pour une solution de sauvegarde cloud immuable.", ugapRef: "STOR-IMM-09", marketRef: "Stockage Enterprise" },
   'prot-3': { name: "Outil de gestion des vulnérabilités", phase: 1, cost: 7000, recurrent: 7000, description: "Licence annuelle pour un scanner de vulnérabilités et gestion des correctifs." },
   'prot-4': { name: "Solution de chiffrement de données", phase: 2, cost: 3500, recurrent: 3500, description: "Licence pour le chiffrement centralisé des postes et serveurs." },
   // Contrôle d'accès

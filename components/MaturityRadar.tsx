@@ -2,12 +2,15 @@ import React from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { DOMAINS } from '../constants';
 
+import { Benchmark } from '../types';
+
 interface MaturityRadarProps {
   domainScores: { [key: string]: number };
   projectedScores?: { [key: string]: number };
+  benchmark?: Benchmark | null;
 }
 
-const MaturityRadar: React.FC<MaturityRadarProps> = ({ domainScores, projectedScores }) => {
+const MaturityRadar: React.FC<MaturityRadarProps> = ({ domainScores, projectedScores, benchmark }) => {
   // Transformation des données pour le graphique radar
   const data = DOMAINS.map(domain => {
     // On nettoie le titre pour l'affichage
@@ -15,21 +18,23 @@ const MaturityRadar: React.FC<MaturityRadarProps> = ({ domainScores, projectedSc
     
     const score = domainScores[domain.title] || 0;
     const projected = projectedScores ? (projectedScores[domain.title] || 0) : 0;
+    const benchmarkScore = benchmark ? benchmark.avgMaturity : 0;
 
     return {
       subject: domain.title,
       score: Math.round(score),
       projected: Math.round(projected),
+      benchmark: benchmarkScore,
       fullMark: 100,
     };
   });
 
   return (
-    <div className="w-full h-[300px] flex items-center justify-center">
+    <div className="w-full h-[350px] flex items-center justify-center">
       <ResponsiveContainer width="100%" height="100%">
-        <RadarChart cx="50%" cy="50%" outerRadius="75%" data={data}>
+        <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
           <PolarGrid gridType="polygon" />
-          <PolarAngleAxis dataKey="subject" tick={{ fill: '#4B5563', fontSize: 10 }} />
+          <PolarAngleAxis dataKey="subject" tick={{ fill: '#4B5563', fontSize: 11 }} />
           <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
           
           {/* Score Actuel */}
@@ -37,9 +42,9 @@ const MaturityRadar: React.FC<MaturityRadarProps> = ({ domainScores, projectedSc
             name="Maturité Actuelle"
             dataKey="score"
             stroke="#4f46e5"
-            strokeWidth={2}
+            strokeWidth={3}
             fill="#6366f1"
-            fillOpacity={projectedScores ? 0.3 : 0.6} // More transparent if comparison active
+            fillOpacity={projectedScores ? 0.3 : 0.6}
           />
 
           {/* Score Projeté (si simulation active) */}
@@ -55,12 +60,24 @@ const MaturityRadar: React.FC<MaturityRadarProps> = ({ domainScores, projectedSc
             />
           )}
 
-          {/* Legend to make it clear */}
-          {projectedScores && (
-              <text x="50%" y="95%" textAnchor="middle" dominantBaseline="middle" className="text-xs fill-gray-500">
-                  Bleu: Actuel | Vert: Projeté
-              </text>
+          {/* Benchmark Sectoriel */}
+          {benchmark && (
+             <Radar
+              name={`Moyenne ${benchmark.description.split(' ')[0] || 'Secteur'}`}
+              dataKey="benchmark"
+              stroke="#9CA3AF" // Gray 400
+              strokeWidth={2}
+              fill="#9CA3AF"
+              fillOpacity={0.1}
+              strokeDasharray="4 4"
+            />
           )}
+
+          {/* Legend */}
+          <text x="50%" y="95%" textAnchor="middle" dominantBaseline="middle" className="text-xs fill-gray-500 font-sans">
+             {projectedScores ? 'Bleu: Actuel | Vert: Projeté' : 'Bleu: Actuel'}
+             {benchmark && ' | Gris: Moyenne Secteur'}
+          </text>
 
         </RadarChart>
       </ResponsiveContainer>

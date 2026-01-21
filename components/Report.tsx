@@ -6,8 +6,10 @@ import { DOMAINS, ANSSI_SOLUTIONS, GLOSSARY, BUDGET_ITEMS } from '../constants';
 import RadialProgress from './RadialProgress';
 import MaturityRadar from './MaturityRadar';
 import QuickWinMatrix from './QuickWinMatrix';
+import UgapOrderSheet from './UgapOrderSheet';
+import MissionLetter from './MissionLetter';
 import HighlightGlossary from './HighlightGlossary';
-import { ToggleLeft, ToggleRight, ArrowRight } from 'lucide-react';
+import { ToggleLeft, ToggleRight, ArrowRight, ShoppingCart, FileText } from 'lucide-react';
 
 interface ReportProps {
   clientInfo: ClientInfo;
@@ -27,6 +29,8 @@ interface ReportProps {
 
 const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, recommendations, budget, totalBudget, theme, themeSwitcher, onBack, onReset, answers, benchmark, onExport }) => {
   const reportRef = useRef<HTMLDivElement>(null);
+  const ugapSheetRef = useRef<HTMLDivElement>(null);
+  const missionLetterRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>('synthese');
   const sectionRefs = useRef<{[key: string]: HTMLElement | null}>({});
   
@@ -133,7 +137,17 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
             display: block !important;
         }
       }
-    `
+      `
+  });
+
+  const handleUgapPrint = useReactToPrint({
+    contentRef: ugapSheetRef,
+    documentTitle: `Projet_UGAP_${clientInfo.name.replace(/\s+/g, '_')}`,
+  });
+
+  const handleMissionPrint = useReactToPrint({
+    contentRef: missionLetterRef,
+    documentTitle: `Lettre_Mission_${clientInfo.name.replace(/\s+/g, '_')}`,
   });
 
     const togglePhase = (phaseIndex: number) => {
@@ -173,7 +187,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
 
     Object.values(sectionRefs.current).forEach(section => {
         if (section) {
-            observer.observe(section);
+            observer.observe(section as Element);
         }
     });
 
@@ -204,7 +218,15 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
     });
   };
 
-  /* --- LOGIC PROPOSITION 4: Hardware Obsolescence Logic --- */
+    const weakDomains = React.useMemo(() => {
+      const entries = Object.entries(domainScores);
+      if (entries.length === 0) return ['N/A', 'N/A'];
+      return entries
+          .sort(([, a], [, b]) => (a as number) - (b as number))
+          .map(([domain]) => domain);
+    }, [domainScores]);
+
+    /* --- LOGIC PROPOSITION 4: Hardware Obsolescence Logic --- */
   const getHardwareRefreshRecommendation = () => {
       // obs-1: Serveurs (0=Vieux/Risque, 3=Recent/Top)
       // obs-2: Stockage (0=EOS/Risque, 3=Support J+1)
@@ -265,6 +287,22 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                     >
                         <Download size={18} />
                         <span className="hidden sm:inline">Télécharger PDF</span>
+                    </button>
+                    <button
+                        onClick={handleUgapPrint}
+                        className="flex items-center gap-2 px-4 py-2 bg-blue-800 hover:bg-blue-900 text-white rounded-lg transition-colors no-print"
+                        title="Générer Fiche Projet UGAP"
+                    >
+                        <ShoppingCart size={18} />
+                        <span className="hidden sm:inline">Panier UGAP</span>
+                    </button>
+                    <button
+                        onClick={handleMissionPrint}
+                        className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg transition-colors no-print"
+                        title="Générer Lettre de Mission"
+                    >
+                        <FileText size={18} />
+                        <span className="hidden sm:inline">Lettre Mission</span>
                     </button>
                     <button
                         onClick={onReset}
@@ -374,9 +412,9 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                       plaçant l'organisme au niveau <strong className={maturityDetails.color}>{maturityDetails.text}</strong>.
                                     </p>
                                     <p>
-                                      L'analyse a identifié <strong className="text-red-600 dark:text-red-400">{recommendations.filter(r => r.level === 'critique').length} points critiques</strong> et <strong className="text-yellow-600 dark:text-yellow-400">{recommendations.filter(r => r.level === 'important').length} points importants</strong> qui nécessitent une attention particulière.
-                                      Les domaines les plus faibles sont ceux de <strong className="text-gray-900 dark:text-gray-100">{Object.entries(domainScores).sort(([,a],[,b]) => a-b)[0][0]}</strong> et <strong className="text-gray-900 dark:text-gray-100">{Object.entries(domainScores).sort(([,a],[,b]) => a-b)[1][0]}</strong>,
-                                      indiquant des lacunes dans les contrôles de sécurité fondamentaux.
+                                      Le plan d'action vise à traiter {recommendations.filter(r => r.level === 'critique').length} points critiques et {recommendations.filter(r => r.level === 'important').length} points importants.
+                                      Les domaines prioritaires identifiés sont <strong className="text-gray-900 dark:text-gray-100">{weakDomains[0]}</strong> et <strong className="text-gray-900 dark:text-gray-100">{weakDomains[1] || weakDomains[0]}</strong>,
+                                      qui présentent les scores de maturité les plus faibles.
                                     </p>
                                     <p>
                                       Un plan d'action en 3 phases est proposé pour adresser ces risques, avec un budget estimé à <strong>{totalBudget.toLocaleString('fr-FR')} €</strong>.
@@ -489,6 +527,12 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                 <GitMerge size={32} className="text-indigo-600 dark:text-indigo-400"/>
                                 Scores de Maturité par Domaine
                             </h2>
+                            
+                            <div className="mb-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 print-break-inside-avoid">
+                                <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-4 text-center">Visualisation Radar</h3>
+                                <MaturityRadar domainScores={domainScores} benchmark={benchmark} />
+                            </div>
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                               {DOMAINS.map(domain => {
                                 const score = domainScores[domain.title] || 0;
@@ -578,7 +622,6 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                 Budget Prévisionnel & Services
                             </h2>
                             
-                            {/* --- Cost of Inaction Estimation --- */}
                             <div className="bg-gray-100 dark:bg-gray-700/50 p-6 rounded-lg mb-8 border border-gray-200 dark:border-gray-600">
                                 <h4 className="font-bold text-lg text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
                                     <BarChart3 size={20} className="text-gray-500" />
@@ -591,22 +634,29 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                         <p className="text-xs text-gray-400 mt-2">Investissement planifié sur 24 mois</p>
                                     </div>
                                     <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-sm border-l-4 border-red-500">
-                                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Coût Estimé d'une Cyberattaque (Inaction)</p>
-                                        <p className="text-2xl font-bold text-red-600 dark:text-red-400">
-                                            {(() => {
-                                                let agents = 30; // < 50
-                                                if(clientInfo.size === '50-200 agents') agents = 125;
-                                                if(clientInfo.size === '200-1000 agents') agents = 600;
-                                                if(clientInfo.size === '> 1000 agents') agents = 2000;
-                                                return (agents * 2500).toLocaleString('fr-FR');
-                                            })()} € *
-                                        </p>
-                                        <p className="text-xs text-gray-400 mt-2">* Basé sur un impact moyen de 2 500€ / agent (Rançons, Arrêt de service, Rétablissement)</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Coût Potentiel d'un Incident (Ransomware)</p>
+                                        <p className="text-2xl font-bold text-red-600 dark:text-red-400">{(totalBudget * 4.5).toLocaleString('fr-FR')} €</p>
+                                        <p className="text-xs text-gray-400 mt-2">Perte d'exploitation + Récupération + Image</p>
                                     </div>
                                 </div>
                                 <p className="text-xs text-gray-500 italic mt-4">
                                     Note : Investir dans la cybersécurité coûte en moyenne 10 à 20 fois moins cher que de subir une attaque majeure (Ransomware).
                                 </p>
+                            </div>
+
+                            <div style={{ display: "none" }}>
+                                <UgapOrderSheet 
+                                    ref={ugapSheetRef} 
+                                    clientInfo={clientInfo} 
+                                    budget={budget} 
+                                    totalBudget={totalBudget} 
+                                />
+                            </div>
+                            <div style={{ display: "none" }}>
+                                <MissionLetter 
+                                    ref={missionLetterRef} 
+                                    clientInfo={clientInfo} 
+                                />
                             </div>
 
                             <div className="space-y-8">
@@ -640,7 +690,6 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                                           <div className="text-xs text-gray-500 dark:text-gray-400">
                                                               <HighlightGlossary text={item.description} />
                                                           </div>
-                                                      </div>
                                                       </div>
                                                       <p className="font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap">{item.cost.toLocaleString('fr-FR')} €</p>
                                                   </li>

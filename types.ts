@@ -61,6 +61,8 @@ export interface BudgetItem {
     recurrent?: number; // Coût récurrent annuel (Années suivantes)
     description: string;
     anssiCertified?: boolean;
+    ugapRef?: string; // Référence catalogue UGAP
+    marketRef?: string; // Nom du marché (ex: Multi-éditeurs)
 }
 
 export interface BudgetItems {

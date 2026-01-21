@@ -29,7 +29,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
     pageStyle: `
       @page {
         size: A4;
-        margin: 20mm;
+        margin: 10mm;
       }
       @media print {
         body {

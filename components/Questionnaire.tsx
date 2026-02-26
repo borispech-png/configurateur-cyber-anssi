@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { ChevronRight, ChevronLeft, FileText, Info, Save, CheckCircle } from 'lucide-react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { ChevronRight, ChevronLeft, FileText, Info, Save, CheckCircle, Clock } from 'lucide-react';
 import { Domain, Answers, Question } from '../types';
 import Modal from './Modal';
+
+const WEBINAR_TIMER_SECONDS = 3 * 60; // 3 minutes
 
 interface QuestionnaireProps {
   domains: Domain[];
@@ -11,30 +13,86 @@ interface QuestionnaireProps {
   onNext: () => void;
   onPrevious: () => void;
   domainColor: string;
+  isWebinaire?: boolean;
 }
 
-const Questionnaire: React.FC<QuestionnaireProps> = ({ domains, step, answers, onAnswer, onNext, onPrevious, domainColor }) => {
+const Questionnaire: React.FC<QuestionnaireProps> = ({
+  domains, step, answers, onAnswer, onNext, onPrevious, domainColor, isWebinaire = false
+}) => {
   const [modalQuestion, setModalQuestion] = useState<Question | null>(null);
+
+  // --- Timer state (webinar mode only) ---
+  // timerActive: countdown is running
+  // timeLeft: seconds remaining
+  // timerDone: countdown finished, user can proceed
+  const [timerActive, setTimerActive] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(WEBINAR_TIMER_SECONDS);
+  const [timerDone, setTimerDone] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const currentDomain = domains[step];
+  const allQuestionsAnswered = currentDomain?.questions.every(q => answers[q.id] !== undefined) ?? false;
+
+  // Reset timer each time the domain changes
+  useEffect(() => {
+    setTimerActive(false);
+    setTimerDone(false);
+    setTimeLeft(WEBINAR_TIMER_SECONDS);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  }, [step]);
+
+  // Start timer when all questions are answered in webinar mode
+  useEffect(() => {
+    if (!isWebinaire) return;
+    if (allQuestionsAnswered && !timerActive && !timerDone) {
+      setTimerActive(true);
+    }
+  }, [allQuestionsAnswered, isWebinaire, timerActive, timerDone]);
+
+  // Countdown logic
+  useEffect(() => {
+    if (!timerActive) return;
+    intervalRef.current = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(intervalRef.current!);
+          setTimerActive(false);
+          setTimerDone(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
+  }, [timerActive]);
+
+  // Can the user go to next domain?
+  const canProceed = isWebinaire
+    ? allQuestionsAnswered && timerDone
+    : allQuestionsAnswered;
+
+  // Format seconds to MM:SS
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const s = (seconds % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  };
+
+  // Progress % for the ring
+  const progressPct = ((WEBINAR_TIMER_SECONDS - timeLeft) / WEBINAR_TIMER_SECONDS) * 100;
+  const radius = 36;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (progressPct / 100) * circumference;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [step]);
-  
-  const currentDomain = domains[step];
+
   if (!currentDomain) {
     return <div className="text-center py-8"><p className="text-gray-600 dark:text-gray-400">Chargement...</p></div>;
   }
 
-  const allQuestionsAnswered = currentDomain.questions.every(q => answers[q.id] !== undefined);
   const borderColorClass = domainColor.replace('bg-', 'border-');
-
-  const handleOpenModal = (question: Question) => {
-    setModalQuestion(question);
-  };
-
-  const handleCloseModal = () => {
-    setModalQuestion(null);
-  };
 
   return (
     <>
@@ -83,7 +141,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ domains, step, answers, o
                       {qIdx + 1}. {question.text}
                     </h3>
                     {question.help && (
-                      <button onClick={() => handleOpenModal(question)} className="ml-2 text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300" aria-label={`Plus d'informations sur ${question.text}`}>
+                      <button onClick={() => setModalQuestion(question)} className="ml-2 text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300" aria-label={`Plus d'informations sur ${question.text}`}>
                         <Info size={20} />
                       </button>
                     )}
@@ -101,27 +159,21 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ domains, step, answers, o
                       >
                         <div className="flex items-center gap-3">
                           <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                            answers[question.id] === optIdx
-                              ? 'border-indigo-600 dark:border-indigo-400'
-                              : 'border-gray-300 dark:border-gray-500'
+                            answers[question.id] === optIdx ? 'border-indigo-600 dark:border-indigo-400' : 'border-gray-300 dark:border-gray-500'
                           }`}>
                             {answers[question.id] === optIdx && (
                               <div className="w-4 h-4 rounded-full bg-indigo-600 dark:bg-indigo-400" />
                             )}
                           </div>
                           <div className="flex-1">
-                              <span className={`${
-                                answers[question.id] === optIdx ? 'font-semibold text-indigo-900 dark:text-indigo-200' : 'text-gray-700 dark:text-gray-300'
-                              }`}>
-                                {option}
-                              </span>
-                              
-                              {/* Nudge UGAP si réponse faible et solution existe */}
-                              {answers[question.id] === optIdx && optIdx < 2 && question.ugapSuggestion && (
-                                  <div className="text-xs text-indigo-600 dark:text-indigo-400 mt-1 font-semibold flex items-center gap-1 animate-fade-in-up">
-                                      <span role="img" aria-label="ugap">🛍️</span> Solution UGAP identifiée
-                                  </div>
-                              )}
+                            <span className={`${answers[question.id] === optIdx ? 'font-semibold text-indigo-900 dark:text-indigo-200' : 'text-gray-700 dark:text-gray-300'}`}>
+                              {option}
+                            </span>
+                            {answers[question.id] === optIdx && optIdx < 2 && question.ugapSuggestion && (
+                              <div className="text-xs text-indigo-600 dark:text-indigo-400 mt-1 font-semibold flex items-center gap-1 animate-fade-in-up">
+                                <span role="img" aria-label="ugap">🛍️</span> Solution UGAP identifiée
+                              </div>
+                            )}
                           </div>
                         </div>
                       </button>
@@ -130,13 +182,63 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ domains, step, answers, o
                 </div>
               ))}
             </div>
-            
+
             <div className="mb-6 text-center">
               <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center gap-1">
                 <Save size={14} />
                 Sauvegarde automatique activée
               </p>
             </div>
+
+            {/* ===== WEBINAR TIMER PANEL ===== */}
+            {isWebinaire && allQuestionsAnswered && !timerDone && (
+              <div className="mb-6 p-5 bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-300 dark:border-amber-600 rounded-xl text-center animate-fade-in-up">
+                <p className="font-bold text-amber-800 dark:text-amber-200 text-base mb-1">
+                  🎙️ Bravo ! Attendez le commentateur
+                </p>
+                <p className="text-sm text-amber-700 dark:text-amber-300 mb-4">
+                  Toutes vos réponses sont enregistrées. Le domaine suivant s'ouvrira dans :
+                </p>
+
+                {/* Countdown ring */}
+                <div className="flex justify-center mb-3">
+                  <div className="relative w-24 h-24">
+                    <svg className="w-full h-full -rotate-90" viewBox="0 0 88 88">
+                      {/* Background circle */}
+                      <circle cx="44" cy="44" r={radius} fill="none" stroke="#fde68a" strokeWidth="6" />
+                      {/* Progress arc */}
+                      <circle
+                        cx="44" cy="44" r={radius} fill="none"
+                        stroke="#d97706"
+                        strokeWidth="6"
+                        strokeLinecap="round"
+                        strokeDasharray={circumference}
+                        strokeDashoffset={strokeDashoffset}
+                        style={{ transition: 'stroke-dashoffset 1s linear' }}
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-2xl font-bold font-mono text-amber-700 dark:text-amber-300">
+                        {formatTime(timeLeft)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-xs text-amber-600 dark:text-amber-400 italic">
+                  Profitez de ce temps pour noter vos observations.
+                </p>
+              </div>
+            )}
+
+            {/* Timer done confirmation */}
+            {isWebinaire && timerDone && allQuestionsAnswered && step < domains.length - 1 && (
+              <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border-2 border-green-300 dark:border-green-600 rounded-xl text-center">
+                <p className="font-bold text-green-800 dark:text-green-200 flex items-center justify-center gap-2">
+                  <CheckCircle size={18} />
+                  Le prochain domaine est maintenant disponible !
+                </p>
+              </div>
+            )}
 
             {/* Navigation */}
             <div className="flex gap-4">
@@ -154,9 +256,9 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ domains, step, answers, o
               </button>
               <button
                 onClick={onNext}
-                disabled={!allQuestionsAnswered}
+                disabled={!canProceed}
                 className={`flex-1 py-4 rounded-lg font-semibold text-white transition flex items-center justify-center gap-2 ${
-                  allQuestionsAnswered
+                  canProceed
                     ? 'bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600'
                     : 'bg-gray-300 dark:bg-gray-600 cursor-not-allowed text-gray-500 dark:text-gray-400'
                 }`}
@@ -168,8 +270,11 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ domains, step, answers, o
                   </>
                 ) : (
                   <>
-                    Domaine suivant
-                    <ChevronRight size={20} />
+                    {isWebinaire && timerActive ? (
+                      <><Clock size={20} /> En attente du commentateur...</>
+                    ) : (
+                      <>Domaine suivant <ChevronRight size={20} /></>
+                    )}
                   </>
                 )}
               </button>
@@ -184,11 +289,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ domains, step, answers, o
         </div>
       </div>
 
-      <Modal
-        isOpen={!!modalQuestion}
-        onClose={handleCloseModal}
-        title={modalQuestion?.text || ''}
-      >
+      <Modal isOpen={!!modalQuestion} onClose={() => setModalQuestion(null)} title={modalQuestion?.text || ''}>
         <p className="text-gray-600 dark:text-gray-300 whitespace-pre-wrap">{modalQuestion?.help}</p>
       </Modal>
     </>

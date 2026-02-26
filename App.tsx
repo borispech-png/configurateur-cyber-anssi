@@ -309,6 +309,7 @@ const App: React.FC = () => {
                 onNext={handleNextStep} 
                 onPrevious={handlePreviousStep}
                 domainColor={DOMAINS[step]?.color || 'bg-gray-500'}
+                isWebinaire={isWebinaire}
              />;
       
     case 'summary':

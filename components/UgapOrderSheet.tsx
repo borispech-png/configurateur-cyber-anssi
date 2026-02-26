@@ -43,8 +43,8 @@ const UgapOrderSheet = React.forwardRef<HTMLDivElement, UgapOrderSheetProps>(({ 
         <div className="bg-gray-50 p-4 rounded border border-gray-200">
             <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Contact</h3>
             <p className="font-bold text-gray-900">{clientInfo.contact || "N/A"}</p>
-            <p className="text-gray-700">{clientInfo.phone || "N/A"}</p>
-            <p className="text-gray-700 text-sm mt-2">Secteur: {clientInfo.sector}</p>
+            <p className="text-gray-700">{clientInfo.email || "N/A"}</p>
+            <p className="text-gray-700 text-sm mt-2">Secteur: {clientInfo.sector || clientInfo.type}</p>
         </div>
       </div>
 

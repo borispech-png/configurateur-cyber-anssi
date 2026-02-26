@@ -21,7 +21,7 @@ const App: React.FC = () => {
   const [view, setView] = useState<View>('clientInfo');
   const [step, setStep] = useState<number>(0);
   const [clientInfo, setClientInfo] = useState<ClientInfo>({
-    name: '', type: '', size: '', sector: '', contact: '', phone: ''
+    name: '', type: '', size: '', sector: '', contact: '', email: ''
   });
   const [answers, setAnswers] = useState<Answers>({});
   const [theme, setTheme] = useState<Theme>(() => {

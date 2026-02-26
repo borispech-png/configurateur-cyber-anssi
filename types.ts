@@ -5,7 +5,7 @@ export interface ClientInfo {
   size: string;
   sector: string;
   contact: string;
-  phone: string;
+  email: string;
   logo?: string;
 }
 

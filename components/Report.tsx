@@ -397,7 +397,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                             <div><strong>Date du rapport :</strong> {formatDate(new Date())}</div>
                             <div><strong>Taille :</strong> {clientInfo.size}</div>
                             {clientInfo.contact && <div><strong>Contact :</strong> {clientInfo.contact}</div>}
-                            {clientInfo.phone && <div><strong>Téléphone :</strong> {clientInfo.phone}</div>}
+                            {clientInfo.email && <div><strong>Email :</strong> {clientInfo.email}</div>}
                         </div>
 
                         {/* --- Hardware Obsolescence Alert (Si détecté) --- */}

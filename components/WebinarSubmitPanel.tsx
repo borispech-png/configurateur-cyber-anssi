@@ -48,7 +48,7 @@ const WebinarSubmitPanel: React.FC<WebinarSubmitPanelProps> = ({
       Taille: clientInfo.size || 'Non renseignée',
       Secteur: clientInfo.sector || 'Non renseigné',
       Contact: clientInfo.contact || 'Non renseigné',
-      Téléphone: clientInfo.phone || 'Non renseigné',
+      Email: clientInfo.email || 'Non renseigné',
       'Score_Global': `${maturity}%`,
       'Nb_Points_Critiques': nbCritiques,
       'Budget_Estimé_HT': `${totalBudget.toLocaleString('fr-FR')} €`,

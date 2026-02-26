@@ -147,7 +147,7 @@ export const DOMAINS: Domain[] = [
         ugapSuggestion: {
             name: "Stockage Sécurisé & Chiffré",
             description: "Baies de stockage Full Flash avec chiffrement natif des données au repos (Data-at-Rest Encryption) sans perte de performance.",
-            vendors: ["NetApp", "PureStorage", "HPE Alletra", "Huawei", "IBM FlashSystem"],
+            vendors: ["NetApp", "PureStorage", "HPE Alletra", "Dell PowerStore", "Huawei", "IBM FlashSystem"],
             marketRef: "Marché UGAP Stockage"
         },
         nis2: true,

@@ -8,6 +8,7 @@ import LoginScreen from './components/LoginScreen';
 import { ClientInfo, Answers, Domain, Recommendation, BudgetPhase, Theme } from './types';
 import { DOMAINS, BENCHMARKS, BUDGET_ITEMS } from './constants';
 import { useWebinaire } from './hooks/useWebinaire';
+import WebinarConsentScreen from './components/WebinarConsentScreen';
 
 type View = 'clientInfo' | 'questionnaire' | 'summary' | 'report';
 
@@ -15,6 +16,8 @@ const App: React.FC = () => {
   const { isWebinaire } = useWebinaire();
   // In webinar mode, skip the login screen entirely
   const [isAuthenticated, setIsAuthenticated] = useState(isWebinaire);
+  // In webinar mode, show consent screen first
+  const [consentGiven, setConsentGiven] = useState(!isWebinaire);
   const [view, setView] = useState<View>('clientInfo');
   const [step, setStep] = useState<number>(0);
   const [clientInfo, setClientInfo] = useState<ClientInfo>({
@@ -270,6 +273,11 @@ const App: React.FC = () => {
   }, []);
 
   // --- Render logic ---
+  // Webinar: show consent screen first if not yet consented
+  if (isWebinaire && !consentGiven) {
+    return <WebinarConsentScreen onConsent={() => setConsentGiven(true)} />;
+  }
+
   if (!isAuthenticated) {
     return (
       <>

@@ -38,30 +38,33 @@ const WebinarSubmitPanel: React.FC<WebinarSubmitPanelProps> = ({
     setSubmitState('sending');
     setErrorMsg('');
 
-    const payload = {
-      access_key: WEB3FORMS_KEY,
-      subject: `[Webinaire Cyber ANSSI] Rapport - ${clientInfo.name}`,
-      from_name: 'Configurateur Cyber ANSSI - Webinaire',
-      // Data fields that arrive in your email
-      Organisme: clientInfo.name,
-      Type: clientInfo.type || 'Non renseigné',
-      Taille: clientInfo.size || 'Non renseignée',
-      Secteur: clientInfo.sector || 'Non renseigné',
-      Contact: clientInfo.contact || 'Non renseigné',
-      Email: clientInfo.email || 'Non renseigné',
-      'Score_Global': `${maturity}%`,
-      'Nb_Points_Critiques': nbCritiques,
-      'Budget_Estimé_HT': `${totalBudget.toLocaleString('fr-FR')} €`,
-      'Scores_par_Domaine': domainSummary,
-      'Date_Soumission': new Date().toLocaleString('fr-FR'),
-    };
+    // Use FormData to avoid CORS preflight issues (no OPTIONS request needed)
+    const formData = new FormData();
+    formData.append('access_key', WEB3FORMS_KEY);
+    formData.append('subject', `[Webinaire Cyber ANSSI] Rapport - ${clientInfo.name}`);
+    formData.append('from_name', 'Configurateur Cyber ANSSI - Webinaire');
+    formData.append('Organisme', clientInfo.name);
+    formData.append('Type', clientInfo.type || 'Non renseigné');
+    formData.append('Taille', clientInfo.size || 'Non renseignée');
+    formData.append('Secteur', clientInfo.sector || 'Non renseigné');
+    formData.append('Contact', clientInfo.contact || 'Non renseigné');
+    formData.append('Email', clientInfo.email || 'Non renseigné');
+    formData.append('Score_Global', `${maturity}%`);
+    formData.append('Nb_Points_Critiques', String(nbCritiques));
+    formData.append('Budget_Estimé_HT', `${totalBudget.toLocaleString('fr-FR')} €`);
+    formData.append('Scores_par_Domaine', Object.entries(domainScores).map(([d, s]) => `${d}: ${s}%`).join(' | '));
+    formData.append('Date_Soumission', new Date().toLocaleString('fr-FR'));
 
     try {
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(payload),
+        body: formData,
+        // No Content-Type header → browser sets it automatically with boundary for FormData
       });
+
+      if (!response.ok) {
+        throw new Error(`Erreur serveur HTTP ${response.status}`);
+      }
 
       const result = await response.json();
 
@@ -69,12 +72,18 @@ const WebinarSubmitPanel: React.FC<WebinarSubmitPanelProps> = ({
         setSubmitState('success');
         setSubmitted(true);
       } else {
-        throw new Error(result.message || 'Échec de l\'envoi');
+        throw new Error(result.message || 'Réponse inattendue du serveur');
       }
     } catch (err: unknown) {
       console.error('Web3Forms error:', err);
       setSubmitState('error');
-      setErrorMsg(err instanceof Error ? err.message : 'Erreur réseau. Utilisez le bouton email ci-dessous.');
+      const msg = err instanceof Error ? err.message : String(err);
+      // Give actionable guidance based on error type
+      if (msg.includes('fetch') || msg.toLowerCase().includes('network')) {
+        setErrorMsg('Erreur réseau ou CORS. Cela peut arriver en test local (localhost). Le bouton fonctionne correctement sur borispech-png.github.io. Utilisez le bouton email en attendant.');
+      } else {
+        setErrorMsg(`Erreur : ${msg}. Utilisez le bouton email ci-dessous.`);
+      }
     }
   };
 

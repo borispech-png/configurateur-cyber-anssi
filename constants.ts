@@ -16,9 +16,9 @@ export const DOMAINS: Domain[] = [
         options: ["Plus de 7 ans ou inconnu", "Entre 5 et 7 ans", "Entre 3 et 5 ans", "Moins de 3 ans"],
         weight: 3,
         ugapSuggestion: {
-            name: "Renouvellement Serveurs Gen11",
-            description: "Anciens serveurs = Risque Cyber critique. Passage sur HPE ProLiant Gen11 avec sécurité ancrée dans le silicium (Silicon Root of Trust).",
-            vendors: ["HPE ProLiant", "Dell PowerEdge"],
+            name: "Renouvellement Serveurs Gen12",
+            description: "Anciens serveurs = Risque Cyber critique. Passage sur HPE ProLiant Gen12 avec sécurité ancrée dans le silicium (Silicon Root of Trust).",
+            vendors: ["HPE ProLiant Gen12"],
             marketRef: "Marché UGAP Serveurs & Calcul"
         }
       },
@@ -115,7 +115,7 @@ export const DOMAINS: Domain[] = [
         ugapSuggestion: {
             name: "Sauvegarde Immuable & Cyber Recovery",
             description: "Solution de sauvegarde de dernière génération protégeant contre les ransomwares (copies immuables) avec capacité de restauration instantanée.",
-            vendors: ["HPE (StoreOnce/Zerto)", "Rubrik", "Dell (Data Domain)", "Quantum"],
+            vendors: ["HPE (StoreOnce/Zerto)", "Rubrik", "Quantum"],
             marketRef: "Marché UGAP Stockage & Sauvegarde"
         },
         nis2: true,
@@ -131,7 +131,7 @@ export const DOMAINS: Domain[] = [
         ugapSuggestion: {
             name: "Renouvellement Infrastructure Compute",
             description: "Remplacement des serveurs obsolètes par des équipements récents intégrant la sécurité au niveau hardware (Silicon Root of Trust).",
-            vendors: ["HPE ProLiant Gen11"],
+            vendors: ["HPE ProLiant Gen12"],
             marketRef: "Marché UGAP Serveurs"
         },
         nis2: true,
@@ -147,7 +147,7 @@ export const DOMAINS: Domain[] = [
         ugapSuggestion: {
             name: "Stockage Sécurisé & Chiffré",
             description: "Baies de stockage Full Flash avec chiffrement natif des données au repos (Data-at-Rest Encryption) sans perte de performance.",
-            vendors: ["NetApp", "PureStorage", "HPE Alletra", "Dell PowerStore", "Huawei", "IBM FlashSystem"],
+            vendors: ["NetApp", "PureStorage", "HPE Alletra", "Huawei", "IBM FlashSystem"],
             marketRef: "Marché UGAP Stockage"
         },
         nis2: true,
@@ -168,9 +168,9 @@ export const DOMAINS: Domain[] = [
         options: ["Non", "Partiellement (sur certains partages)", "Oui, via retention logicielle", "Oui, immutabilité matérielle/physique stricte"],
         weight: 3,
         ugapSuggestion: {
-            name: "HPE StoreOnce / Dell DataDomain",
-            description: "Appliance de déduplication avec verrouillage objet (Object Lock) certifié pour garantir l'intégrité des données.",
-            vendors: ["HPE", "Dell", "Quantum"],
+            name: "HPE StoreOnce",
+            description: "Appliance de déduplication HPE avec verrouillage objet (Object Lock) certifié pour garantir l'intégrité des données.",
+            vendors: ["HPE", "Quantum"],
             marketRef: "Marché Stockage & Sauvegarde"
         },
         effort: 2,
@@ -185,7 +185,7 @@ export const DOMAINS: Domain[] = [
         ugapSuggestion: {
             name: "Architecture Cyber Recovery",
             description: "Solution créant un coffre-fort numérique isolé (Vault) pour analyser et protéger les données critiques hors d'atteinte du réseau principal.",
-            vendors: ["Rubrik", "Dell Cyber Recovery", "HPE Zerto"],
+            vendors: ["Rubrik", "HPE Zerto"],
             marketRef: "Marché Logiciels Infra"
         },
         effort: 3,

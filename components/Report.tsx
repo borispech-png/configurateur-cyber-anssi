@@ -256,7 +256,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
               ...(needsServerRefresh ? [{
                   label: "Renouvellement Compute",
                   desc: "Vos serveurs sont trop anciens pour être sécurisés efficacement (Firmware/TPM).",
-                  ugap: "HPE ProLiant Gen11 / Dell PowerEdge",
+                  ugap: "HPE ProLiant Gen12",
                   ref: "Marché Serveurs"
               }] : []),
               ...(needsStorageRefresh ? [{
@@ -508,13 +508,13 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                 {(() => {
                                     const idx = answers['res-3'] || 0;
                                     const rec = idx <= 1 ? {
-                                        product: "HPE StoreOnce / Dell Data Domain",
+                                        product: "HPE StoreOnce",
                                         desc: "Appliance de stockage avec déduplication agressive et verrouillage objet (Immutabilité). Idéal pour optimiser le stockage et garantir l'intégrité.",
-                                        vendors: ["HPE", "Dell", "Quantum"]
+                                        vendors: ["HPE", "Quantum"]
                                     } : {
-                                        product: "Rubrik Security Cloud / Dell Cyber Recovery",
+                                        product: "Rubrik Security Cloud / HPE Zerto",
                                         desc: "Plateforme de sécurité des données Zero Trust. Architecture Scale-out avec détection d'anomalies (Ransomware) et restauration chirurgicale.",
-                                        vendors: ["Rubrik", "Dell", "HPE Zerto"]
+                                        vendors: ["Rubrik", "HPE Zerto"]
                                     };
 
                                     return (

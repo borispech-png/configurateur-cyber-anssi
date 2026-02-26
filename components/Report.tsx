@@ -10,6 +10,7 @@ import UgapOrderSheet from './UgapOrderSheet';
 import MissionLetter from './MissionLetter';
 import ImplementationPlan from './ImplementationPlan';
 import HighlightGlossary from './HighlightGlossary';
+import WebinarSubmitPanel from './WebinarSubmitPanel';
 import { ToggleLeft, ToggleRight, ArrowRight, ShoppingCart, FileText, Calendar } from 'lucide-react';
 
 interface ReportProps {
@@ -26,14 +27,17 @@ interface ReportProps {
   answers: Answers;
   benchmark: Benchmark | null;
   onExport: () => void;
+  isWebinaire?: boolean;
 }
 
-const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, recommendations, budget, totalBudget, theme, themeSwitcher, onBack, onReset, answers, benchmark, onExport }) => {
+const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, recommendations, budget, totalBudget, theme, themeSwitcher, onBack, onReset, answers, benchmark, onExport, isWebinaire = false }) => {
   const reportRef = useRef<HTMLDivElement>(null);
   const ugapSheetRef = useRef<HTMLDivElement>(null);
   const missionLetterRef = useRef<HTMLDivElement>(null);
   const planningRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>('synthese');
+  // In webinar mode, show the submit panel automatically when report is displayed
+  const [showWebinarPanel, setShowWebinarPanel] = useState<boolean>(isWebinaire);
   const sectionRefs = useRef<{[key: string]: HTMLElement | null}>({});
   
   // -- Simulation State --
@@ -268,6 +272,17 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
 
   return (
     <div className="bg-gray-100 dark:bg-slate-900">
+        {/* Webinar Submit Panel — shown automatically at report display */}
+        {showWebinarPanel && (
+          <WebinarSubmitPanel
+            clientInfo={clientInfo}
+            maturity={maturity}
+            domainScores={domainScores}
+            totalBudget={totalBudget}
+            nbCritiques={recommendations.filter(r => r.level === 'critique').length}
+            onDownloadPdf={() => handleDownload()}
+          />
+        )}
         {/* Header */}
         <header className="sticky top-0 z-40 bg-white dark:bg-gray-800 shadow-md">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
@@ -295,30 +310,34 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                         <Download size={18} />
                         <span className="hidden sm:inline">Télécharger PDF</span>
                     </button>
-                    <button
-                        onClick={handleUgapPrint}
-                        className="flex items-center gap-2 px-4 py-2 bg-blue-800 hover:bg-blue-900 text-white rounded-lg transition-colors no-print"
-                        title="Générer Fiche Projet UGAP"
-                    >
-                        <ShoppingCart size={18} />
-                        <span className="hidden sm:inline">Panier UGAP</span>
-                    </button>
-                    <button
-                        onClick={handleMissionPrint}
-                        className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg transition-colors no-print"
-                        title="Générer Lettre de Mission"
-                    >
-                        <FileText size={18} />
-                        <span className="hidden sm:inline">Lettre Mission</span>
-                    </button>
-                     <button
-                        onClick={handlePlanningPrint}
-                        className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors no-print"
-                        title="Générer Planning Projet"
-                    >
-                        <Calendar size={18} />
-                        <span className="hidden sm:inline">Planning</span>
-                    </button>
+                    {!isWebinaire && (
+                      <>
+                        <button
+                            onClick={handleUgapPrint}
+                            className="flex items-center gap-2 px-4 py-2 bg-blue-800 hover:bg-blue-900 text-white rounded-lg transition-colors no-print"
+                            title="Générer Fiche Projet UGAP"
+                        >
+                            <ShoppingCart size={18} />
+                            <span className="hidden sm:inline">Panier UGAP</span>
+                        </button>
+                        <button
+                            onClick={handleMissionPrint}
+                            className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg transition-colors no-print"
+                            title="Générer Lettre de Mission"
+                        >
+                            <FileText size={18} />
+                            <span className="hidden sm:inline">Lettre Mission</span>
+                        </button>
+                         <button
+                            onClick={handlePlanningPrint}
+                            className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors no-print"
+                            title="Générer Planning Projet"
+                        >
+                            <Calendar size={18} />
+                            <span className="hidden sm:inline">Planning</span>
+                        </button>
+                      </>
+                    )}
                     <button
                         onClick={onReset}
                         className="flex items-center gap-2 px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg transition-colors no-print"

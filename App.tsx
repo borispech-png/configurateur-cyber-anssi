@@ -7,11 +7,14 @@ import ThemeSwitcher from './components/ThemeSwitcher';
 import LoginScreen from './components/LoginScreen';
 import { ClientInfo, Answers, Domain, Recommendation, BudgetPhase, Theme } from './types';
 import { DOMAINS, BENCHMARKS, BUDGET_ITEMS } from './constants';
+import { useWebinaire } from './hooks/useWebinaire';
 
 type View = 'clientInfo' | 'questionnaire' | 'summary' | 'report';
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isWebinaire } = useWebinaire();
+  // In webinar mode, skip the login screen entirely
+  const [isAuthenticated, setIsAuthenticated] = useState(isWebinaire);
   const [view, setView] = useState<View>('clientInfo');
   const [step, setStep] = useState<number>(0);
   const [clientInfo, setClientInfo] = useState<ClientInfo>({
@@ -60,7 +63,8 @@ const App: React.FC = () => {
         const now = new Date();
         const hoursDiff = (now.getTime() - savedDate.getTime()) / (1000 * 60 * 60);
         
-        if (hoursDiff < 24 && data.clientInfo?.name) {
+        // In webinar mode, don't offer to restore a previous session - always start fresh
+        if (!isWebinaire && hoursDiff < 24 && data.clientInfo?.name) {
           if (confirm(`Reprendre l'audit de "${data.clientInfo.name}" commencé il y a ${Math.round(hoursDiff)}h ?`)) {
             setClientInfo(data.clientInfo);
             setAnswers(data.answers);
@@ -72,7 +76,7 @@ const App: React.FC = () => {
         console.error('Erreur chargement données:', e);
       }
     }
-  }, []);
+  }, [isWebinaire]);
 
   // Scroll to top on view change
   useEffect(() => {
@@ -284,7 +288,8 @@ const App: React.FC = () => {
                 onClientInfoChange={handleClientInfoChange} 
                 onStart={() => setView('questionnaire')} 
                 themeSwitcher={themeSwitcher}
-                onImport={handleImportAudit} 
+                onImport={handleImportAudit}
+                isWebinaire={isWebinaire}
              />;
     
     case 'questionnaire':
@@ -310,7 +315,8 @@ const App: React.FC = () => {
                 onReset={handleReset} 
                 onExport={handleExportAudit}
                 theme={theme} 
-                themeSwitcher={themeSwitcher} 
+                themeSwitcher={themeSwitcher}
+                isWebinaire={isWebinaire}
              />;
       
     default:

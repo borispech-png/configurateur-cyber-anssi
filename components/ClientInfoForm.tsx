@@ -10,9 +10,10 @@ interface ClientInfoFormProps {
   onStart: () => void;
   themeSwitcher: React.ReactNode;
   onImport: (data: string) => void;
+  isWebinaire?: boolean;
 }
 
-const ClientInfoForm: React.FC<ClientInfoFormProps> = ({ clientInfo, onClientInfoChange, onStart, themeSwitcher, onImport }) => {
+const ClientInfoForm: React.FC<ClientInfoFormProps> = ({ clientInfo, onClientInfoChange, onStart, themeSwitcher, onImport, isWebinaire = false }) => {
   const [consentGiven, setConsentGiven] = useState(false);
   const [sectorSuggestions, setSectorSuggestions] = useState<string[]>([]);
   const [isSectorInputFocused, setIsSectorInputFocused] = useState(false);
@@ -69,6 +70,16 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({ clientInfo, onClientInf
             {themeSwitcher}
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-8 animate-fade-in-up">
+
+          {/* Webinar Banner */}
+          {isWebinaire && (
+            <div className="mb-6 p-4 bg-indigo-600 text-white rounded-xl text-center">
+              <p className="text-lg font-bold">🎙️ Mode Webinaire Actif</p>
+              <p className="text-sm text-indigo-200 mt-1">
+                Bienvenue ! Renseignez votre organisme ci-dessous, puis suivez le questionnaire au rythme du commentateur.
+              </p>
+            </div>
+          )}
           <div className="text-center mb-8 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
             <Shield className="mx-auto text-indigo-600 dark:text-indigo-400 mb-4" size={64} />
             <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">

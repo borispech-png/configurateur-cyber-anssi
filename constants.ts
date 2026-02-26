@@ -115,7 +115,7 @@ export const DOMAINS: Domain[] = [
         ugapSuggestion: {
             name: "Sauvegarde Immuable & Cyber Recovery",
             description: "Solution de sauvegarde de dernière génération protégeant contre les ransomwares (copies immuables) avec capacité de restauration instantanée.",
-            vendors: ["HPE (StoreOnce/Zerto)", "Rubrik", "Quantum"],
+            vendors: ["HPE (StoreOnce/Zerto)", "Rubrik", "Dell (Data Domain)", "Quantum"],
             marketRef: "Marché UGAP Stockage & Sauvegarde"
         },
         nis2: true,
@@ -168,9 +168,9 @@ export const DOMAINS: Domain[] = [
         options: ["Non", "Partiellement (sur certains partages)", "Oui, via retention logicielle", "Oui, immutabilité matérielle/physique stricte"],
         weight: 3,
         ugapSuggestion: {
-            name: "HPE StoreOnce",
-            description: "Appliance de déduplication HPE avec verrouillage objet (Object Lock) certifié pour garantir l'intégrité des données.",
-            vendors: ["HPE", "Quantum"],
+            name: "HPE StoreOnce / Dell DataDomain",
+            description: "Appliance de déduplication avec verrouillage objet (Object Lock) certifié pour garantir l'intégrité des données.",
+            vendors: ["HPE", "Dell", "Quantum"],
             marketRef: "Marché Stockage & Sauvegarde"
         },
         effort: 2,
@@ -185,7 +185,7 @@ export const DOMAINS: Domain[] = [
         ugapSuggestion: {
             name: "Architecture Cyber Recovery",
             description: "Solution créant un coffre-fort numérique isolé (Vault) pour analyser et protéger les données critiques hors d'atteinte du réseau principal.",
-            vendors: ["Rubrik", "HPE Zerto"],
+            vendors: ["Rubrik", "Dell Cyber Recovery", "HPE Zerto"],
             marketRef: "Marché Logiciels Infra"
         },
         effort: 3,

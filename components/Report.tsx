@@ -508,13 +508,13 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                 {(() => {
                                     const idx = answers['res-3'] || 0;
                                     const rec = idx <= 1 ? {
-                                        product: "HPE StoreOnce",
+                                        product: "HPE StoreOnce / Dell Data Domain",
                                         desc: "Appliance de stockage avec déduplication agressive et verrouillage objet (Immutabilité). Idéal pour optimiser le stockage et garantir l'intégrité.",
-                                        vendors: ["HPE", "Quantum"]
+                                        vendors: ["HPE", "Dell", "Quantum"]
                                     } : {
-                                        product: "Rubrik Security Cloud / HPE Zerto",
+                                        product: "Rubrik Security Cloud / Dell Cyber Recovery",
                                         desc: "Plateforme de sécurité des données Zero Trust. Architecture Scale-out avec détection d'anomalies (Ransomware) et restauration chirurgicale.",
-                                        vendors: ["Rubrik", "HPE Zerto"]
+                                        vendors: ["Rubrik", "Dell", "HPE Zerto"]
                                     };
 
                                     return (

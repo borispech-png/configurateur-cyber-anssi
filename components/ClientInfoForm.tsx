@@ -72,36 +72,36 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 dark:from-gray-800 dark:to-slate-900 flex items-center justify-center p-6">
         <div className="max-w-2xl w-full mx-auto">
 
-          {/* Logos SCC + UGAP */}
-          <div className="flex items-center justify-center gap-8 mb-8">
-            <img
-              src="/configurateur-cyber-anssi/logo-scc.jpg"
-              alt="Logo SCC"
-              className="h-14 object-contain"
-              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-            />
-            <div className="h-10 w-px bg-gray-300 dark:bg-gray-600" />
-            <img
-              src="/configurateur-cyber-anssi/logo-ugap.jpg"
-              alt="Logo UGAP"
-              className="h-14 object-contain"
-              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-            />
-          </div>
-
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 animate-fade-in-up">
 
-            {/* Header */}
-            <div className="text-center mb-6">
-              <div className="inline-block bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-3">
-                🎙️ Webinaire Cyber ANSSI
+            {/* Header with logos inline */}
+            <div className="flex items-center justify-between gap-4 mb-6">
+              {/* Logo SCC gauche */}
+              <img
+                src="/configurateur-cyber-anssi/logo-scc.jpg"
+                alt="Logo SCC"
+                className="h-12 object-contain flex-shrink-0"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
+              {/* Titre centré */}
+              <div className="text-center flex-1">
+                <div className="inline-block bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-2">
+                  🎙️ Webinaire Cyber ANSSI
+                </div>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">
+                  Identifiez-vous
+                </h1>
+                <p className="text-gray-500 dark:text-gray-400 text-sm">
+                  Renseignez votre organisme, puis le questionnaire démarrera.
+                </p>
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">
-                Identifiez-vous
-              </h1>
-              <p className="text-gray-500 dark:text-gray-400 text-sm">
-                Renseignez votre organisme, puis le questionnaire démarrera.
-              </p>
+              {/* Logo UGAP droite */}
+              <img
+                src="/configurateur-cyber-anssi/logo-ugap.jpg"
+                alt="Logo UGAP"
+                className="h-12 object-contain flex-shrink-0"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
             </div>
 
             {/* Context */}

@@ -14,7 +14,8 @@ interface WebinarSubmitPanelProps {
 type SubmitState = 'idle' | 'sending' | 'success' | 'error';
 
 const COLLECTOR_EMAIL = 'bpehcevski@fr.scc.com';
-const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || '';
+// Web3Forms key - domain restricted to borispech-png.github.io (safe to embed)
+const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || '8667d234-bbb9-4398-9837-60846441b244';
 
 const WebinarSubmitPanel: React.FC<WebinarSubmitPanelProps> = ({
   clientInfo,

@@ -13,7 +13,7 @@ import WebinarConsentScreen from './components/WebinarConsentScreen';
 type View = 'clientInfo' | 'questionnaire' | 'summary' | 'report';
 
 const App: React.FC = () => {
-  const { isWebinaire } = useWebinaire();
+  const { isWebinaire, isHost } = useWebinaire();
   // In webinar mode, skip the login screen entirely
   const [isAuthenticated, setIsAuthenticated] = useState(isWebinaire);
   // In webinar mode, show consent screen first
@@ -310,6 +310,7 @@ const App: React.FC = () => {
                 onPrevious={handlePreviousStep}
                 domainColor={DOMAINS[step]?.color || 'bg-gray-500'}
                 isWebinaire={isWebinaire}
+                isHost={isHost}
              />;
       
     case 'summary':

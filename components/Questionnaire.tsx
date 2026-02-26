@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { ChevronRight, ChevronLeft, FileText, Info, Save, CheckCircle, Clock } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
+import { ChevronRight, ChevronLeft, FileText, Info, Save, CheckCircle, Clock, SkipForward, Settings2 } from 'lucide-react';
 import { Domain, Answers, Question } from '../types';
 import Modal from './Modal';
 
@@ -14,12 +14,24 @@ interface QuestionnaireProps {
   onPrevious: () => void;
   domainColor: string;
   isWebinaire?: boolean;
+  isHost?: boolean; // Secret host/presenter mode — shows timer controls
 }
 
 const Questionnaire: React.FC<QuestionnaireProps> = ({
-  domains, step, answers, onAnswer, onNext, onPrevious, domainColor, isWebinaire = false
+  domains, step, answers, onAnswer, onNext, onPrevious, domainColor, isWebinaire = false, isHost = false
 }) => {
   const [modalQuestion, setModalQuestion] = useState<Question | null>(null);
+
+  // --- Timer configuration (host can change duration) ---
+  const DURATION_OPTIONS = [
+    { label: '30 sec (test)', value: 30 },
+    { label: '1 minute', value: 60 },
+    { label: '2 minutes', value: 120 },
+    { label: '3 minutes', value: 180 },
+    { label: '5 minutes', value: 300 },
+    { label: '10 minutes', value: 600 },
+  ];
+  const [timerDuration, setTimerDuration] = useState(WEBINAR_TIMER_SECONDS);
 
   // --- Timer state (webinar mode only) ---
   // timerActive: countdown is running
@@ -37,9 +49,9 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
   useEffect(() => {
     setTimerActive(false);
     setTimerDone(false);
-    setTimeLeft(WEBINAR_TIMER_SECONDS);
+    setTimeLeft(timerDuration);
     if (intervalRef.current) clearInterval(intervalRef.current);
-  }, [step]);
+  }, [step, timerDuration]);
 
   // Start timer when all questions are answered in webinar mode
   useEffect(() => {
@@ -65,6 +77,22 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
     }, 1000);
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [timerActive]);
+
+  // HOST: skip timer instantly
+  const handleSkipTimer = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    setTimerActive(false);
+    setTimerDone(true);
+    setTimeLeft(0);
+  };
+
+  // HOST: change duration and reset timer
+  const handleChangeDuration = (newDuration: number) => {
+    setTimerDuration(newDuration);
+    // Will be picked up by the reset effect on next domain,
+    // but also update current timer display if not yet started
+    if (!timerActive && !timerDone) setTimeLeft(newDuration);
+  };
 
   // Can the user go to next domain?
   const canProceed = isWebinaire
@@ -227,6 +255,36 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
                 <p className="text-xs text-amber-600 dark:text-amber-400 italic">
                   Profitez de ce temps pour noter vos observations.
                 </p>
+
+                {/* ===== SECRET HOST CONTROLS (invisible for participants) ===== */}
+                {isHost && (
+                  <div className="mt-4 pt-4 border-t border-amber-300 dark:border-amber-600">
+                    <p className="text-xs text-amber-700 dark:text-amber-300 font-bold mb-2 flex items-center justify-center gap-1">
+                      <Settings2 size={13} /> Contrôles Animateur
+                    </p>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
+                      {/* Skip button */}
+                      <button
+                        onClick={handleSkipTimer}
+                        className="flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg transition-colors"
+                      >
+                        <SkipForward size={14} />
+                        Passer le timer
+                      </button>
+                      {/* Duration selector */}
+                      <select
+                        value={timerDuration}
+                        onChange={(e) => handleChangeDuration(Number(e.target.value))}
+                        title="Durée du timer"
+                        className="px-3 py-2 text-xs rounded-lg border border-amber-400 bg-white dark:bg-gray-700 text-amber-800 dark:text-amber-200 font-semibold focus:outline-none cursor-pointer"
+                      >
+                        {DURATION_OPTIONS.map(opt => (
+                          <option key={opt.value} value={opt.value}>{opt.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 

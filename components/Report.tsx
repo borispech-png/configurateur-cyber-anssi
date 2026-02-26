@@ -499,21 +499,21 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                     Recommandation Spécifique UGAP
                                 </h3>
                                 <p className="mb-4 text-indigo-100">
-                                    Basé sur votre volumétrie déclarée de <strong>{(() => {
+                                    Basé sur votre niveau de classification des données (<strong>{(() => {
                                         const idx = answers['res-3'] || 0;
-                                        return ["< 10 To", "10 - 50 To", "50 - 150 To", "> 150 To"][idx];
-                                    })()}</strong> (Back-end) :
+                                        return ["aucun inventaire", "inventaire partiel", "inventaire complet", "classification formalisée"][idx];
+                                    })()}</strong>) :
                                 </p>
                                 
                                 {(() => {
                                     const idx = answers['res-3'] || 0;
                                     const rec = idx <= 1 ? {
                                         product: "HPE StoreOnce / Dell Data Domain",
-                                        desc: "Appliance de stockage avec déduplication agressive et verrouillage objet (Immutabilité). Idéal pour optimiser le stockage et garantir l'intégrité.",
+                                        desc: "Appliance de déduplication avec verrouillage objet (Immutabilité). Première étape pour sécuriser vos données avant même de les avoir toutes classifiées.",
                                         vendors: ["HPE", "Dell", "Quantum"]
                                     } : {
                                         product: "Rubrik Security Cloud / Dell Cyber Recovery",
-                                        desc: "Plateforme de sécurité des données Zero Trust. Architecture Scale-out avec détection d'anomalies (Ransomware) et restauration chirurgicale.",
+                                        desc: "Plateforme Zero Trust pour données classifiées et critiques. Détection d'anomalies (Ransomware), restauration sélective et coffre-fort isolé pour vos données les plus sensibles.",
                                         vendors: ["Rubrik", "Dell", "HPE Zerto"]
                                     };
 

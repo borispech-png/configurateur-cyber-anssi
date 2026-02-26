@@ -26,7 +26,7 @@ export const DOMAINS: Domain[] = [
         id: 'obs-2',
         text: "Vos baies de stockage sont-elles sous support constructeur actif ?",
         help: "Le support garantit l'accès aux mises à jour contre les failles. Un stockage hors support met en danger toutes vos données.",
-        options: ["Support expiré ou fin de vie (EOS)", "Pas de baie de stockage", "Oui, support standard", "Oui, support J+1 ou 4h"],
+        options: ["Support expiré ou fin de vie (EOS)", "Pas de baie dédiée (NAS/stockage serveur)", "Oui, support standard", "Oui, support J+1 ou 4h"],
         weight: 3,
         ugapSuggestion: {
             name: "Modernisation Stockage Flash",
@@ -71,7 +71,7 @@ export const DOMAINS: Domain[] = [
         id: 'gov-2',
         text: "Un responsable de la sécurité des systèmes d'information (RSSI) a-t-il été formellement désigné ?",
         help: "Le RSSI est le pilote de la sécurité. Il doit disposer des moyens et de l'autorité nécessaires pour mener à bien ses missions.",
-        options: ["Non", "Rôle non exclusif / sans moyens", "Oui, mais sans autorité suffisante", "Oui, avec autorité, équipe et budget"],
+        options: ["Non", "RSSI mutualisé ou à temps partagé", "Oui, mais sans autorité suffisante", "Oui, avec autorité, équipe et budget"],
         weight: 3,
       },
       {
@@ -129,10 +129,10 @@ export const DOMAINS: Domain[] = [
         options: ["Manuellement et rarement", "Manuellement avec retard", "Automatisé mais sans supervision", "Automatisé, supervisé et priorisé selon la criticité"],
         weight: 2,
         ugapSuggestion: {
-            name: "Renouvellement Infrastructure Compute",
-            description: "Remplacement des serveurs obsolètes par des équipements récents intégrant la sécurité au niveau hardware (Silicon Root of Trust).",
-            vendors: ["HPE ProLiant Gen12"],
-            marketRef: "Marché UGAP Serveurs"
+            name: "Gestion des vulnérabilités & Patch Management",
+            description: "Outil permettant d'identifier, prioriser et corriger automatiquement les failles connues sur l'ensemble du parc (serveurs, postes, équipements réseau). Indispensable pour respecter les recommandations ANSSI.",
+            vendors: [],
+            marketRef: "Marché UGAP Logiciels"
         },
         nis2: true,
         effort: 2,
@@ -193,10 +193,11 @@ export const DOMAINS: Domain[] = [
       },
       {
         id: 'res-3',
-        text: "Quelle est la volumétrie totale de données (Back-end) à protéger ?",
-        help: "Permet de dimensionner la solution de sauvegarde et d'archivage nécessaire.",
-        options: ["< 10 To", "10 - 50 To", "50 - 150 To", "> 150 To"],
-        weight: 1, // Poids faible car c'est une question de dimensionnement technique
+        text: "Vos données sensibles sont-elles inventoriées et classifiées (données personnelles, données critiques métier) ?",
+        help: "L'inventaire et la classification des données permettent de prioriser les mesures de protection. C'est un prérequis au RGPD et aux recommandations ANSSI. Sans cet inventaire, les données les plus sensibles peuvent ne pas être correctement protégées.",
+        options: ["Non, aucun inventaire", "Inventaire partiel sans classification formelle", "Inventaire complet mais classification non formalisée", "Inventaire et classification formalisés, tenus à jour"],
+        weight: 2,
+        nis2: true,
       },
     ]
   },
@@ -329,7 +330,7 @@ export const DOMAINS: Domain[] = [
         id: 'detect-3',
         text: "Une surveillance est-elle externalisée auprès d'un SOC (Security Operations Center) ?",
         help: "Un SOC apporte une expertise et une surveillance 24/7 que peu d'organisations peuvent internaliser.",
-        options: ["Non", "Prestation ponctuelle d'audit", "SOC en heures ouvrées", "SOC 24/7 avec capacités de réponse"],
+        options: ["Non", "Prestation ponctuelle d'audit", "SOC mutualisé (CSIRT régional, GIP)", "SOC 24/7 avec capacités de réponse"],
         weight: 2,
       },
       {
@@ -368,7 +369,7 @@ export const DOMAINS: Domain[] = [
       {
         id: 'resp-3',
         text: "L'organisation a-t-elle souscrit une cyber-assurance ?",
-        help: "La cyber-assurance peut aider à couvrir les frais liés à un incident (experts, notification, pertes d'exploitation...) mais ne remplace pas les mesures de sécurité.",
+        help: "La cyber-assurance peut aider à couvrir les frais liés à un incident (experts, notification, pertes d'exploitation) mais ne remplace pas les mesures de sécurité. Dans le secteur public, la couverture est souvent mutualisée via des groupements ou centrales d'achat (ex: UGAP, MNT, assureurs FPT).",
         options: ["Non", "En cours d'étude", "Oui, mais avec des garanties faibles", "Oui, avec des garanties adaptées aux risques identifiés"],
         weight: 1,
       },

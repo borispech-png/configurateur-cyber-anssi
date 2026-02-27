@@ -38,7 +38,7 @@ const WebinarSubmitPanel: React.FC<WebinarSubmitPanelProps> = ({
     setSubmitState('sending');
     setErrorMsg('');
 
-    // Use FormData to avoid CORS preflight issues (no OPTIONS request needed)
+    // Use FormData to avoid CORS preflight issues
     const formData = new FormData();
     formData.append('access_key', WEB3FORMS_KEY);
     formData.append('subject', `[Webinaire Cyber ANSSI] Rapport - ${clientInfo.name}`);
@@ -55,35 +55,38 @@ const WebinarSubmitPanel: React.FC<WebinarSubmitPanelProps> = ({
     formData.append('Scores_par_Domaine', Object.entries(domainScores).map(([d, s]) => `${d}: ${s}%`).join(' | '));
     formData.append('Date_Soumission', new Date().toLocaleString('fr-FR'));
 
+    let web3Success = false;
+
     try {
+      // 8-second timeout — don't make participants wait too long
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         body: formData,
-        // No Content-Type header → browser sets it automatically with boundary for FormData
+        signal: controller.signal,
       });
+      clearTimeout(timeout);
 
-      if (!response.ok) {
-        throw new Error(`Erreur serveur HTTP ${response.status}`);
+      if (response.ok) {
+        const result = await response.json();
+        if (result.success) web3Success = true;
       }
+    } catch {
+      // Network/CORS/timeout — silent fail, fallback to mailto below
+    }
 
-      const result = await response.json();
-
-      if (result.success) {
-        setSubmitState('success');
-        setSubmitted(true);
-      } else {
-        throw new Error(result.message || 'Réponse inattendue du serveur');
-      }
-    } catch (err: unknown) {
-      console.error('Web3Forms error:', err);
-      setSubmitState('error');
-      const msg = err instanceof Error ? err.message : String(err);
-      // Give actionable guidance based on error type
-      if (msg.includes('fetch') || msg.toLowerCase().includes('network')) {
-        setErrorMsg('Erreur réseau ou CORS. Cela peut arriver en test local (localhost). Le bouton fonctionne correctement sur borispech-png.github.io. Utilisez le bouton email en attendant.');
-      } else {
-        setErrorMsg(`Erreur : ${msg}. Utilisez le bouton email ci-dessous.`);
-      }
+    if (web3Success) {
+      // Web3Forms succeeded
+      setSubmitState('success');
+      setSubmitted(true);
+    } else {
+      // Automatic mailto fallback — opens mail client directly, no extra click needed
+      handleMailto();
+      setSubmitState('success');
+      setSubmitted(true);
+      setErrorMsg('mailto'); // flag to show specific message
     }
   };
 
@@ -149,10 +152,21 @@ const WebinarSubmitPanel: React.FC<WebinarSubmitPanelProps> = ({
             <div className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/30 rounded-lg border border-green-200 dark:border-green-700">
               <CheckCircle2 className="text-green-600 dark:text-green-400 shrink-0" size={24} />
               <div>
-                <p className="font-bold text-green-800 dark:text-green-200">Résultats envoyés !</p>
-                <p className="text-xs text-green-700 dark:text-green-300">
-                  Merci. Restez connecté(e) au webinaire pour la restitution collective.
-                </p>
+                {errorMsg === 'mailto' ? (
+                  <>
+                    <p className="font-bold text-green-800 dark:text-green-200">Client mail ouvert ✉️</p>
+                    <p className="text-xs text-green-700 dark:text-green-300">
+                      Envoyez l'email qui vient de s'ouvrir dans votre messagerie (pensez à joindre le PDF). Merci de votre participation !
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="font-bold text-green-800 dark:text-green-200">Résultats envoyés automatiquement ✅</p>
+                    <p className="text-xs text-green-700 dark:text-green-300">
+                      Merci. Restez connecté(e) au webinaire pour la restitution collective.
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           ) : (

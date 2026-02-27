@@ -44,14 +44,14 @@ const WebinarSubmitPanel: React.FC<WebinarSubmitPanelProps> = ({
     formData.append('subject', `[Webinaire Cyber ANSSI] Rapport - ${clientInfo.name}`);
     formData.append('from_name', 'Configurateur Cyber ANSSI - Webinaire');
     formData.append('Organisme', clientInfo.name);
-    formData.append('Type', clientInfo.type || 'Non renseigné');
-    formData.append('Taille', clientInfo.size || 'Non renseignée');
-    formData.append('Secteur', clientInfo.sector || 'Non renseigné');
-    formData.append('Contact', clientInfo.contact || 'Non renseigné');
-    formData.append('Email', clientInfo.email || 'Non renseigné');
+    formData.append('Type', clientInfo.type || 'Non renseigne');
+    formData.append('Taille', clientInfo.size || 'Non renseignee');
+    formData.append('Secteur', clientInfo.sector || 'Non renseigne');
+    formData.append('Contact', clientInfo.contact || 'Non renseigne');
+    formData.append('Email', clientInfo.email || 'Non renseigne');
     formData.append('Score_Global', `${maturity}%`);
     formData.append('Nb_Points_Critiques', String(nbCritiques));
-    formData.append('Budget_Estimé_HT', `${totalBudget.toLocaleString('fr-FR')} €`);
+    formData.append('Budget_Estime_HT', `${totalBudget.toLocaleString('fr-FR')} EUR`);
     formData.append('Scores_par_Domaine', Object.entries(domainScores).map(([d, s]) => `${d}: ${s}%`).join(' | '));
     formData.append('Date_Soumission', new Date().toLocaleString('fr-FR'));
 

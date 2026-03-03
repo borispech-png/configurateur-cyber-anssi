@@ -41,8 +41,8 @@ const WebinarSubmitPanel: React.FC<WebinarSubmitPanelProps> = ({
     // Use FormData to avoid CORS preflight issues
     const formData = new FormData();
     formData.append('access_key', WEB3FORMS_KEY);
-    formData.append('subject', `[Webinaire Cyber ANSSI] Rapport - ${clientInfo.name}`);
-    formData.append('from_name', 'Configurateur Cyber ANSSI - Webinaire');
+    formData.append('subject', `[Webinaire Testez la maturité de votre système d’information] Rapport - ${clientInfo.name}`);
+    formData.append('from_name', 'Maturité SI - Webinaire');
     formData.append('Organisme', clientInfo.name);
     formData.append('Type', clientInfo.type || 'Non renseigne');
     formData.append('Taille', clientInfo.size || 'Non renseignee');
@@ -91,7 +91,7 @@ const WebinarSubmitPanel: React.FC<WebinarSubmitPanelProps> = ({
   };
 
   const handleMailto = () => {
-    const subject = encodeURIComponent(`[Webinaire Cyber ANSSI] Rapport PDF - ${clientInfo.name}`);
+    const subject = encodeURIComponent(`[Webinaire Testez la maturité de votre système d’information] Rapport PDF - ${clientInfo.name}`);
     const body = encodeURIComponent(
       `Bonjour,\n\nVeuillez trouver ci-joint mon rapport d'audit cyber.\n\n` +
       `Organisme : ${clientInfo.name}\n` +

@@ -86,7 +86,7 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({
               {/* Titre centré */}
               <div className="text-center flex-1">
                 <div className="inline-block bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-2">
-                  🎙️ Webinaire Cyber ANSSI
+                  🎙️ Webinaire Testez la maturité de votre système d’information
                 </div>
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">
                   Identifiez-vous

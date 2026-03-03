@@ -21,7 +21,7 @@ const WebinarConsentScreen: React.FC<WebinarConsentScreenProps> = ({ onConsent }
             <Shield className="text-indigo-600 dark:text-indigo-400" size={40} />
           </div>
           <div className="inline-block bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4">
-            🎙️ Webinaire Cyber ANSSI
+            🎙️ Webinaire Testez la maturité de votre système d’information
           </div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             Avant de commencer

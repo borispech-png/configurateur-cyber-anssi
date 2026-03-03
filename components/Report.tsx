@@ -180,6 +180,7 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
       { id: 'scores', label: 'Scores de Maturité', icon: GitMerge },
       { id: 'recommandations', label: 'Recommandations Priorisées', icon: ListChecks },
       { id: 'budget', label: 'Budget Prévisionnel', icon: CreditCard },
+      { id: 'financement', label: 'Financement UGAP', icon: Coins },
       { id: 'catalogue', label: 'Solutions Qualifiées ANSSI', icon: Award },
       { id: 'glossaire', label: 'Glossaire Pédagogique', icon: Book }
   ];
@@ -811,21 +812,23 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                 </div>
                             </div>
 
-                            <div className="mt-6 bg-indigo-50 dark:bg-indigo-900/50 border-l-4 border-indigo-500 rounded-r-lg p-4">
-                                <div className="flex">
-                                    <div className="flex-shrink-0">
-                                        <Coins className="h-5 w-5 text-indigo-600 dark:text-indigo-400 mt-0.5" />
+                        <section id="financement" ref={el => { sectionRefs.current['financement'] = el; }} className="mt-8 scroll-mt-20 print-break-avoid">
+                            <div className="bg-indigo-50 dark:bg-indigo-900/50 border-l-4 border-indigo-500 rounded-r-lg p-6 shadow-sm">
+                                <div className="flex items-start gap-4">
+                                    <div className="flex-shrink-0 bg-indigo-600 p-3 rounded-lg">
+                                        <Coins className="h-6 w-6 text-white" />
                                     </div>
-                                    <div className="ml-3">
-                                        <h3 className="text-md font-semibold text-indigo-900 dark:text-indigo-200">Levier de financement (Centrale d'achat UGAP) :</h3>
-                                        <p className="mt-2 text-sm text-indigo-800 dark:text-indigo-300">
-                                            La centrale d'achat <strong>UGAP dispose d'un marché de financement</strong> spécifique. 
-                                            Ce dispositif permet d'étaler l'investissement cyber sur plusieurs exercices budgétaires via la location financière. 
-                                            C'est un moteur essentiel pour solutionner les problématiques budgétaires des administrations publiques et accélérer leur mise aux normes de sécurité.
+                                    <div>
+                                        <h3 className="text-xl font-bold text-indigo-900 dark:text-indigo-100 mb-2">Levier de Financement (Centrale d'achat UGAP)</h3>
+                                        <p className="text-sm text-indigo-800 dark:text-indigo-300 leading-relaxed">
+                                            La centrale d'achat <strong>UGAP dispose d'un marché de financement</strong> spécifique et pérenne. 
+                                            Ce dispositif est un atout majeur pour les administrations publiques : il permet d'étaler l'investissement cyber sur plusieurs exercices budgétaires (24, 36 ou 48 mois) via la location financière. 
+                                            C'est le moteur indispensable pour solutionner les problématiques de budget d'investissement (CAPEX) et accélérer immédiatement votre mise aux normes de sécurité.
                                         </p>
                                     </div>
                                 </div>
                             </div>
+                        </section>
                             
                             <div className="mt-12">
                                 <div className="flex items-center gap-3 mb-6">

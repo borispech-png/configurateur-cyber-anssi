@@ -92,6 +92,18 @@ const UgapOrderSheet = React.forwardRef<HTMLDivElement, UgapOrderSheetProps>(({ 
         )}
       </div>
 
+      {/* Financing info */}
+      <div className="mb-8 bg-blue-50 p-6 rounded-lg border-2 border-blue-200">
+          <h3 className="text-lg font-bold text-blue-900 mb-2 flex items-center gap-2">
+              💡 Option de Financement
+          </h3>
+          <p className="text-sm text-blue-800 leading-relaxed">
+              L'UGAP propose un <strong>marché de financement (Location Financière)</strong> permettant d'étaler cet investissement 
+              sur 24, 36 ou 48 mois. Cette solution permet de contourner les contraintes de budget d'investissement (CAPEX) 
+              immédiates et de lancer les projets de sécurisation sans attendre l'exercice budgétaire suivant.
+          </p>
+      </div>
+
       {/* Disclaimer */}
       <div className="mt-12 pt-6 border-t border-gray-200 text-xs text-gray-500 text-justify">
         <p className="mb-2"><strong>Mentions Légales & Avertissement :</strong></p>

@@ -11,7 +11,7 @@ import MissionLetter from './MissionLetter';
 import ImplementationPlan from './ImplementationPlan';
 import HighlightGlossary from './HighlightGlossary';
 import WebinarSubmitPanel from './WebinarSubmitPanel';
-import { ToggleLeft, ToggleRight, ArrowRight, ShoppingCart, FileText, Calendar } from 'lucide-react';
+import { ToggleLeft, ToggleRight, ArrowRight, ShoppingCart, FileText, Calendar, Coins } from 'lucide-react';
 
 interface ReportProps {
   clientInfo: ClientInfo;
@@ -807,6 +807,22 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                                 <li>Les produits mentionnés (ex: Stormshield, Tehtris) sont des <strong>exemples représentatifs</strong> privilégiant les solutions souveraines (françaises/européennes) et qualifiées/recommandées par l'ANSSI.</li>
                                             </ul>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="mt-6 bg-indigo-50 dark:bg-indigo-900/50 border-l-4 border-indigo-500 rounded-r-lg p-4">
+                                <div className="flex">
+                                    <div className="flex-shrink-0">
+                                        <Coins className="h-5 w-5 text-indigo-600 dark:text-indigo-400 mt-0.5" />
+                                    </div>
+                                    <div className="ml-3">
+                                        <h3 className="text-md font-semibold text-indigo-900 dark:text-indigo-200">Levier de financement (Centrale d'achat UGAP) :</h3>
+                                        <p className="mt-2 text-sm text-indigo-800 dark:text-indigo-300">
+                                            La centrale d'achat <strong>UGAP dispose d'un marché de financement</strong> spécifique. 
+                                            Ce dispositif permet d'étaler l'investissement cyber sur plusieurs exercices budgétaires via la location financière. 
+                                            C'est un moteur essentiel pour solutionner les problématiques budgétaires des administrations publiques et accélérer leur mise aux normes de sécurité.
+                                        </p>
                                     </div>
                                 </div>
                             </div>

@@ -841,9 +841,15 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                         <Coins className="h-6 w-6 text-white" />
                                     </div>
                                     <div>
-                                        <h3 className="text-xl font-bold text-emerald-900 dark:text-emerald-100 mb-1">Aides & Financements Publics pour votre projet cyber</h3>
-                                        <p className="text-sm text-emerald-800 dark:text-emerald-300 leading-relaxed">
-                                            En complément du levier UGAP, plusieurs dispositifs publics peuvent co-financer ou accompagner gratuitement votre démarche de cybersécurisation.
+                                        <h3 className="text-xl font-bold text-emerald-900 dark:text-emerald-100 mb-2">Aides & Financements Publics pour votre projet cyber</h3>
+                                        <p className="text-sm text-emerald-800 dark:text-emerald-300 leading-relaxed mb-2">
+                                            La cybersécurité représente un investissement significatif pour les organismes publics. Selon l'ANSSI, près de 60 % des administrations françaises n'ont pas encore atteint un niveau de maturité cyber suffisant — souvent faute de budget identifié ou d'accompagnement adapté.
+                                        </p>
+                                        <p className="text-sm text-emerald-800 dark:text-emerald-300 leading-relaxed mb-2">
+                                            Au-delà du financement via la centrale d'achat UGAP, plusieurs dispositifs publics nationaux et européens permettent d'obtenir un accompagnement gratuit, des subventions ou des prêts bonifiés pour concrétiser votre projet de sécurisation. Ces aides sont accessibles à toutes les administrations publiques françaises — collectivités, établissements publics, ministères — et peuvent se cumuler entre elles.
+                                        </p>
+                                        <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-100">
+                                            Voici les 6 leviers officiels à activer en priorité.
                                         </p>
                                     </div>
                                 </div>

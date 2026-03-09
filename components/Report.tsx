@@ -832,7 +832,66 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                 </div>
                             </div>
                         </section>
-                            
+
+                        {/* --- Aides & Financements Publics --- */}
+                        <section className="mt-8 print-break-avoid">
+                            <div className="bg-emerald-50 dark:bg-emerald-900/30 border-l-4 border-emerald-500 rounded-r-lg p-6 shadow-sm">
+                                <div className="flex items-start gap-4 mb-4">
+                                    <div className="flex-shrink-0 bg-emerald-600 p-3 rounded-lg">
+                                        <Coins className="h-6 w-6 text-white" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-xl font-bold text-emerald-900 dark:text-emerald-100 mb-1">Aides & Financements Publics pour votre projet cyber</h3>
+                                        <p className="text-sm text-emerald-800 dark:text-emerald-300 leading-relaxed">
+                                            En complément du levier UGAP, plusieurs dispositifs publics peuvent co-financer ou accompagner gratuitement votre démarche de cybersécurisation.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+
+                                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-emerald-200 dark:border-emerald-800">
+                                        <h4 className="font-bold text-sm text-gray-800 dark:text-gray-100 mb-1">🏛️ ANSSI — MonAideCyber</h4>
+                                        <p className="text-xs text-gray-600 dark:text-gray-400">Diagnostic cyber gratuit réalisé par un aidant ANSSI agréé. Point d'entrée officiel pour toute administration souhaitant évaluer et prioriser ses actions.</p>
+                                        <p className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold mt-1">monaidecyber.ssi.gouv.fr</p>
+                                    </div>
+
+                                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-emerald-200 dark:border-emerald-800">
+                                        <h4 className="font-bold text-sm text-gray-800 dark:text-gray-100 mb-1">🛡️ Cybermalveillance.gouv.fr</h4>
+                                        <p className="text-xs text-gray-600 dark:text-gray-400">Dispositif national d'assistance aux victimes et de prévention. Propose des ressources, guides et mise en relation avec des prestataires qualifiés.</p>
+                                        <p className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold mt-1">cybermalveillance.gouv.fr</p>
+                                    </div>
+
+                                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-emerald-200 dark:border-emerald-800">
+                                        <h4 className="font-bold text-sm text-gray-800 dark:text-gray-100 mb-1">🏦 Banque des Territoires (Caisse des Dépôts)</h4>
+                                        <p className="text-xs text-gray-600 dark:text-gray-400">Prêts à taux bonifiés et ingénierie financière pour les collectivités. Programme « Territoires Numériques » incluant les projets de cybersécurité.</p>
+                                        <p className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold mt-1">banquedesterritoires.fr</p>
+                                    </div>
+
+                                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-emerald-200 dark:border-emerald-800">
+                                        <h4 className="font-bold text-sm text-gray-800 dark:text-gray-100 mb-1">🌍 Fonds Européens — FEDER</h4>
+                                        <p className="text-xs text-gray-600 dark:text-gray-400">Les fonds FEDER 2021-2027 cofinancent des projets de transformation numérique et de cybersécurité pour les organismes publics. Instruction via les Conseils Régionaux.</p>
+                                        <p className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold mt-1">europe-en-france.gouv.fr</p>
+                                    </div>
+
+                                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-emerald-200 dark:border-emerald-800">
+                                        <h4 className="font-bold text-sm text-gray-800 dark:text-gray-100 mb-1">📍 CSIRT Régionaux</h4>
+                                        <p className="text-xs text-gray-600 dark:text-gray-400">Centres de réponse aux incidents de sécurité informatique régionaux, financés par l'État. Accompagnement gratuit de premier niveau pour les TPE, PME et collectivités.</p>
+                                        <p className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold mt-1">cyber.gouv.fr/csirt-regionaux</p>
+                                    </div>
+
+                                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-emerald-200 dark:border-emerald-800">
+                                        <h4 className="font-bold text-sm text-gray-800 dark:text-gray-100 mb-1">🏗️ DETR / DSIL (Préfectures)</h4>
+                                        <p className="text-xs text-gray-600 dark:text-gray-400">Dotations d'État pour les collectivités territoriales (DETR : communes rurales / DSIL : projets structurants). Les projets de sécurisation numérique sont éligibles.</p>
+                                        <p className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold mt-1">Via votre Préfecture de département</p>
+                                    </div>
+
+                                </div>
+                                <p className="text-xs text-gray-500 dark:text-gray-500 italic mt-4">
+                                    Ces dispositifs peuvent être cumulés. Il est recommandé de contacter votre CSIRT régional ou l'ANSSI en premier lieu pour un accompagnement personnalisé et gratuit.
+                                </p>
+                            </div>
+                        </section>
+
                             <div className="mt-12">
                                 <div className="flex items-center gap-3 mb-6">
                                     <span className="h-8 w-1.5 bg-indigo-500 rounded" />

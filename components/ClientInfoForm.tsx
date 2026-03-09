@@ -133,7 +133,7 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({
               {/* Type / Secteur fusionné */}
               <div className={`relative ${isSectorFocused ? 'z-20' : ''}`}>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Type / Secteur d'organisme
+                  Type / Secteur d'organisme *
                 </label>
                 <input
                   type="text"
@@ -163,7 +163,7 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({
               {/* Taille */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Taille de la structure
+                  Taille de la structure *
                 </label>
                 <select
                   value={clientInfo.size}
@@ -181,7 +181,7 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({
               {/* Nom contact */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Votre nom / prénom
+                  Votre nom / prénom *
                 </label>
                 <input
                   type="text"
@@ -195,7 +195,7 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({
               {/* Email */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Adresse email
+                  Adresse email *
                 </label>
                 <input
                   type="email"
@@ -211,9 +211,9 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({
             {/* CTA */}
             <button
               onClick={onStart}
-              disabled={!clientInfo.name}
+              disabled={!clientInfo.name || !(clientInfo.sector || clientInfo.type) || !clientInfo.size || !clientInfo.contact || !clientInfo.email}
               className={`w-full mt-6 py-4 rounded-xl font-bold text-white text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
-                clientInfo.name
+                clientInfo.name && (clientInfo.sector || clientInfo.type) && clientInfo.size && clientInfo.contact && clientInfo.email
                   ? 'bg-indigo-600 hover:bg-indigo-700 transform hover:scale-[1.02] shadow-lg'
                   : 'bg-gray-300 dark:bg-gray-600 cursor-not-allowed text-gray-400'
               }`}
@@ -307,7 +307,7 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({
             {/* Type / Secteur fusionné */}
             <div className={`relative animate-fade-in-up ${isSectorFocused ? 'z-20' : ''}`} style={{ animationDelay: '400ms' }}>
               <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                Type / Secteur d'organisme (pour un benchmark précis)
+                Type / Secteur d'organisme * (pour un benchmark précis)
               </label>
               <input
                 type="text"
@@ -337,7 +337,7 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({
             {/* Taille */}
             <div className="animate-fade-in-up" style={{ animationDelay: '500ms' }}>
               <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                Taille de la structure
+                Taille de la structure *
               </label>
               <select
                 value={clientInfo.size}
@@ -355,7 +355,7 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({
             {/* Contact */}
             <div className="animate-fade-in-up" style={{ animationDelay: '600ms' }}>
               <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                Nom du contact (optionnel)
+                Votre nom / prénom *
               </label>
               <input
                 type="text"
@@ -369,7 +369,7 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({
             {/* Email (remplace Téléphone) */}
             <div className="animate-fade-in-up" style={{ animationDelay: '700ms' }}>
               <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                Adresse email (optionnel)
+                Adresse email *
               </label>
               <input
                 type="email"
@@ -408,9 +408,9 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({
 
           <button
             onClick={onStart}
-            disabled={!clientInfo.name || !consentGiven}
+            disabled={!clientInfo.name || !(clientInfo.sector || clientInfo.type) || !clientInfo.size || !clientInfo.contact || !clientInfo.email || !consentGiven}
             className={`w-full mt-8 py-4 rounded-lg font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2 animate-fade-in-up ${
-              clientInfo.name && consentGiven
+              clientInfo.name && (clientInfo.sector || clientInfo.type) && clientInfo.size && clientInfo.contact && clientInfo.email && consentGiven
                 ? 'bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 transform hover:scale-105'
                 : 'bg-gray-300 dark:bg-gray-600 cursor-not-allowed text-gray-500 dark:text-gray-400'
             }`}

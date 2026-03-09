@@ -502,8 +502,8 @@ export const ANSSI_SOLUTIONS: AnssiSolutionCategory[] = [
     icon: '🏛️',
     description: "Services d'accompagnement pour définir votre stratégie, évaluer vos risques et auditer votre conformité.",
     solutions: [
-      { name: "Assistance et conseil (PACS)", provider: "Ex: Intrinsec Sécurité, Holiseum", description: "Aide à la sécurisation et au maintien en condition de sécurité des SI." },
-      { name: "Audit de la sécurité (PASSI)", provider: "Ex: Orange Cyberdefense, Amossys, Wavestone", description: "Évaluation impartiale de la conformité d'un SI à des critères d'audit." },
+      { name: "Assistance et conseil (PACS)", provider: "Ex : Orange Cyber Défense", description: "Aide à la sécurisation et au maintien en condition de sécurité des SI." },
+      { name: "Audit de la sécurité (PASSI)", provider: "Ex : Orange Cyber Défense", description: "Évaluation impartiale de la conformité d'un SI à des critères d'audit." },
     ],
   },
   {
@@ -538,8 +538,8 @@ export const ANSSI_SOLUTIONS: AnssiSolutionCategory[] = [
     icon: '📡',
     description: "Services opérés (SOC) pour surveiller, détecter, analyser et répondre aux incidents de sécurité 24/7.",
     solutions: [
-      { name: "Détection d'incidents (PDIS)", provider: "Ex: Airbus Protect, Advens, Orange Cyberdefense", description: "Supervision en temps réel pour détecter les activités anormales." },
-      { name: "Réponse aux incidents (PRIS)", provider: "Ex: Wavestone, Lexfo, Sopra Steria", description: "Investigation et remédiation suite à un incident de sécurité avéré." },
+      { name: "Détection d'incidents (PDIS)", provider: "Ex: Orange Cyber Défense,", description: "Supervision en temps réel pour détecter les activités anormales." },
+      { name: "Réponse aux incidents (PRIS)", provider: "Ex: Orange Cyber Défense,", description: "Investigation et remédiation suite à un incident de sécurité avéré." },
     ],
   },
   {
@@ -547,8 +547,8 @@ export const ANSSI_SOLUTIONS: AnssiSolutionCategory[] = [
     icon: '☁️',
     description: "Services d'informatique en nuage (IaaS, PaaS, SaaS) offrant les plus hautes garanties de sécurité et de confiance, recommandés par l'État.",
     solutions: [
-      { name: "Infrastructure as a Service (IaaS)", provider: "Ex: Outscale, OVHcloud, Cloud Temple", description: "Hébergement de machines virtuelles et stockage sur une infrastructure sécurisée." },
-      { name: "Platform as a Service (PaaS)", provider: "Ex: Cloud Temple (PaaS Openshift)", description: "Plateformes pour développer et déployer des applications." },
+      { name: "Infrastructure as a Service (IaaS)", provider: "Ex: Outscale, OVHcloud, Cloud Temple, S3NS", description: "Hébergement de machines virtuelles et stockage sur une infrastructure sécurisée." },
+      { name: "Platform as a Service (PaaS)", provider: "Ex: Cloud Temple (PaaS Openshift), S3NS", description: "Plateformes pour développer et déployer des applications." },
     ],
   }
 ];

@@ -108,7 +108,7 @@ const ClientInfoForm: React.FC<ClientInfoFormProps> = ({
             <div className="bg-indigo-50 dark:bg-indigo-900/30 border-l-4 border-indigo-500 p-4 mb-6 rounded-r-lg">
               <p className="text-sm text-indigo-800 dark:text-indigo-200">
                 🎯 <strong>Programme :</strong> 7 domaines de sécurité guidés par le commentateur.
-                Un timer de 3 minutes s'activera après chaque domaine.
+                Un timer de 2 minutes s'activera après chaque domaine.
               </p>
             </div>
 

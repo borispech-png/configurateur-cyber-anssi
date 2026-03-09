@@ -3,7 +3,7 @@ import { ChevronRight, ChevronLeft, FileText, Info, Save, CheckCircle, Clock, Sk
 import { Domain, Answers, Question } from '../types';
 import Modal from './Modal';
 
-const WEBINAR_TIMER_SECONDS = 3 * 60; // 3 minutes
+const WEBINAR_TIMER_SECONDS = 2 * 60; // 2 minutes
 
 interface QuestionnaireProps {
   domains: Domain[];

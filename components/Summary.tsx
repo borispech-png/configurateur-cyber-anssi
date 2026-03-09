@@ -105,7 +105,7 @@ const Summary: React.FC<SummaryProps> = ({ clientInfo, maturity, domainScores, r
                     <div className="text-blue-400 dark:text-blue-500 text-2xl">vs</div>
                     <div>
                       <span className="text-xs text-blue-700 dark:text-blue-300">Moyenne secteur</span>
-                      <div className="text-2xl font-bold text-blue-900 dark:text-blue-200">{benchmark.avgMaturity}%</div>
+                      <div className="text-2xl font-bold text-blue-900 dark:text-blue-200">{benchmark.avgMaturity}%<sup>*</sup></div>
                     </div>
                   </div>
                 </div>
@@ -113,7 +113,7 @@ const Summary: React.FC<SummaryProps> = ({ clientInfo, maturity, domainScores, r
               <p className={`mt-3 text-sm font-semibold ${
                 maturity >= benchmark.avgMaturity ? 'text-green-700 dark:text-green-400' : 'text-orange-700 dark:text-orange-400'
               }`}>
-                {maturity >= benchmark.avgMaturity 
+                {maturity >= benchmark.avgMaturity
                   ? '✅ Au-dessus de la moyenne sectorielle'
                   : '⚠️ En-dessous de la moyenne sectorielle'}
               </p>
@@ -124,6 +124,9 @@ const Summary: React.FC<SummaryProps> = ({ clientInfo, maturity, domainScores, r
                   <p>Cela suggère un décalage qui pourrait vous exposer à des risques plus élevés que des organismes similaires. Il est recommandé de prioriser les actions correctives pour atteindre, à minima, le niveau de maturité moyen de votre secteur.</p>
                 )}
               </div>
+              <p className="mt-3 text-xs text-gray-500 dark:text-gray-500 italic">
+                * Données estimatives basées sur les résultats des audits et accompagnements ANSSI (programme France Relance, 2021-2024) et de l'étude annuelle sur la maturité cyber des organismes publics publiée par Cybermalveillance.gouv.fr. Ces valeurs constituent des ordres de grandeur représentatifs, non des mesures officielles certifiées.
+              </p>
             </div>
           )}
 

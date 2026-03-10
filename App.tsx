@@ -115,11 +115,10 @@ const App: React.FC = () => {
       let maxScore = 0;
       DOMAINS.forEach(domain => {
         domain.questions.forEach(q => {
-          maxScore += (q.options.length - 1) * q.weight;
           const answer = answers[q.id];
-          if (answer !== undefined) {
-            totalScore += answer * q.weight;
-          }
+          if (answer === undefined || answer === -1) return; // exclure non répondus et "Je ne sais pas"
+          maxScore += (q.options.length - 1) * q.weight;
+          totalScore += answer * q.weight;
         });
       });
       if (maxScore === 0) return 0;
@@ -132,11 +131,10 @@ const App: React.FC = () => {
         let totalScore = 0;
         let maxScore = 0;
         domain.questions.forEach(q => {
-          maxScore += (q.options.length - 1) * q.weight;
           const answer = answers[q.id];
-          if (answer !== undefined) {
-            totalScore += answer * q.weight;
-          }
+          if (answer === undefined || answer === -1) return; // exclure non répondus et "Je ne sais pas"
+          maxScore += (q.options.length - 1) * q.weight;
+          totalScore += answer * q.weight;
         });
         scores[domain.title] = maxScore > 0 ? Math.round((totalScore / maxScore) * 100) : 0;
       });
@@ -147,7 +145,8 @@ const App: React.FC = () => {
       const recs: Recommendation[] = [];
       DOMAINS.forEach(domain => {
         domain.questions.forEach(q => {
-          const answer = answers[q.id] || 0;
+          const answer = answers[q.id];
+          if (answer === undefined || answer === -1) return; // exclure "Je ne sais pas"
           if (answer < 2) {
             recs.push({
               domain: domain.title,

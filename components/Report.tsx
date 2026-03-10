@@ -242,8 +242,8 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
   const getHardwareRefreshRecommendation = () => {
       // obs-1: Serveurs (0=Vieux/Risque, 3=Recent/Top)
       // obs-2: Stockage (0=EOS/Risque, 3=Support J+1)
-      const serverAgeIdx = answers['obs-1'] || 0;
-      const storageSupportIdx = answers['obs-2'] || 0;
+      const serverAgeIdx = (answers['obs-1'] === undefined || answers['obs-1'] === -1) ? 0 : answers['obs-1'];
+      const storageSupportIdx = (answers['obs-2'] === undefined || answers['obs-2'] === -1) ? 0 : answers['obs-2'];
 
       // Logic INVERTED: Low index = High Risk
       const needsServerRefresh = serverAgeIdx <= 1; // 0 (>7ans) or 1 (5-7ans)
@@ -504,13 +504,13 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                 </h3>
                                 <p className="mb-4 text-indigo-100">
                                     Basé sur votre niveau de classification des données (<strong>{(() => {
-                                        const idx = answers['res-3'] || 0;
+                                        const idx = (answers['res-3'] === undefined || answers['res-3'] === -1) ? 0 : answers['res-3'];
                                         return ["aucun inventaire", "inventaire partiel", "inventaire complet", "classification formalisée"][idx];
                                     })()}</strong>) :
                                 </p>
                                 
                                 {(() => {
-                                    const idx = answers['res-3'] || 0;
+                                    const idx = (answers['res-3'] === undefined || answers['res-3'] === -1) ? 0 : answers['res-3'];
                                     const rec = idx <= 1 ? {
                                         product: "HPE StoreOnce / Dell Data Domain",
                                         desc: "Appliance de déduplication avec verrouillage objet (Immutabilité). Première étape pour sécuriser vos données avant même de les avoir toutes classifiées.",
@@ -651,6 +651,38 @@ const Report: React.FC<ReportProps> = ({ clientInfo, maturity, domainScores, rec
                                 ))}
                             </div>
                         </section>
+
+                        {/* --- Points à évaluer (Je ne sais pas) --- */}
+                        {(() => {
+                            const unknownQuestions = DOMAINS.flatMap(d =>
+                                d.questions
+                                    .filter(q => answers[q.id] === -1)
+                                    .map(q => ({ domain: d.title, icon: d.icon, text: q.text }))
+                            );
+                            if (unknownQuestions.length === 0) return null;
+                            return (
+                                <section className="mt-16 print-break-avoid">
+                                    <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-3 mb-2">
+                                        <Info size={32} className="text-slate-500 dark:text-slate-400"/>
+                                        Points à évaluer
+                                    </h2>
+                                    <p className="text-gray-500 dark:text-gray-400 mb-6 text-sm">
+                                        Les questions suivantes ont reçu la réponse "Je ne sais pas". Elles n'ont pas été prises en compte dans le calcul du score de maturité. Il est recommandé de les investiguer avec votre équipe technique ou votre RSSI pour compléter l'analyse.
+                                    </p>
+                                    <div className="bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-700 rounded-lg divide-y divide-slate-200 dark:divide-slate-700">
+                                        {unknownQuestions.map((item, i) => (
+                                            <div key={i} className="flex items-start gap-3 p-4">
+                                                <span className="text-xl flex-shrink-0">{item.icon}</span>
+                                                <div>
+                                                    <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-0.5">{item.domain}</p>
+                                                    <p className="text-sm text-gray-700 dark:text-gray-300">{item.text}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </section>
+                            );
+                        })()}
 
                         {/* --- Budget --- */}
                         {/* Fix: Changed ref callback to use a block body to prevent returning a value. */}

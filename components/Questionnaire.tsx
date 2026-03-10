@@ -208,6 +208,28 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
                         </div>
                       </button>
                     ))}
+                    {/* Je ne sais pas */}
+                    <button
+                      onClick={() => onAnswer(question.id, -1)}
+                      className={`w-full text-left p-3 rounded-lg border-2 transition ${
+                        answers[question.id] === -1
+                          ? 'border-slate-400 bg-slate-100 dark:bg-slate-700 dark:border-slate-400'
+                          : 'border-dashed border-gray-300 dark:border-gray-600 hover:border-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
+                          answers[question.id] === -1 ? 'border-slate-500 dark:border-slate-400' : 'border-gray-300 dark:border-gray-500'
+                        }`}>
+                          {answers[question.id] === -1 && (
+                            <div className="w-4 h-4 rounded-full bg-slate-500 dark:bg-slate-400" />
+                          )}
+                        </div>
+                        <span className={`text-sm italic ${answers[question.id] === -1 ? 'font-semibold text-slate-700 dark:text-slate-300' : 'text-gray-400 dark:text-gray-500'}`}>
+                          Je ne sais pas
+                        </span>
+                      </div>
+                    </button>
                   </div>
                 </div>
               ))}

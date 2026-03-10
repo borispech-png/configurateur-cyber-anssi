@@ -44,6 +44,8 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
 
   const currentDomain = domains[step];
   const allQuestionsAnswered = currentDomain?.questions.every(q => answers[q.id] !== undefined) ?? false;
+  const answeredCount = currentDomain?.questions.filter(q => answers[q.id] !== undefined).length ?? 0;
+  const secondQuestionAnswered = answeredCount >= 2;
 
   // Reset timer each time the domain changes
   useEffect(() => {
@@ -53,13 +55,13 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
     if (intervalRef.current) clearInterval(intervalRef.current);
   }, [step, timerDuration]);
 
-  // Start timer when all questions are answered in webinar mode
+  // Start timer when the 2nd question is answered in webinar mode
   useEffect(() => {
     if (!isWebinaire) return;
-    if (allQuestionsAnswered && !timerActive && !timerDone) {
+    if (secondQuestionAnswered && !timerActive && !timerDone) {
       setTimerActive(true);
     }
-  }, [allQuestionsAnswered, isWebinaire, timerActive, timerDone]);
+  }, [secondQuestionAnswered, isWebinaire, timerActive, timerDone]);
 
   // Countdown logic
   useEffect(() => {
@@ -219,7 +221,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
             </div>
 
             {/* ===== WEBINAR TIMER PANEL ===== */}
-            {isWebinaire && allQuestionsAnswered && !timerDone && (
+            {isWebinaire && secondQuestionAnswered && !timerDone && (
               <div className="mb-6 p-5 bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-300 dark:border-amber-600 rounded-xl text-center animate-fade-in-up">
                 <p className="font-bold text-amber-800 dark:text-amber-200 text-base mb-1">
                   🎙️ Bravo ! Attendez le commentateur

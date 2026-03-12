@@ -1,9 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { ChevronRight, ChevronLeft, FileText, Info, Save, CheckCircle, Clock, SkipForward, Settings2 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { ChevronRight, ChevronLeft, FileText, Info, Save } from 'lucide-react';
 import { Domain, Answers, Question } from '../types';
 import Modal from './Modal';
-
-const WEBINAR_TIMER_SECONDS = 2 * 60; // 2 minutes
 
 interface QuestionnaireProps {
   domains: Domain[];
@@ -14,105 +12,16 @@ interface QuestionnaireProps {
   onPrevious: () => void;
   domainColor: string;
   isWebinaire?: boolean;
-  isHost?: boolean; // Secret host/presenter mode — shows timer controls
 }
 
 const Questionnaire: React.FC<QuestionnaireProps> = ({
-  domains, step, answers, onAnswer, onNext, onPrevious, domainColor, isWebinaire = false, isHost = false
+  domains, step, answers, onAnswer, onNext, onPrevious, domainColor, isWebinaire = false
 }) => {
   const [modalQuestion, setModalQuestion] = useState<Question | null>(null);
 
-  // --- Timer configuration (host can change duration) ---
-  const DURATION_OPTIONS = [
-    { label: '30 sec (test)', value: 30 },
-    { label: '1 minute', value: 60 },
-    { label: '2 minutes', value: 120 },
-    { label: '3 minutes', value: 180 },
-    { label: '5 minutes', value: 300 },
-    { label: '10 minutes', value: 600 },
-  ];
-  const [timerDuration, setTimerDuration] = useState(WEBINAR_TIMER_SECONDS);
-
-  // --- Timer state (webinar mode only) ---
-  // timerActive: countdown is running
-  // timeLeft: seconds remaining
-  // timerDone: countdown finished, user can proceed
-  const [timerActive, setTimerActive] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(WEBINAR_TIMER_SECONDS);
-  const [timerDone, setTimerDone] = useState(false);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
   const currentDomain = domains[step];
   const allQuestionsAnswered = currentDomain?.questions.every(q => answers[q.id] !== undefined) ?? false;
-  const answeredCount = currentDomain?.questions.filter(q => answers[q.id] !== undefined).length ?? 0;
-  const secondQuestionAnswered = answeredCount >= 2;
-
-  // Reset timer each time the domain changes
-  useEffect(() => {
-    setTimerActive(false);
-    setTimerDone(false);
-    setTimeLeft(timerDuration);
-    if (intervalRef.current) clearInterval(intervalRef.current);
-  }, [step, timerDuration]);
-
-  // Start timer when the 2nd question is answered in webinar mode
-  useEffect(() => {
-    if (!isWebinaire) return;
-    if (secondQuestionAnswered && !timerActive && !timerDone) {
-      setTimerActive(true);
-    }
-  }, [secondQuestionAnswered, isWebinaire, timerActive, timerDone]);
-
-  // Countdown logic
-  useEffect(() => {
-    if (!timerActive) return;
-    intervalRef.current = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev <= 1) {
-          clearInterval(intervalRef.current!);
-          setTimerActive(false);
-          setTimerDone(true);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, [timerActive]);
-
-  // HOST: skip timer instantly
-  const handleSkipTimer = () => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    setTimerActive(false);
-    setTimerDone(true);
-    setTimeLeft(0);
-  };
-
-  // HOST: change duration and reset timer
-  const handleChangeDuration = (newDuration: number) => {
-    setTimerDuration(newDuration);
-    // Will be picked up by the reset effect on next domain,
-    // but also update current timer display if not yet started
-    if (!timerActive && !timerDone) setTimeLeft(newDuration);
-  };
-
-  // Can the user go to next domain?
-  const canProceed = isWebinaire
-    ? allQuestionsAnswered && timerDone
-    : allQuestionsAnswered;
-
-  // Format seconds to MM:SS
-  const formatTime = (seconds: number) => {
-    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
-    const s = (seconds % 60).toString().padStart(2, '0');
-    return `${m}:${s}`;
-  };
-
-  // Progress % for the ring
-  const progressPct = ((WEBINAR_TIMER_SECONDS - timeLeft) / WEBINAR_TIMER_SECONDS) * 100;
-  const radius = 36;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (progressPct / 100) * circumference;
+  const canProceed = allQuestionsAnswered;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -242,86 +151,6 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
               </p>
             </div>
 
-            {/* ===== WEBINAR TIMER PANEL ===== */}
-            {isWebinaire && secondQuestionAnswered && !timerDone && (
-              <div className="mb-6 p-5 bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-300 dark:border-amber-600 rounded-xl text-center animate-fade-in-up">
-                <p className="font-bold text-amber-800 dark:text-amber-200 text-base mb-1">
-                  🎙️ Bravo ! Attendez le commentateur
-                </p>
-                <p className="text-sm text-amber-700 dark:text-amber-300 mb-4">
-                  Toutes vos réponses sont enregistrées. Le domaine suivant s'ouvrira dans :
-                </p>
-
-                {/* Countdown ring */}
-                <div className="flex justify-center mb-3">
-                  <div className="relative w-24 h-24">
-                    <svg className="w-full h-full -rotate-90" viewBox="0 0 88 88">
-                      {/* Background circle */}
-                      <circle cx="44" cy="44" r={radius} fill="none" stroke="#fde68a" strokeWidth="6" />
-                      {/* Progress arc */}
-                      <circle
-                        cx="44" cy="44" r={radius} fill="none"
-                        stroke="#d97706"
-                        strokeWidth="6"
-                        strokeLinecap="round"
-                        strokeDasharray={circumference}
-                        strokeDashoffset={strokeDashoffset}
-                        style={{ transition: 'stroke-dashoffset 1s linear' }}
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-2xl font-bold font-mono text-amber-700 dark:text-amber-300">
-                        {formatTime(timeLeft)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <p className="text-xs text-amber-600 dark:text-amber-400 italic">
-                  Profitez de ce temps pour noter vos observations.
-                </p>
-
-                {/* ===== SECRET HOST CONTROLS (invisible for participants) ===== */}
-                {isHost && (
-                  <div className="mt-4 pt-4 border-t border-amber-300 dark:border-amber-600">
-                    <p className="text-xs text-amber-700 dark:text-amber-300 font-bold mb-2 flex items-center justify-center gap-1">
-                      <Settings2 size={13} /> Contrôles Animateur
-                    </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
-                      {/* Skip button */}
-                      <button
-                        onClick={handleSkipTimer}
-                        className="flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg transition-colors"
-                      >
-                        <SkipForward size={14} />
-                        Passer le timer
-                      </button>
-                      {/* Duration selector */}
-                      <select
-                        value={timerDuration}
-                        onChange={(e) => handleChangeDuration(Number(e.target.value))}
-                        title="Durée du timer"
-                        className="px-3 py-2 text-xs rounded-lg border border-amber-400 bg-white dark:bg-gray-700 text-amber-800 dark:text-amber-200 font-semibold focus:outline-none cursor-pointer"
-                      >
-                        {DURATION_OPTIONS.map(opt => (
-                          <option key={opt.value} value={opt.value}>{opt.label}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Timer done confirmation */}
-            {isWebinaire && timerDone && allQuestionsAnswered && step < domains.length - 1 && (
-              <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border-2 border-green-300 dark:border-green-600 rounded-xl text-center">
-                <p className="font-bold text-green-800 dark:text-green-200 flex items-center justify-center gap-2">
-                  <CheckCircle size={18} />
-                  Le prochain domaine est maintenant disponible !
-                </p>
-              </div>
-            )}
-
             {/* Navigation */}
             <div className="flex gap-4">
               <button
@@ -351,13 +180,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({
                     Voir le récapitulatif
                   </>
                 ) : (
-                  <>
-                    {isWebinaire && timerActive ? (
-                      <><Clock size={20} /> En attente du commentateur...</>
-                    ) : (
-                      <>Domaine suivant <ChevronRight size={20} /></>
-                    )}
-                  </>
+                  <>Domaine suivant <ChevronRight size={20} /></>
                 )}
               </button>
             </div>
